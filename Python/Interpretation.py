@@ -1,4 +1,4 @@
-from MatrixPackage import *
+from Matrix import *
 
 class Interpretation():
 	__max_prec = 0
