@@ -225,7 +225,7 @@ g = 7
 >> (get 1:3 from m) ^ (get 0:0 from m)
 -161051
 ```
-To get whole rows and columns, use the format **get row _n_ from m** or **get col _n_ from m**. Use a range instead of *n* to get multiple rows and columns.
+To get whole rows and columns, use the format **get row _n_ from _matrix_** or **get col _n_ from _matrix_**. Use a range instead of *n* to get multiple rows and columns.
 
 Using the format **get _n_ from _tuple_** retrieves a value from a tuple.
 
