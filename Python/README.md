@@ -247,3 +247,46 @@ accessed again following that command. However, it can be helpful to change a ma
 [ 1  2  3 ], [ 0  0  0  ;  7  8  9 ], 0
 ```
 
+### Common Errors
+
+##### Invalid Variable Name
+```
+>> 5&hello = 5
+Error: invalid variable name
+```
+
+##### Invalid Matrix
+```
+>> [1 2 3 ; 4 5 6 ; 7 8]
+Error: invalid matrix
+```
+
+##### Unbalanced Parentheses
+```
+>> (5 + 6 - (7 * 8)
+Error: unbalanced parentheses or matrix blocks
+```
+
+##### Invalid Dimensions
+```
+>> set row 0 from [1 2 3] to [0 0]
+Error: invalid dimensions
+```
+
+##### Invalid Math
+```
+>> 5 + [1]
+Error: invalid addition
+
+>> [1 2] * [3 4]
+Error: invalid matrix
+
+>> 5 ^ [6]
+Error: invalid exponent
+```
+
+##### Decimals in Ranges
+```
+>> r = 5:6.5
+Error: range must consist of integers
+```
