@@ -120,6 +120,7 @@ There are several important functions used with MatrixScape objects.
 - **zero vector _number_**: returns a *zero vector* of the given length
 - **type _object_**: prints the data type of the object (prints "void" if no type and "error" if error)
 - **list**: lists all current variables, organized by data type
+- **clear**: clears the screen of all visible commands (all variables will be saved)
 - ***Boolean Functions***
   - **_boolean_ and _boolean_**: returns whether both booleans are *true*
   - **_boolean_ or _boolean_**: returns whether at least one of the booleans is *true*
@@ -155,8 +156,25 @@ void
 [ 1  0  -1  -2  -7 ]
 [ 0  1   2   3   6 ] 
 
+>> invertible? m1
+true
+
+>> inverse m1
+[ -2.66667   1.66667   1 ]
+[  2.33333  -1.33333  -2 ]
+[        0         0   1 ]
+
 >> rank m1
 2
+
+>> [1 2 3] == [1   2  3]
+true
+
+>> [1 2 3] == [1 2 3 4]
+false
+
+>> ([1 2 3] == 5) or (5 < 6)
+true
 ```
 
 There are two functions related to matrices that have not been discussed yet. They are the **get** and **set** functions. They are more 
@@ -181,3 +199,33 @@ g = 7
 To get whole rows and columns, use the format **get row _n_ from m** or **get col _n_ from m**. Use a range instead of *n* to get multiple rows and columns.
 
 Using the format **get _n_ from _tuple_** retrieves a value from a tuple.
+
+### Matrix *Set* Function
+
+It is important to be able to change values in a matrix. This is what the **set** function is for. This function follows the format
+**set _row_:_column_ from _matrix_ to _number_**.
+```
+>> m = [0 0 0; 0 0 0];
+>> m
+[ 0  0  0 ]
+[ 0  0  0 ]
+
+>> set 0:0 from m to 5
+m = 
+  [ 5  0  0 ]
+  [ 0  0  0 ]
+```
+You can also set an entire row or column of a matrix using **set row _number_ from _matrix_ to _matrix_** or **set col _number_ from _matrix_ to _matrix_**.
+
+Setting a value in a matrix that does not exist within a variable will change the matrix, but this does not do much good since the matrix cannot be 
+accessed again following that command. However, it can be helpful to change a matrix that exists in a tuple.
+```
+>> t = [1 2 3], [4 5 6; 7 8 9], 0;
+>> set row 0 from (get 1 from t) to [0 0 0]
+[ 0  0  0 ]
+[ 7  8  9 ]
+
+>> t
+[ 1  2  3 ], [ 0  0  0  ;  7  8  9 ], 0
+```
+
