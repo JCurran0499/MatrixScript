@@ -136,7 +136,7 @@ often together.
 There are several important functions used with MatrixScape objects.
 - **row _matrix_**: returns the number of rows in the matrix
 - **col _matrix_**: returns the number of columns in the matrix
-- **size _matrix/tuple_**: returns the number of total elements in the matrix or tuple
+- **size _matrix/tuple\range_**: returns the number of total elements in the matrix, tuple, or range
 - **square? _matrix_**: returns the boolean of whether the matrix is square
 - **invertible? _matrix_**: returns the boolean of whether the matrix is invertible
 - **symmetrical? _matrix_**: returns the boolean of whether the matrix is symmetrical
@@ -300,4 +300,48 @@ Error: invalid exponent
 ```
 >> r = 5:6.5
 Error: range must consist of integers
+```
+
+##### Invalid Comparisons
+```
+>> 1:6 < 5
+Error: invalid comparison
+
+>> // NOTE: == and != can compare different types, returning false
+```
+
+### Common Tricks
+
+##### Negation
+Negation is a powerful tool used with several data types.
+```
+>> m = [1 2 -3];
+>> n = 6;
+>> t = 1,2,3;
+>> r = -1:6;
+>>
+>> -(m * 2)
+[ -2  -4  6 ]
+
+>> -n
+-6
+
+>> -t
+3,2,1
+
+>> -r
+6:-1
+```
+
+##### Range Size
+The absolute value of the difference between the beginning and end is the size of a range.
+```
+>> r = 1:6
+r = 1:6
+
+>> size r
+5
+
+>> r < 1:7
+true
 ```
