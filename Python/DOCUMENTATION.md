@@ -54,3 +54,31 @@ tup = 0.5, 1.5, true, [ 1  2  3  ;  4  5  6 ]
 >> ran = 1:6  // range (can only consist of integers)
 ran = 1:6
 ```
+*Tip: ranges must consist of integers, but they can include negative integers. If the first integer is greater than the second, the range will run in reverse order*
+
+Any MatrixScape syntax errors will be caught and the given command will not run. The rest of the program will be unaffected
+```
+>> x = 5;
+>> y = true;
+>> x + y
+Error: invalid addition
+```
+
+### Matrix and Vector Calculations
+
+Matrices are created using the format **\[ row 1 values ; row 2 values ; ... ; row n values]**, with the values in each row separated by spaces. Matrices that do not 
+have an equal number of values in each row will result in an error.
+
+Functions involving matrices are the core of MatrixScape. Simple mathematical operations (+, -, \*, /) work between matrices and numbers.
+```
+>> m = [1 1 1 ; 4  5 7; 8 9 0];
+>> m * 3
+[  3   3   3 ]
+[ 12  15  21 ]
+[ 24  27   0 ]
+
+>> m + [1 1 1; 2 2 2; 3 3 3]
+[  2   2  2 ]
+[  6   7  9 ]
+[ 11  12  3 ]
+```
