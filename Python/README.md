@@ -76,7 +76,7 @@ Any MatrixScape syntax errors will be caught and the given command will not run.
 Error: invalid addition
 ```
 
-### Matrix and Vector Calculations
+### Matrix and Number Calculations
 
 Matrices are created using the format **\[ row 1 values ; row 2 values ; ... ; row n values]**, with the values in each row separated by spaces. Matrices that do not 
 have an equal number of values in each row will result in an error.
@@ -92,7 +92,8 @@ m1 =
 m2 = 
   [ 7  6  5  4  3  2  1  0  -1  -2 ]
 ```
-*Tip: you can use variables when creating a matrix*\n
+*Tip: you can use variables when creating a matrix*
+
 *Tip: using parentheses in matrix brackets can be helpful. MatrixScape separates row values by spaces, but not within parentheses*
 
 Functions involving matrices are the core of MatrixScape. Simple mathematical operations (+, -, \*, /, ^) work between matrices and numbers.
@@ -115,7 +116,9 @@ Functions involving matrices are the core of MatrixScape. Simple mathematical op
 ```
 *Tip: multiplying matrices will calculate the dot product*
 
-MatrixScape mathematical calculations follow standard order of operations. Using parentheses will help remove any ambiguity. 
+MatrixScape mathematical calculations follow standard order of operations. Using parentheses will help remove any ambiguity. Addition (+), subtraction (-), 
+multiplication (\*), division (/), exponents (^), and factorials (!) are all supported. Most of these expressions can be performed with matrices and numbers,
+often together.
 
 ## Functions
 
