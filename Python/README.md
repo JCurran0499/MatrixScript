@@ -35,7 +35,7 @@ There are *5* object data types used in MatrixScape
 - **Tuple:** a collection of MatrixScape objects/variables in a given order
 - **Range:** a discrete range of integers from a distinct startpoint and endpoint
 
-The most efficient way to interact with these objects is to store them in *variables*
+The most efficient way to interact with these objects is to store them in *variables*.
 ```
 >> x = 5;
 >> y = 10;
@@ -100,7 +100,7 @@ Using **:** will augment matrices
 ```
 >> m1 = [1 2 ; 3 4];
 >> m2 = [0 0 ; 3 4];
->> m3 = m1
+>> m3 = m1;
 >> aug_m = m1:m2:m3
 aug_m = 
   [ 1  2  0  0  1  2 ]
