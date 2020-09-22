@@ -108,9 +108,6 @@ There are several important functions used with MatrixScape objects.
 - **row _matrix_**: returns the number of rows in the matrix
 - **col _matrix_**: returns the number of columns in the matrix
 - **size _matrix/tuple_**: returns the number of total elements in the matrix or tuple
-- **not _boolean_**: returns the opposite of the given boolean
-- **_boolean_ and _boolean_**: returns the boolean of whether both booleans are *true*
-- **_boolean_ or _boolean_**: returns the boolean of whether at least one boolean is *true*
 - **square? _matrix_**: returns the boolean of whether the matrix is square
 - **invertible? _matrix_**: returns the boolean of whether the matrix is invertible
 - **symmetrical? _matrix_**: returns the boolean of whether the matrix is symmetrical
@@ -123,6 +120,16 @@ There are several important functions used with MatrixScape objects.
 - **zero vector _number_**: returns a *zero vector* of the given length
 - **type _object_**: prints the data type of the object (prints "void" if no type and "error" if error)
 - **list**: lists all current variables, organized by data type
+- ***Boolean Functions***
+  - **_boolean_ and _boolean_**: returns whether both booleans are *true*
+  - **_boolean_ or _boolean_**: returns whether at least one of the booleans is *true*
+  - **not _boolean_**: returns the opposite of the given boolean
+  - **_object_ == _object_**: returns whether the objects are equal to each other 
+  - **_object_ != _object_**: returns whether the objects are not equal to each other 
+  - **_number_ < _number_**: returns whether a number is less than another
+  - **_number_ > _number_**: returns whether a number is greater than another
+  - **_number_ <= _number_**: returns whether a number is less than or equal to another
+  - **_number_ >= _number_**: returns whether a number is greater than or equal to another
 *Tip: any function that ends with __?__ will return a boolean*
 
 Here are some examples
