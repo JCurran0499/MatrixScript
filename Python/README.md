@@ -102,29 +102,9 @@ Functions involving matrices are the core of MatrixScape. Simple mathematical op
 
 MatrixScape mathematical calculations follow standard order of operations. Using parentheses will help remove any ambiguity. 
 
-### Matrix Get Function
-
-It is also import to retrive values from matrices. This is done using the **get** command using the format
-**get _row_:_column_ from _matrix_**. Indexing begins at 0.
-```
->> m = [5 6 7 8; 9 0 0 -(5 + 6)]
-m = 
-  [ 5  6  7    8 ]
-  [ 9  0  0  -11 ]
-  
->> g = get 0:2 from m
-g = 7
-
->> (get 1:3 from m) ^ (get 0:0 from m)
--161051
-```
-To get whole rows and columns, use the format **get row _n_ from m** or **get col _n_ from m**. Use a range instead of *n* to get multiple rows and columns.
-
-Using the format **get _n_ from _tuple_** retrieves a value from a tuple.
-
 ## Functions
 
-There are several important functions used with MatrixScape objects. This documentation has already discussed the **get** function.
+There are several important functions used with MatrixScape objects.
 - **row _matrix_**: returns the number of rows in the matrix
 - **col _matrix_**: returns the number of columns in the matrix
 - **size _matrix/tuple_**: returns the number of total elements in the matrix or tuple
@@ -171,3 +151,26 @@ void
 >> rank m1
 2
 ```
+
+There are two functions related to matrices that have not been discussed yet. They are the **get** and **set** functions. They are more 
+complex and will be discussed below.
+
+### Matrix *Get* Function
+
+It is also import to retrive values from matrices. This is done using the **get** command using the format
+**get _row_:_column_ from _matrix_**. Indexing begins at 0.
+```
+>> m = [5 6 7 8; 9 0 0 -(5 + 6)]
+m = 
+  [ 5  6  7    8 ]
+  [ 9  0  0  -11 ]
+  
+>> g = get 0:2 from m
+g = 7
+
+>> (get 1:3 from m) ^ (get 0:0 from m)
+-161051
+```
+To get whole rows and columns, use the format **get row _n_ from m** or **get col _n_ from m**. Use a range instead of *n* to get multiple rows and columns.
+
+Using the format **get _n_ from _tuple_** retrieves a value from a tuple.
