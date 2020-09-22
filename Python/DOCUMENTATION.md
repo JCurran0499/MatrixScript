@@ -36,6 +36,7 @@ The most efficient way to interact with these objects is to store them in *varia
 *Tip: comments in MatrixScape begin with __//__. Any text after that on a given line will be ignored*
 
 Variables can be set to the 5 data types, and nothing else. Variables are dynamically typed and can be reset to any data type.
+Variable names can only consist of letters, numbers, and underscores, and they cannot share names with any existing MatrixScape functions.
 ```
 >> num = 0.5   // number
 num = 0.5
@@ -126,3 +127,33 @@ There are several important functions used with MatrixScape objects. This docume
 - **rank _matrix_**: returns the number of the rank of the matrix
 - **identity _number_**: returns an *identity matrix* of the given dimensions
 - **zero vector _number_**: returns a *zero vector* of the given length
+- **type _object_**: prints the data type of the object (prints "void" if no type and "error" if error)
+- **list**: lists all current variables, organized by data type
+*Tip: any function that ends with __?__ will return a boolean*
+
+Here are some examples
+```
+>> t = true;
+>> f = false;
+>> b = not (true and false)
+b = true
+
+>> identity 3
+[ 1  0  0 ]
+[ 0  1  0 ]
+[ 0  0  1 ]
+
+>> type b
+boolean
+
+>> type (x = 5)
+void
+
+>> m1 = [1 2 3 4 5; 6 7 8 9 0];
+>> rref m1
+[ 1  0  -1  -2  -7 ]
+[ 0  1   2   3   6 ] 
+
+>> rank m1
+2
+```
