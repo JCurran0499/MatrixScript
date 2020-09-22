@@ -8,7 +8,7 @@ University of Maryland or any employer. All code is mine.*
 
 *I give full permission for anybody to download and execute this code for personal use.
 If publishing work done using this code, please credit me. If you have any questions,
-please feel free to reach me at __jcurran2@terpmail.umd.edu__*
+please feel free to reach me at __jcurran2@terpmail.umd.edu__ or through my [LinkedIn](http://www.linkedin.com/in/johncurran49)*
 
 
 ### Introduction: What is MatrixScape?
