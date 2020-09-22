@@ -10,6 +10,8 @@ University of Maryland or any employer. All code is mine.*
 If publishing work done using this code, please credit me. If you have any questions,
 please feel free to reach me at __jcurran2@terpmail.umd.edu__*
 
+
+
 MatrixScape is an interpreted command language that supports the calculation of linear algebra
 problems. To use MatrixScape, run the [Program.py](https://github.com/JCurran0499/MatrixScape/blob/master/Python/Program.py) file and type in commands.
 To exit MatrixScape, type **quit** or **exit** into the prompt.
