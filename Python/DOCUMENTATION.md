@@ -32,7 +32,7 @@ The most efficient way to interact with these objects is to store them in *varia
 >> (x + y) * 3
 45
 ```
-*Tip: ending a MatrixScape calculation or variable declaration with __;__ will not cause the result to be printed immediately, which is the default*
+*Tip: ending a MatrixScape variable declaration with __;__ will not cause the result to be printed immediately, which is the default*
 *Tip: comments in MatrixScape begin with __//__. Any text after that on a given line will be ignored*
 
 Variables can be set to the 5 data types, and nothing else. Variables are dynamically typed and can be reset to any data type.
@@ -104,3 +104,25 @@ g = 7
 -161051
 ```
 To get whole rows and columns, use the format **get row _n_ from m** or **get col _n_ from m**. Use a range instead of *n* to get multiple rows and columns.
+
+Using the format **get _n_ from _tuple_** retrieves a value from a tuple.
+
+## Functions
+
+There are several important functions used with MatrixScape objects. This documentation has already discussed the **get** function.
+- **row _matrix_**: returns the number of rows in the matrix
+- **col _matrix_**: returns the number of columns in the matrix
+- **size _matrix/tuple_**: returns the number of total elements in the matrix or tuple
+- **not _boolean_**: returns the opposite of the given boolean
+- **_boolean_ and _boolean_**: returns the boolean of whether both booleans are *true*
+- **_boolean_ or _boolean_**: returns the boolean of whether at least one boolean is *true*
+- **square? _matrix_**: returns the boolean of whether the matrix is square
+- **invertible? _matrix_**: returns the boolean of whether the matrix is invertible
+- **symmetrical? _matrix_**: returns the boolean of whether the matrix is symmetrical
+- **inverse _matrix_**: returns the inverse of the matrix (error if not invertible)
+- **transpose _matrix_**: returns the transpose of the matrix
+- **rref _matrix_**: returns the *reduced row echelon form* of the matrix
+- **det _matrix_**: returns the number of the determinant of the matrix
+- **rank _matrix_**: returns the number of the rank of the matrix
+- **identity _number_**: returns an *identity matrix* of the given dimensions
+- **zero vector _number_**: returns a *zero vector* of the given length
