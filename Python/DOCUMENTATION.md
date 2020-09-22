@@ -2,6 +2,7 @@
 ## This is the official MatrixScape documentation
 
 **Author:** John Curran
+
 *All work done with this project is mine alone. This project is independent and has no affiliation with the 
 University of Maryland or any employer. All code is mine.*
 
