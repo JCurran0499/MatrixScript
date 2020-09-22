@@ -16,11 +16,22 @@ matrices and vectors. This language is meant to make linear algebra problems eas
 background in linear algebra or machine learning. It is my sincere goal to make complex problems easier and more fun, and I hope MatrixScape
 contributes to that effort.
 
-### Introduction to MatrixScape : Variables
+### Introduction to MatrixScape : Data and Variables
 
-There are *5* types of variables used in MatrixScape
-- Number: also referred to as a scalar, a number represents a simple real number value
-- Matrix: the matrix is a mathematical two-dimensional organization of numbers. Matrices made of one column are *vectors*
-- Boolean: the computer science representation of a true/false value
-- Tuple: a collection of MatrixScape objects/variables in a given order
-- Range: a discrete range of whole numbers from a distinct startpoint and endpoint
+There are *5* object data types used in MatrixScape
+- **Number:** also referred to as a scalar, a number represents a simple real number value
+- **Matrix:** the matrix is a mathematical two-dimensional organization of numbers. Matrices made of one column are *vectors*
+- **Boolean:** the computer science representation of a true/false value
+- **Tuple:** a collection of MatrixScape objects/variables in a given order
+- **Range:** a discrete range of whole numbers from a distinct startpoint and endpoint
+
+The most efficient way to interact with these objects is to store them in *variables*
+```
+>> x = 5;
+>> y = 10;
+>> (x + y) * 3
+45
+```
+*Tip: ending a MatrixScape calculation or variable declaration with __;__ will not cause the result to be printed immediately, which is the default*
+
+
