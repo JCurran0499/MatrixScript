@@ -69,7 +69,7 @@ Error: invalid addition
 Matrices are created using the format **\[ row 1 values ; row 2 values ; ... ; row n values]**, with the values in each row separated by spaces. Matrices that do not 
 have an equal number of values in each row will result in an error.
 
-Functions involving matrices are the core of MatrixScape. Simple mathematical operations (+, -, \*, /) work between matrices and numbers.
+Functions involving matrices are the core of MatrixScape. Simple mathematical operations (+, -, \*, /, ^) work between matrices and numbers.
 ```
 >> m = [1 1 1 ; 4  5 7; 8 9 0];
 >> m * 3
@@ -81,4 +81,26 @@ Functions involving matrices are the core of MatrixScape. Simple mathematical op
 [  2   2  2 ]
 [  6   7  9 ]
 [ 11  12  3 ]
+
+>> -m
+[ -1  -1  -1 ]
+[ -4  -5  -7 ]
+[ -8  -9   0 ]
 ```
+*Tip: multiplying matrices will calculate the dot product*
+
+It is also import to retrive values from matrices. This is done using the **get** command using the format
+**get _row_:_column_ from _matrix_**. Indexing begins at 0.
+```
+>> m = [5 6 7 8; 9 0 0 -(5 + 6)]
+m = 
+  [ 5  6  7    8 ]
+  [ 9  0  0  -11 ]
+  
+>> g = get 0:2 from m
+g = 7
+
+>> (get 1:3 from m) ^ (get 0:0 from m)
+-161051
+```
+To get whole rows and columns, use the format **get row _n_ from m** or **get col _n_ from m**. Use a range instead of *n* to get multiple rows and columns.
