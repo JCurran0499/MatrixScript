@@ -345,3 +345,40 @@ r = 1:6
 >> r < 1:7
 true
 ```
+
+##### Set Several Rows or Columns
+```
+>> m = [1 2 3 ; 4 5 6 ; 7  8 9]
+m = 
+  [ 1  2  3 ]
+  [ 4  5  6 ]
+  [ 7  8  9 ]
+
+>> set row 0:1 from m to [0 0 0 ; 0 0 0]
+m = 
+  [ 0  0  0 ]
+  [ 0  0  0 ]
+  [ 7  8  9 ]
+  
+>> set col 1:2 from m to [1 1 ; 1 1 ; 1 1]
+m = 
+  [ 0  1  1 ]
+  [ 0  1  1 ]
+  [ 7  1  1 ]
+```
+
+##### Verify Inverse
+This trick is a fun way to interact with complex MatrixScape commands
+```
+>> m = [1 3 5 ; 1 1 2 ; 4 6 9]
+m = 
+  [ 1  3  5 ]
+  [ 1  1  2 ]
+  [ 4  6  9 ]
+  
+>> invertible? m
+true
+
+>> (get col 3:5 from (rref m:(identity 3))) == inverse m
+true
+```
