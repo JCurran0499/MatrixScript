@@ -1,6 +1,14 @@
 # MatrixScape Documentation
 ## This is the official MatrixScape documentation
 
+**Author:** John Curran
+*All work done with this project is mine alone. This project is independent and has no affiliation with the 
+University of Maryland or any employer. All code is mine.*
+
+*I give full permission for anybody to download and execute this code for personal use.
+If publishing work done using this code, please credit me. If you have any questions,
+please feel free to reach me at __jcurran2@terpmail.umd.edu__*
+
 MatrixScape is an interpreted command language that supports the calculation of linear algebra
 problems. To use MatrixScape, run the [Program.py](https://github.com/JCurran0499/MatrixScape/blob/master/Python/Program.py) file and type in commands.
 To exit MatrixScape, type **quit** or **exit** into the prompt.
@@ -57,7 +65,7 @@ ran = 1:6
 ```
 *Tip: ranges must consist of integers, but they can include negative integers. If the first integer is greater than the second, the range will run in reverse order*
 
-Any MatrixScape syntax errors will be caught and the given command will not run. The rest of the program will be unaffected
+Any MatrixScape syntax errors will be caught and the given command will not run. The rest of the program will be unaffected.
 ```
 >> x = 5;
 >> y = true;
@@ -89,6 +97,10 @@ Functions involving matrices are the core of MatrixScape. Simple mathematical op
 [ -8  -9   0 ]
 ```
 *Tip: multiplying matrices will calculate the dot product*
+
+MatrixScape mathematical calculations follow standard order of operations. Using parentheses will help remove any ambiguity. 
+
+### Matrix Get Function
 
 It is also import to retrive values from matrices. This is done using the **get** command using the format
 **get _row_:_column_ from _matrix_**. Indexing begins at 0.
