@@ -28,7 +28,7 @@ contributes to that effort.
 
 ### Data and Variables
 
-There are *5* object data types used in MatrixScape
+There are 5 object data types used in MatrixScape
 - **Number:** also referred to as a scalar, a number represents a simple real number value
 - **Matrix:** the matrix is a mathematical two-dimensional organization of numbers. Matrices made of one column are *vectors*
 - **Boolean:** the computer science representation of a true/false value
