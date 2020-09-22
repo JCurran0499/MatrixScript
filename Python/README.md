@@ -79,7 +79,7 @@ Error: invalid addition
 ### Matrix and Number Calculations
 
 Matrices are created using the format **\[ row 1 values ; row 2 values ; ... ; row n values]**, with the values in each row separated by spaces. Matrices that do not 
-have an equal number of values in each row will result in an error.
+have an equal number of values in each row will result in an error. *Matrices are mutable objects.*
 
 Using a range in a matrix will add in all of the numbers within that range.
 ```
@@ -95,6 +95,17 @@ m2 =
 *Tip: you can use variables when creating a matrix*
 
 *Tip: using parentheses in matrix brackets can be helpful. MatrixScape separates row values by spaces, but not within parentheses*
+
+Using **:** will augment matrices
+```
+>> m1 = [1 2 ; 3 4];
+>> m2 = [0 0 ; 3 4];
+>> m3 = m1
+>> aug_m = m1:m2:m3
+aug_m = 
+  [ 1  2  0  0  1  2 ]
+  [ 3  4  0  0  3  4 ]
+```
 
 Functions involving matrices are the core of MatrixScape. Simple mathematical operations (+, -, \*, /, ^) work between matrices and numbers.
 ```
