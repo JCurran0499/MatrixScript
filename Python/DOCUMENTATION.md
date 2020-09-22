@@ -23,7 +23,7 @@ There are *5* object data types used in MatrixScape
 - **Matrix:** the matrix is a mathematical two-dimensional organization of numbers. Matrices made of one column are *vectors*
 - **Boolean:** the computer science representation of a true/false value
 - **Tuple:** a collection of MatrixScape objects/variables in a given order
-- **Range:** a discrete range of whole numbers from a distinct startpoint and endpoint
+- **Range:** a discrete range of integers from a distinct startpoint and endpoint
 
 The most efficient way to interact with these objects is to store them in *variables*
 ```
@@ -33,5 +33,24 @@ The most efficient way to interact with these objects is to store them in *varia
 45
 ```
 *Tip: ending a MatrixScape calculation or variable declaration with __;__ will not cause the result to be printed immediately, which is the default*
+*Tip: comments in MatrixScape begin with __//__. Any text after that on a given line will be ignored*
 
+Variables can be set to the 5 data types, and nothing else. Variables are dynamically typed and can be reset to any data type.
+```
+>> num = 0.5   // number
+num = 0.5
 
+>> mat = [1 2 3; 4 5 6]   // matrix
+mat =
+  [ 1  2  3 ]
+  [ 4  5  6 ]
+  
+>> bool = true  // boolean
+bool = true
+
+>> tup = num, num+1, bool, mat   // tuple
+tup = 0.5, 1.5, true, [ 1  2  3  ;  4  5  6 ]
+
+>> ran = 1:6  // range (can only consist of integers)
+ran = 1:6
+```
