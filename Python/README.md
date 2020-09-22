@@ -43,6 +43,7 @@ The most efficient way to interact with these objects is to store them in *varia
 45
 ```
 *Tip: ending a MatrixScape variable declaration with __;__ will not cause the result to be printed immediately, which is the default*
+
 *Tip: comments in MatrixScape begin with __//__. Any text after that on a given line will be ignored*
 
 Variables can be set to the 5 data types, and nothing else. Variables are dynamically typed and can be reset to any data type.
@@ -91,7 +92,7 @@ m1 =
 m2 = 
   [ 7  6  5  4  3  2  1  0  -1  -2 ]
 ```
-*Tip: you can use variables when creating a matrix*
+*Tip: you can use variables when creating a matrix*\n
 *Tip: using parentheses in matrix brackets can be helpful. MatrixScape separates row values by spaces, but not within parentheses*
 
 Functions involving matrices are the core of MatrixScape. Simple mathematical operations (+, -, \*, /, ^) work between matrices and numbers.
