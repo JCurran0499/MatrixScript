@@ -91,8 +91,8 @@ m1 =
 m2 = 
   [ 7  6  5  4  3  2  1  0  -1  -2 ]
 ```
-*Tip: you can use variables when creating a matrix
-Tip: using parentheses in matrix brackets can be helpful. MatrixScape separates row values by spaces, but not within parentheses*
+*Tip: you can use variables when creating a matrix*
+*Tip: using parentheses in matrix brackets can be helpful. MatrixScape separates row values by spaces, but not within parentheses*
 
 Functions involving matrices are the core of MatrixScape. Simple mathematical operations (+, -, \*, /, ^) work between matrices and numbers.
 ```
