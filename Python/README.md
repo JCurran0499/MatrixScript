@@ -80,6 +80,20 @@ Error: invalid addition
 Matrices are created using the format **\[ row 1 values ; row 2 values ; ... ; row n values]**, with the values in each row separated by spaces. Matrices that do not 
 have an equal number of values in each row will result in an error.
 
+Using a range in a matrix will add in all of the numbers within that range.
+```
+>> m1 = [5:8; 1 2 3 4]
+m1 =
+  [ 5  6  7  8 ]
+  [ 1  2  3  4 ]
+  
+>> m2 = [7:(-2)]
+m2 = 
+  [ 7  6  5  4  3  2  1  0  -1  -2 ]
+```
+*Tip: you can use variables when creating a matrix
+Tip: using parentheses in matrix brackets can be helpful. MatrixScape separates row values by spaces, but not within parentheses*
+
 Functions involving matrices are the core of MatrixScape. Simple mathematical operations (+, -, \*, /, ^) work between matrices and numbers.
 ```
 >> m = [1 1 1 ; 4  5 7; 8 9 0];
