@@ -390,5 +390,4 @@ but not all of the full functionality of this language. This project has become 
 be added from time to time. If anybody has any ideas for features I could add to this source code, please feel free to reach out. I 
 appreciate any and all suggestions. Thank you for taking the time to explore my work, and have fun!
 
-Best,
-John Curran
+*John Curran*
