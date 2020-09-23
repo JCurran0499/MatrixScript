@@ -382,3 +382,13 @@ true
 >> (get col 3:5 from (rref m:(identity 3))) == inverse m
 true
 ```
+
+### Conclusion
+
+MatrixScape is a personal project of mine that I hope is found to be useful for anyone that needs it. This documentation contains most, 
+but not all of the full functionality of this language. This project has become a continuous process, and more functionality will 
+be added from time to time. If anybody has any ideas for features I could add to this source code, please feel free to reach out. I 
+appreciate any and all suggestions. Thank you for taking the time to explore my work, and have fun!
+
+Best,
+John Curran
