@@ -1,16 +1,19 @@
 /* John Curran
  * 
  * This class simulates a matrix of numbers. A matrix is simulated 
- * with a two dimensional array of BigDecimal values. BigDecimal is
+ * with a two-dimensional array of BigDecimal values. BigDecimal is
  * used in order to ensure precision when it comes to mathematical 
  * calculations. The methods below define the behavior of the matrix. 
  * In this case, each row in a matrix is an array of BigDecimal values 
- * in the two dimensional array, so each value in the matrix can be 
- * retrived from the array using matrix[row][column]. All methods 
+ * in the two-dimensional array, so each value in the matrix can be
+ * retrieved from the array using matrix[row][column]. All methods
  * that return objects will return null on an error, so it is the 
  * responsibility of the user to check for that if they think there
  * might be an error. Methods that do not return values, along with
- * constructors, will throw an exception upon an error */
+ * constructors, will throw an exception upon an error.
+ *
+ * With proper credit, anybody is free to use and distribute this code for
+ * their own purposes. */
 
 package Matrix;
 
@@ -22,7 +25,7 @@ import java.util.Arrays;
 public class Matrix {
 	
 	//represents the matrix, with each array within the array representing a row
-	private BigDecimal[][] matrix;
+	private final BigDecimal[][] matrix;
 	
 	/* the matrix class contains several constructors for different purposes */
 	
@@ -37,7 +40,7 @@ public class Matrix {
 				matrix[i][j] = new BigDecimal(0);
 	}
 	
-	//creates a matrix from the corresponding two dimensional array
+	//creates a matrix from the corresponding two-dimensional array
 	public Matrix(double[][] m) {
 		for (int i = 1; i < m.length; i++) 
 			if (m[i] == null || m[i].length != m[0].length)
@@ -46,19 +49,31 @@ public class Matrix {
 		matrix = new BigDecimal[m.length][m[0].length];
 		for (int i = 0; i < m.length; i++)
 			for (int j = 0; j < m[0].length; j++)
+				matrix[i][j] = BigDecimal.valueOf(m[i][j]);
+	}
+
+	public Matrix(int[][] m) {
+		for (int i = 1; i < m.length; i++)
+			if (m[i] == null || m[i].length != m[0].length)
+				throw new ArrayIndexOutOfBoundsException("Invalid Dimensions");
+
+		matrix = new BigDecimal[m.length][m[0].length];
+		for (int i = 0; i < m.length; i++)
+			for (int j = 0; j < m[0].length; j++)
 				matrix[i][j] = new BigDecimal(m[i][j]);
+	}
+
+	public Matrix(BigDecimal[][] m) {
+		matrix = Arrays.copyOf(m, m.length);
 	}
 	
 	//creates a deep copy of the given matrix
 	public Matrix(Matrix m) {	
-		matrix = new BigDecimal[m.rows()][m.cols()];
-		for (int i = 0; i < m.rows(); i++)
-			for (int j = 0; j < m.cols(); j++)
-				matrix[i][j] = m.matrix[i][j];
+		matrix = Arrays.copyOf(m.matrix, m.matrix.length);
 	}
 	
 	/* this is the most complex and most useful Matrix constructor. This creates
-	 * a matrix from the given String command. The String must be in the form
+	 * a matrix from the given String command. The String must be in the format
 	 * "row1_val1 row1_val2 row1_val3 ; row2_val1 row2_val2 row2_val3", with
 	 * each row separated by a semicolon and each value in each row separated
 	 * by at least one space. There can be any number of rows, and each row
@@ -66,33 +81,24 @@ public class Matrix {
 	 * values */
 	
 	public Matrix(String s) {
-		if (s.endsWith(";"))
-			throw new ArrayIndexOutOfBoundsException("Invalid String");
-		
 		try {
-		String[] rows = s.split(";");
-		matrix = new BigDecimal[rows.length][];
-		
-		for (int i = 0; i < rows.length; i++) {
-			String row = rows[i];
-			String[] ints = row.trim().split("\\s+");
-			BigDecimal[] vals = new BigDecimal[ints.length];
-			for (int j = 0; j < ints.length; j++)
-				vals[j] = new BigDecimal(Double.parseDouble(ints[j]));
-			
-			matrix[i] = vals;
+			String[] rows = s.split(";");
+			matrix = new BigDecimal[rows.length][];
+
+			for (int i = 0; i < rows.length; i++) {
+				String row = rows[i];
+				String[] ints = row.strip().split("\\s+");
+				BigDecimal[] vals = new BigDecimal[ints.length];
+				for (int j = 0; j < ints.length; j++)
+					vals[j] = BigDecimal.valueOf(Double.parseDouble(ints[j]));
+
+				matrix[i] = vals;
 		}
 		
 		for (int i = 1; i < matrix.length; i++) 
 			if (matrix[i].length != matrix[0].length)
 				throw new ArrayIndexOutOfBoundsException("Invalid Dimensions");
 		} catch (Exception e) { throw new ArrayIndexOutOfBoundsException("Invalid String"); }
-	}
-	
-	//this private constructor builds an array out of a BigDecimal 2D array, and
-	//is only used as a helper within this class
-	private Matrix(BigDecimal[][] m) {
-		matrix = Arrays.copyOf(m, m.length);
 	}
 	
 	/* the following are the methods associated with Matrix class */
@@ -108,30 +114,30 @@ public class Matrix {
 	 * This method adjusts for the differing widths of the values, and guarantees
 	 * that all rows are identical in visual length
 	 */
-	public void print() {
+	public String printString() {
+		StringBuilder print = new StringBuilder();
 		int[] widths = widths(this);
 		
 		for (int i = 0; i < rows(); i++) {
-			System.out.print("[ ");
+			print.append("[ ");
 			for (int j = 0; j < cols() - 1; j++) {
-				printVal(matrix[i][j].setScale(5,RoundingMode.HALF_UP), widths[j]);
-				System.out.print("  ");
+				print.append(printVal(matrix[i][j].setScale(5,RoundingMode.HALF_UP), widths[j]));
+				print.append("  ");
 			}
 			
-			printVal(matrix[i][cols() - 1].setScale(5,RoundingMode.HALF_UP), widths[cols() - 1]);
-			System.out.println(" ]");
+			print.append(printVal(matrix[i][cols() - 1].setScale(5,RoundingMode.HALF_UP),
+					widths[cols() - 1]));
+			print.append(" ]");
 		}
 		
-		System.out.println();
+		return print.append("\n").toString();
 	}
 	
-	/* returns the matrix in the given String form:	 * 
-	 * Matrix: "1 2 3 ; 4 5 6 ; 7 8 9"
-	 * 
-	 * "[ 1 2 3 ; 4 5 6 ; 7 8 9 ]"
+	/* returns the matrix in the given String form:
+	 * Matrix: 1 2 3 ; 4 5 6 ; 7 8 9 -> "[ 1 2 3 ; 4 5 6 ; 7 8 9 ]"
 	 */
 	public String toString() {
-		String m = "[ ";
+		StringBuilder m = new StringBuilder("[ ");
 		double d;
 		
 		for (int i = 0; i < rows(); i++) {
@@ -139,17 +145,17 @@ public class Matrix {
 				d = matrix[i][j].setScale(5,RoundingMode.HALF_UP).doubleValue();
 				
 				if (d % 1 == 0)
-					m = m + Integer.toString((int) d) + " ";
+					m.append(((int) d)).append(" ");
 				else
-					m = m + Double.toString(d) + " ";
+					m.append(d).append(" ");
 			}
 			
 			if (i < rows() - 1)
-				m = m + "; ";
+				m.append("; ");
 		}
 		
-		m = m + "]";		
-		return m;
+		m.append("]");
+		return m.toString();
 	}
 	
 	
@@ -240,7 +246,7 @@ public class Matrix {
 		if (r < 0 || c < 0 || r >= rows() || c >= cols())
 			throw new ArrayIndexOutOfBoundsException("Invalid Dimensions");
 		
-		matrix[r][c] = new BigDecimal(d);
+		matrix[r][c] = BigDecimal.valueOf(d);
 	}
 	
 	//alters the matrix by setting the given column to the new matrix
@@ -256,9 +262,8 @@ public class Matrix {
 	public void setRow(int r, Matrix m) {
 		if (m.rows() != 1 || m.cols() != cols())
 			throw new ArrayIndexOutOfBoundsException("Invalid Dimensions");
-		
-		for (int i = 0; i < cols(); i++)
-			matrix[r][i] = m.matrix[0][i];
+
+		matrix[r] = Arrays.copyOf(m.matrix[0], m.matrix[0].length);
 	}
 	
 	//adds together the matrix with the argument matrix
@@ -316,7 +321,7 @@ public class Matrix {
 		
 		for (int i = 0; i < rows(); i++)
 			for (int j = 0; j < cols(); j++)
-				m[i][j] = matrix[i][j].multiply(new BigDecimal(c), MathContext.DECIMAL128);
+				m[i][j] = matrix[i][j].multiply(BigDecimal.valueOf(c), MathContext.DECIMAL128);
 		
 		return new Matrix(m);
 	}
@@ -330,7 +335,7 @@ public class Matrix {
 		
 		for (int i = 0; i < rows(); i++)
 			for (int j = 0; j < cols(); j++)
-				m[i][j] = matrix[i][j].divide(new BigDecimal(c), MathContext.DECIMAL128);
+				m[i][j] = matrix[i][j].divide(BigDecimal.valueOf(c), MathContext.DECIMAL128);
 		
 		return new Matrix(m);
 	}
@@ -341,6 +346,9 @@ public class Matrix {
 			return null;
 		
 		Matrix newMatrix = Identity(rows());
+		if (newMatrix == null)
+			return null;
+
 		for (int i = 0; i < power; i++)
 			newMatrix = newMatrix.multiply(this);
 		
@@ -382,27 +390,42 @@ public class Matrix {
 		return arr;
 	}
 	
-	//appends the columns of the argument matrix onto the end of the calling matrix
+	//appends the columns of the argument matrix onto the right end of the calling matrix
 	public Matrix augment(Matrix m) {
 		if (m == null || m.rows() != rows())
 			return null;
 		
 		BigDecimal[][] m1 = new BigDecimal[rows()][m.cols() + cols()];
 		
-		for (int i = 0; i < rows(); i++) 
+		for (int i = 0; i < rows(); i++) {
 			for (int j = 0; j < cols(); j++)
 				m1[i][j] = matrix[i][j];
-		
-		for (int i = 0; i < rows(); i++)
+
 			for (int j = 0; j < m.cols(); j++)
 				m1[i][cols() + j] = m.matrix[i][j];
+		}
 		
+		return new Matrix(m1);
+	}
+
+	//appends the columns of the argument matrix onto the bottom of the calling matrix
+	public Matrix append(Matrix m) {
+		if (m == null || m.cols() != cols())
+			return null;
+
+		BigDecimal[][] m1 = new BigDecimal[m.rows() + rows()][cols()];
+
+		for (int i = 0; i < rows(); i++)
+			m1[i] = Arrays.copyOf(matrix[i], matrix[i].length);
+		for (int i = 0; i < m.rows(); i++)
+			m1[rows() + i] = Arrays.copyOf(m.matrix[i], m.matrix[i].length);
+
 		return new Matrix(m1);
 	}
 	
 	//returns the matrix in reduced row echelon form
 	public Matrix rref() {
-		Matrix m = transpose(); //simplier to work with the transpose
+		Matrix m = transpose(); //simpler to work with the transpose
 		BigDecimal scale;
 		int indexRow = 0, indexCol = 0;
 		
@@ -552,22 +575,25 @@ public class Matrix {
 	}
 	
 	//prints a value, dropping the decimal end if the value is an integer
-	private static void printVal(BigDecimal v, int w) {
+	private static String printVal(BigDecimal v, int w) {
+		StringBuilder val = new StringBuilder();
 		double d = v.doubleValue();
 		int l;
 		
 		if (d % 1 == 0) {
 			l = Integer.toString((int) d).length();
 			for (int i = 0; i < w - l; i++)
-				System.out.print(" ");
-			System.out.print((int) d);
+				val.append(" ");
+			val.append((int) d);
 		}
 		else {
 			l = Double.toString(d).length();
 			for (int i = 0; i < w - l; i++)
-				System.out.print(" ");
-			System.out.print(d);
+				val.append(" ");
+			val.append(d);
 		}
+
+		return val.toString();
 	}
 	
 	//returns the width of each column in the matrix by calculating the maximum 
@@ -582,9 +608,9 @@ public class Matrix {
 				double d = m.matrix[j][i].setScale(5,RoundingMode.HALF_UP).doubleValue();
 				String s;
 				if (d % 1 == 0)
-					s = (new Integer((int) d)).toString();
+					s = (Integer.valueOf((int) d)).toString();
 				else
-					s = (new Double(d)).toString();
+					s = (Double.valueOf(d)).toString();
 				
 				if (s.length() > w)
 					w = s.length();
