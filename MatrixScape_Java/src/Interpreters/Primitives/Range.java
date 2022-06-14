@@ -2,6 +2,7 @@ package Interpreters.Primitives;
 
 import Interpreters.Interpreter;
 import Interpreters.Primitive;
+import Matrix.Matrix;
 
 public class Range extends Primitive {
 
@@ -21,7 +22,18 @@ public class Range extends Primitive {
         if (end.id().equals("err"))
             return end;
 
-        return this;
+        if (start.id().equals("mat") && end.id().equals("mat")) {
+            Matrix startM = ((Mat) start).mat();
+            Matrix endM = ((Mat) end).mat();
+
+            return new Mat(startM.augment(endM)).solve();
+        }
+
+        if (start.id().equals("num") && end.id().equals("num"))
+            if (((Num) start).isInteger() && ((Num) end).isInteger())
+                return this;
+
+        return new Err("range must consist of integers");
     }
 
     public String id() {
@@ -30,5 +42,11 @@ public class Range extends Primitive {
 
     public String string() {
         return start.string() + ":" + end.string();
+    }
+
+    /* Logic Methods */
+
+    public Range negate() {
+        return new Range(end, start);
     }
 }

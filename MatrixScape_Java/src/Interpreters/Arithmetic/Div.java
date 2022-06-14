@@ -27,23 +27,15 @@ public class Div implements Interpreter {
         if (p2.id().equals("err"))
             return p2;
 
-        if (p1.id().equals("num") && p2.id().equals("num")) {
-            BigDecimal n1 = ((Num) p1).num();
-            BigDecimal n2 = ((Num) p2).num();
-            try {
-                return new Num(n1.divide(n2, MathContext.DECIMAL128));
-            } catch (ArithmeticException e) {
-                return new Err("cannot divide by 0");
-            }
+        if (p1.id().equals("num")) {
+            return ((Num) p1).divide(p2).solve();
         }
 
-        if (p1.id().equals("mat") && p2.id().equals("num")) {
-            Matrix m = ((Mat) p1).mat();
-            BigDecimal n = ((Num) p2).num();
-            return new Mat(m.divide(n.doubleValue()));
+        if (p1.id().equals("mat")) {
+            return ((Mat) p1).divide(p2).solve();
         }
 
-        else return new Err("invalid division");
+        return new Err("invalid division");
     }
 
     public String id() {

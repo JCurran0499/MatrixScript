@@ -30,4 +30,18 @@ public class Tuple extends Primitive {
     public String string() {
         return v1.string() + ", " + v2.string();
     }
+
+    /* Logic Methods */
+
+    public Tuple negate() {
+        Interpreter newV1 = v1;
+        Interpreter newV2 = v2;
+
+        if (newV1.id().equals("tuple"))
+            newV1 = ((Tuple) newV1).negate();
+        if (newV2.id().equals("tuple"))
+            newV2 = ((Tuple) newV2).negate();
+
+        return new Tuple(newV2, newV1);
+    }
 }

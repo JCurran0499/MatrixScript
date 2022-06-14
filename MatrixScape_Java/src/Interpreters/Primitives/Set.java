@@ -20,7 +20,6 @@ public class Set extends Primitive {
         if (expression.id().equals("err"))
             return expression;
 
-        Variables.variables().put(varName, expression);
         return this;
     }
 
@@ -30,5 +29,10 @@ public class Set extends Primitive {
 
     public String string() {
         return varName + " = " + expression.string();
+    }
+
+    /* Logic Methods */
+    public void addVariable() {
+        Variables.variables().put(varName, expression);
     }
 }

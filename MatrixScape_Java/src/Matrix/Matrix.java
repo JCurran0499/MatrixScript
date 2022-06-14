@@ -93,12 +93,13 @@ public class Matrix {
 					vals[j] = BigDecimal.valueOf(Double.parseDouble(ints[j]));
 
 				matrix[i] = vals;
-		}
-		
-		for (int i = 1; i < matrix.length; i++) 
+			}
+
+		} catch (Exception e) { throw new ArrayIndexOutOfBoundsException("Invalid String"); }
+
+		for (int i = 1; i < matrix.length; i++)
 			if (matrix[i].length != matrix[0].length)
 				throw new ArrayIndexOutOfBoundsException("Invalid Dimensions");
-		} catch (Exception e) { throw new ArrayIndexOutOfBoundsException("Invalid String"); }
 	}
 	
 	/* the following are the methods associated with Matrix class */

@@ -27,19 +27,15 @@ public class Sub implements Interpreter {
         if (p2.id().equals("err"))
             return p2;
 
-        if (p1.id().equals("num") && p2.id().equals("num")) {
-            BigDecimal n1 = ((Num) p1).num();
-            BigDecimal n2 = ((Num) p2).num();
-            return new Num(n1.subtract(n2));
+        if (p1.id().equals("num")) {
+            return ((Num) p1).subtract(p2).solve();
         }
 
-        if (p1.id().equals("mat") && p2.id().equals("mat")) {
-            Matrix m1 = ((Mat) p1).mat();
-            Matrix m2 = ((Mat) p2).mat();
-            return new Mat(m1.subtract(m2));
+        if (p1.id().equals("mat")) {
+            return ((Mat) p1).subtract(p2).solve();
         }
 
-        else return new Err("invalid subtraction");
+        return new Err("invalid subtraction");
     }
 
     public String id() {
