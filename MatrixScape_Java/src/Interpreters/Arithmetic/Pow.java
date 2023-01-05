@@ -40,4 +40,5 @@ public class Pow implements Interpreter {
     public String id() {
         return "pow";
     }
+
 }

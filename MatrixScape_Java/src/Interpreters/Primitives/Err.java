@@ -18,4 +18,8 @@ public class Err extends Primitive {
     public String string() {
         return "Error: " + message;
     }
+
+    public boolean equals(Primitive p) {
+        return false;
+    }
 }

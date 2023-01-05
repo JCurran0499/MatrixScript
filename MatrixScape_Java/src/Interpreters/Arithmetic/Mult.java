@@ -3,9 +3,6 @@ package Interpreters.Arithmetic;
 import Interpreters.Interpreter;
 import Interpreters.Primitive;
 import Interpreters.Primitives.*;
-import Matrix.Matrix;
-
-import java.math.BigDecimal;
 
 public class Mult implements Interpreter {
     private final Interpreter i1;
@@ -41,4 +38,5 @@ public class Mult implements Interpreter {
     public String id() {
         return "mult";
     }
+
 }

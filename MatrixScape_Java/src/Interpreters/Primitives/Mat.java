@@ -1,16 +1,48 @@
 package Interpreters.Primitives;
 
 import Interpreters.Primitive;
+import Interpreters.Interpreter;
 import Matrix.Matrix;
-
 import java.math.BigDecimal;
-import java.math.MathContext;
 
 public class Mat extends Primitive {
-    private final Matrix mat;
+    private Matrix mat;
 
     public Mat(Matrix m) {
         mat = m;
+    }
+
+    public Mat(Interpreter[][] m) {
+        StringBuilder matrixString = new StringBuilder();
+        Primitive p;
+        for (Interpreter[] row : m) {
+            for (Interpreter i : row) {
+                p = i.solve();
+
+                if (p.id().equals("num")) {
+                    matrixString.append(p.string());
+                }
+
+                if (p.id().equals("mat")) {
+                    matrixString.append(p.string(), 1, p.string().length() - 1).append(" ; ");
+                }
+
+                if (p.id().equals("range")) {
+                    for (int e : ((Range) p).fullRange())
+                        matrixString.append(e).append(" ");
+                }
+
+                matrixString.append(" ");
+            }
+
+            matrixString.append(" ; ");
+        }
+
+        try {
+            mat = new Matrix(matrixString.toString());
+        } catch (ArrayIndexOutOfBoundsException e) {
+            mat = null;
+        }
     }
 
     /* Base Methods */
@@ -28,6 +60,13 @@ public class Mat extends Primitive {
 
     public String string() {
         return mat.printString();
+    }
+
+    public boolean equals(Primitive p) {
+        if (!id().equals(p.id()))
+            return false;
+
+        return mat.equals(((Mat) p).mat);
     }
 
     /* Logic Methods */

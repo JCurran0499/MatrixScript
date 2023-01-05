@@ -18,4 +18,17 @@ public class Bool extends Primitive {
     public String string() {
         return (bool ? "true" : "false");
     }
+
+    public boolean equals(Primitive p) {
+        if (!id().equals(p.id()))
+            return false;
+
+        return bool == ((Bool) p).bool;
+    }
+
+    /* Logic Methods */
+
+    public Bool not() {
+        return new Bool(!bool);
+    }
 }

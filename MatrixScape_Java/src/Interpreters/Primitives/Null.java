@@ -15,6 +15,10 @@ public class Null extends Primitive {
         return null;
     }
 
+    public boolean equals(Primitive p) {
+        return p == nullReturn;
+    }
+
     public static Null returnNull() {
         return nullReturn;
     }

@@ -128,10 +128,11 @@ public class Matrix {
 			
 			print.append(printVal(matrix[i][cols() - 1].setScale(5,RoundingMode.HALF_UP),
 					widths[cols() - 1]));
-			print.append(" ]");
+			print.append(" ]\n");
 		}
+		print.setLength(print.length() - 1);
 		
-		return print.append("\n").toString();
+		return print.toString();
 	}
 	
 	/* returns the matrix in the given String form:

@@ -1,52 +1,68 @@
 package Interpreters.Primitives;
 
-import Interpreters.Interpreter;
 import Interpreters.Primitive;
-import Matrix.Matrix;
+import java.math.BigDecimal;
+import java.lang.Math;
 
 public class Range extends Primitive {
 
-    private final Primitive start;
-    private final Primitive end;
+    private final int start;
+    private final int end;
 
-    public Range(Interpreter s, Interpreter e) {
-        start = s.solve();
-        end = e.solve();
+    public Range(int s, int e) {
+        start = s;
+        end = e;
     }
 
     /* Base Methods */
-
-    public Primitive solve() {
-        if (start.id().equals("err"))
-            return start;
-        if (end.id().equals("err"))
-            return end;
-
-        if (start.id().equals("mat") && end.id().equals("mat")) {
-            Matrix startM = ((Mat) start).mat();
-            Matrix endM = ((Mat) end).mat();
-
-            return new Mat(startM.augment(endM)).solve();
-        }
-
-        if (start.id().equals("num") && end.id().equals("num"))
-            if (((Num) start).isInteger() && ((Num) end).isInteger())
-                return this;
-
-        return new Err("range must consist of integers");
-    }
 
     public String id() {
         return "range";
     }
 
     public String string() {
-        return start.string() + ":" + end.string();
+        return start + ":" + end;
+    }
+
+    public boolean equals(Primitive p) {
+        if (!id().equals(p.id()))
+            return false;
+
+        Range r = (Range) p;
+        return start == (r.start) && end == (r.end);
     }
 
     /* Logic Methods */
 
     public Range negate() {
         return new Range(end, start);
+    }
+
+    public int range() {
+        return Math.abs(end - start);
+    }
+
+    public Integer compareTo(Primitive a) {
+        if (a.id().equals("num"))
+            return BigDecimal.valueOf(range()).compareTo(((Num) a).num());
+
+        if (a.id().equals("range"))
+            return BigDecimal.valueOf(range()).compareTo(BigDecimal.valueOf(((Range) a).range()));
+
+        return null;
+    }
+
+    public int[] fullRange() {
+        int[] range = new int[range()];
+        if (start <= end) {
+            for (int i = start; i < end; i++)
+                range[i - start] = i;
+        }
+        else {
+            for (int i = start; i > end; i--)
+                range[start - i] = i;
+        }
+
+        return range;
     }
 }

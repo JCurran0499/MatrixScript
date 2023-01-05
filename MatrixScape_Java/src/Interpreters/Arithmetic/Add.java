@@ -2,7 +2,6 @@ package Interpreters.Arithmetic;
 
 import Interpreters.*;
 import Interpreters.Primitives.*;
-import Matrix.Matrix;
 
 public class Add implements Interpreter {
     private final Interpreter i1;

@@ -2,7 +2,7 @@ package Program;
 
 import java.util.Scanner;
 import Interpreters.*;
-import Interpreters.Primitives.Set;
+import Interpreters.Commands.Set;
 import Parser.Parser;
 
 public class MatrixScape {
@@ -21,9 +21,6 @@ public class MatrixScape {
 
             if (result.id().equals("null"))
                 continue;
-
-            if (result.id().equals("set"))
-                ((Set) result).addVariable();
 
             System.out.println(result.string());
             System.out.println();

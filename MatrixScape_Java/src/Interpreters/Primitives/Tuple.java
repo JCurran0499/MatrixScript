@@ -31,6 +31,14 @@ public class Tuple extends Primitive {
         return v1.string() + ", " + v2.string();
     }
 
+    public boolean equals(Primitive p) {
+        if (!id().equals(p.id()))
+            return false;
+
+        Tuple t = (Tuple) p;
+        return v1.equals(t.v1) && v2.equals(t.v2);
+    }
+
     /* Logic Methods */
 
     public Tuple negate() {

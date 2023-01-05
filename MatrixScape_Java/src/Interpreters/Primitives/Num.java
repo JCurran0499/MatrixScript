@@ -22,6 +22,13 @@ public class Num extends Primitive {
         return num.toString();
     }
 
+    public boolean equals(Primitive p) {
+        if (!id().equals(p.id()))
+            return false;
+
+        return num.compareTo(((Num) p).num) == 0;
+    }
+
     /* Logic Methods */
 
     public BigDecimal num() {
@@ -86,7 +93,31 @@ public class Num extends Primitive {
         return new Num(num.negate());
     }
 
+    public Primitive factorial() {
+        if (isInteger() && isPositive()) {
+            BigDecimal factorial = new BigDecimal(1);
+            for (BigDecimal b = num; b.compareTo(BigDecimal.ZERO) > 0; b = b.subtract(BigDecimal.ONE))
+                factorial = factorial.multiply(b);
+
+            return new Num(factorial);
+        }
+
+        return new Err("factorial must be a positive integer");
+    }
+
+    public Integer compareTo(Primitive a) {
+        if (a.id().equals("num"))
+            return num.compareTo(((Num) a).num);
+
+        if (a.id().equals("range"))
+            return num.compareTo(BigDecimal.valueOf(((Range) a).range()));
+
+        return null;
+    }
+
     public boolean isInteger() {
         return (num.doubleValue() % 1 == 0);
     }
+
+    public boolean isPositive() { return (num.doubleValue() > 0); }
 }

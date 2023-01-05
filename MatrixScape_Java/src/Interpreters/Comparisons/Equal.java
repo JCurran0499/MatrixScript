@@ -1,14 +1,15 @@
-package Interpreters.Arithmetic;
+package Interpreters.Comparisons;
 
 import Interpreters.Interpreter;
 import Interpreters.Primitive;
-import Interpreters.Primitives.*;
+import Interpreters.Primitives.Bool;
 
-public class Div implements Interpreter {
+public class Equal implements Interpreter {
+
     private final Interpreter i1;
     private final Interpreter i2;
 
-    public Div(Interpreter i1, Interpreter i2) {
+    public Equal(Interpreter i1, Interpreter i2) {
         this.i1 = i1;
         this.i2 = i2;
     }
@@ -24,19 +25,10 @@ public class Div implements Interpreter {
         if (p2.id().equals("err"))
             return p2;
 
-        if (p1.id().equals("num")) {
-            return ((Num) p1).divide(p2).solve();
-        }
-
-        if (p1.id().equals("mat")) {
-            return ((Mat) p1).divide(p2).solve();
-        }
-
-        return new Err("invalid division");
+        return new Bool(p1.equals(p2));
     }
 
     public String id() {
-        return "div";
+        return "equal";
     }
-
 }
