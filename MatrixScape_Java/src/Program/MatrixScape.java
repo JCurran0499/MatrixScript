@@ -1,9 +1,10 @@
 package Program;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 import Interpreters.*;
-import Interpreters.Commands.Set;
 import Parser.Parser;
+import Parser.Token;
 
 public class MatrixScape {
 

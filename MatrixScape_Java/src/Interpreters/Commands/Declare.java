@@ -2,15 +2,14 @@ package Interpreters.Commands;
 
 import Interpreters.Interpreter;
 import Interpreters.Primitive;
-import Interpreters.Primitives.Null;
 import Interpreters.Variables.Variables;
 
-public class Set implements Interpreter {
+public class Declare implements Interpreter {
     private final String varName;
     private final Interpreter expression;
 
 
-    public Set(String v, Interpreter e) {
+    public Declare(String v, Interpreter e) {
         varName = v;
         expression = e;
     }
@@ -22,20 +21,12 @@ public class Set implements Interpreter {
         if (p.id().equals("err"))
             return p;
 
-        Set.addVariable(varName, p);
-        return Null.returnNull();
+        Declare.addVariable(varName, p);
+        return p;
     }
 
     public String id() {
-        return "set";
-    }
-
-    public String string() {
-        return "";
-    }
-
-    public boolean equals(Primitive p) {
-        return false;
+        return "declare";
     }
 
     /* Logic Methods */
