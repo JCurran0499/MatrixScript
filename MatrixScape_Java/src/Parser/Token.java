@@ -1,7 +1,5 @@
 package Parser;
 
-import java.util.List;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -12,10 +10,10 @@ public class Token {
     private final String value;
 
     public static final Map<TokenType, Pattern> equivalentSymbols = Stream.of(new Object[][]{
-            {TokenType.ADD, Pattern.compile("(\\+)")}, {TokenType.SUB, Pattern.compile("(-)")},
-            {TokenType.MULT, Pattern.compile("(\\*)")}, {TokenType.DIV, Pattern.compile("(/)")},
-            {TokenType.POW, Pattern.compile("(\\^)")}, {TokenType.FACT, Pattern.compile("(!)")},
-            {TokenType.MERGE, Pattern.compile("(:)")}, {TokenType.COMMA, Pattern.compile("(,)")},
+            {TokenType.ADD, Pattern.compile("(\\+)")}, {TokenType.MULT, Pattern.compile("(\\*)")},
+            {TokenType.DIV, Pattern.compile("(/)")}, {TokenType.POW, Pattern.compile("(\\^)")},
+            {TokenType.FACT, Pattern.compile("(!)")}, {TokenType.MERGE, Pattern.compile("(:)")},
+            {TokenType.COMMA, Pattern.compile("(,)")},
             {TokenType.EQUAL, Pattern.compile("(==)")}, {TokenType.GTEQUAL, Pattern.compile("(>=)")},
             {TokenType.LTEQUAL, Pattern.compile("(<=)")}, {TokenType.GREAT, Pattern.compile("(>)")},
             {TokenType.LESS, Pattern.compile("(<)")}, {TokenType.NOT, Pattern.compile("(~)")},
@@ -46,13 +44,14 @@ public class Token {
             index++;
         } while (depth > 0);
 
-        return new Token(type, phrase.toString());
+        String phraseString = phrase.toString();
+        return new Token(type, phraseString.substring(1, phraseString.length() - 1));
     }
 }
 
 enum TokenType {
     PAREN, MAT,
-    ADD, SUB, MULT, DIV, POW, FACT, MERGE, COMMA,
+    ADD, SUB, MULT, DIV, POW, FACT, MERGE, COMMA, NEG,
     EQUAL, GREAT, LESS, GTEQUAL, LTEQUAL, NOT,
     DECLARE,
     NUM, BOOL, ERR,

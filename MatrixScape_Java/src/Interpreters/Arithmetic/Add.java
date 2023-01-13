@@ -18,10 +18,17 @@ public class Add implements Interpreter {
         Primitive p1 = i1.solve();
         Primitive p2 = i2.solve();
 
+        // --------- Errors --------- \\
+
         if (p1.id().equals("err"))
             return p1;
         if (p2.id().equals("err"))
             return p2;
+
+        if (p1.id().equals("null") || p2.id().equals("null"))
+            return new Err("imbalanced addition");
+
+        // --------- Computation --------- \\
 
         if (p1.id().equals("num")) {
             return ((Num) p1).add(p2).solve();

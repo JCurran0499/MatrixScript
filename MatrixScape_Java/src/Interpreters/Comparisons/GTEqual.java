@@ -7,7 +7,7 @@ import Interpreters.Primitives.Err;
 import Interpreters.Primitives.Num;
 import Interpreters.Primitives.Range;
 
-public class GTEqual {
+public class GTEqual implements Interpreter {
 
     private final Interpreter i1;
     private final Interpreter i2;

@@ -12,4 +12,12 @@ public class Variables {
     public static Map<String, Primitive> variables() {
         return variables;
     }
+
+    public static boolean containsVar(String var) {
+        return variables.containsKey(var);
+    }
+
+    public static Primitive getVar(String var) {
+        return variables.get(var);
+    }
 }

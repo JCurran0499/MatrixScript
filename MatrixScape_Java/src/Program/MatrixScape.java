@@ -13,15 +13,19 @@ public class MatrixScape {
 
         while (true) {
             System.out.print(">> ");
-            String command = scanner.nextLine();
+            String command = scanner.nextLine().strip();
 
             if (command.equals("quit") || command.equals("exit"))
                 break;
 
             Primitive result = Parser.parse(command).solve();
-
             if (result.id().equals("null"))
                 continue;
+
+            if (result.declaration != null) {
+                System.out.print(result.declaration + " = ");
+                result.declaration = null;
+            }
 
             System.out.println(result.string());
             System.out.println();
