@@ -64,7 +64,14 @@ public class Matrix {
 	}
 
 	public Matrix(BigDecimal[][] m) {
-		matrix = Arrays.copyOf(m, m.length);
+		for (int i = 1; i < m.length; i++)
+			if (m[i] == null || m[i].length != m[0].length)
+				throw new ArrayIndexOutOfBoundsException("Invalid Dimensions");
+
+		matrix = new BigDecimal[m.length][m[0].length];
+		for (int i = 0; i < m.length; i++)
+			for (int j = 0; j < m[0].length; j++)
+				matrix[i][j] = (m[i][j]);
 	}
 	
 	//creates a deep copy of the given matrix
@@ -381,14 +388,17 @@ public class Matrix {
 		return new Matrix(m1);
 	}
 	
-	//returns a 2D array representation of the matrix
-	public double[][] toArray() {
-		double[][] arr = new double[rows()][cols()];
-		
+	//returns a 2D array representation of the matrix of the given type
+	@SuppressWarnings("unchecked")
+	public <T> T[][] toArray(T[][] a1, T[] a2) {
+		T[][] arr = (T[][]) Arrays.copyOf(new BigDecimal[rows()][], rows(), a1.getClass());
+		for (int i = 0; i < rows(); i++)
+			arr[i] = (T[]) Arrays.copyOf(new BigDecimal[cols()], cols(), a2.getClass());
+
 		for (int i = 0; i < rows(); i++)
 			for (int j = 0; j < cols(); j++)
-				arr[i][j] = matrix[i][j].doubleValue();
-		
+				arr[i][j] = (T) matrix[i][j];
+
 		return arr;
 	}
 	

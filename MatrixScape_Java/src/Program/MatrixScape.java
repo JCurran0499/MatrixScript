@@ -24,6 +24,8 @@ public class MatrixScape {
 
             if (result.declaration != null) {
                 System.out.print(result.declaration + " = ");
+                if (result.id().equals("mat"))
+                    System.out.println();
                 result.declaration = null;
             }
 

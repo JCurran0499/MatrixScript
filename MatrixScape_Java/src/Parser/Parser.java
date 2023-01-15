@@ -13,6 +13,7 @@ import Interpreters.Interpreter;
 import Interpreters.Arithmetic.*;
 import Interpreters.Commands.*;
 import Interpreters.Comparisons.*;
+import Interpreters.Primitive;
 import Interpreters.Primitives.*;
 
 import Interpreters.Variables.Var;
@@ -55,7 +56,7 @@ public class Parser {
                 tokenList.add(token);
                 addedToken = true;
 
-                command = command.substring(token.value().length()).strip();
+                command = command.substring(token.value().length() + 2).strip();
             }
 
             // ---------- Subtraction & Negation ---------- \\
@@ -129,7 +130,7 @@ public class Parser {
             else if (t.type() == TokenType.BOOL)
                 return new Bool(t.value().strip().equals("true"));
             else if (t.type() == TokenType.MAT)
-                return new Mat(parseMatrixTokens(t.value()));
+                return parseMatrixTokens(t.value());
             else if (t.type() == TokenType.PAREN)
                 return parseTokens(tokenize(t.value()));
             else if (t.type() == TokenType.VAR)
@@ -145,6 +146,10 @@ public class Parser {
 
             return new Declare(tokens.get(0).value(), parseTokens(tokens.subList(2, tokens.size())));
         }
+
+        index = findFirstToken(tokens, TokenType.COMMA);
+        if (index > -1)
+            return new Tuple(parseTokens(tokens.subList(0, index)), parseTokens(tokens.subList(index + 1, tokens.size())));
 
         // ---------- COMPARISONS ---------- \\
 
@@ -210,9 +215,73 @@ public class Parser {
 
     // -------------- HELPER METHODS -------------- \\
 
-    private static Matrix parseMatrixTokens(String m) {
-        List<Token> tokenList = tokenize(m);
-        return null;
+    private static List<String> spaceSplit(String command) {
+        command = command.strip();
+        Pattern p = Pattern.compile("\\S+");
+        String s;
+
+        List<String> commandParts = new ArrayList<>();
+        while (command.length() > 0) {
+            if (command.startsWith("("))
+                s = "(" + Token.parseBracket(command, '(', ')', TokenType.PAREN).value() + ")";
+
+            else if (command.startsWith("["))
+                s = "[" + Token.parseBracket(command, '[', ']', TokenType.MAT).value() + "]";
+
+            else {
+                Matcher m = p.matcher(command);
+                if (m.find())
+                    s = m.group();
+                else
+                    s = "";
+            }
+
+            commandParts.add(s);
+            command = command.substring(s.length()).stripLeading();
+        }
+
+        return commandParts;
+    }
+
+    private static Primitive parseMatrixTokens(String m) {
+        List<List<BigDecimal>> matrixList = new ArrayList<>();
+
+        // break into rows
+        String[] rows = m.split(";");
+        for (String s : rows) {
+            matrixList.add(new ArrayList<>());
+            List<BigDecimal> row = matrixList.get(matrixList.size() - 1);
+
+            // break into individual items in the row
+            List<String> rowItems = spaceSplit(s);
+            for (String item : rowItems) {
+                Primitive itemValue = parseTokens(tokenize(item)).solve();
+
+                // add each item to the matrix
+                if (itemValue.id().equals("num")) {
+                    row.add(((Num) itemValue).num());
+                } else if (itemValue.id().equals("mat")) {
+                    matrixList.remove(matrixList.size() - 1);
+                    BigDecimal[][] mat = ((Mat) itemValue).mat().toArray(new BigDecimal[0][], new BigDecimal[0]);
+                    for (BigDecimal[] r : mat)
+                        matrixList.add(Arrays.asList(r));
+                } else if (itemValue.id().equals("range")) {
+                    for (int v : ((Range) itemValue).fullRange()) row.add(new BigDecimal(v));
+                } else if (itemValue.id().equals("err")) {
+                    return itemValue;
+                } else return new Err("invalid matrix");
+            }
+        }
+
+        BigDecimal[][] matrixArray = new BigDecimal[matrixList.size()][];
+        for (int i = 0; i < matrixList.size(); i++)
+            matrixArray[i] = matrixList.get(i).toArray(new BigDecimal[0]);
+
+        try {
+            return new Mat(new Matrix(matrixArray));
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return new Err("invalid matrix dimensions");
+        }
     }
 
     private static int findFirstToken(List<Token> tokens, TokenType type) {
