@@ -21,10 +21,6 @@ import Matrix.Matrix;
 
 public class Parser {
     public static Interpreter parse(String command) {
-        // remove comment
-        if (command.contains("//"))
-            command = command.substring(0, command.indexOf("//"));
-
         if (command.isEmpty())
             return Null.returnNull();
 
@@ -32,7 +28,7 @@ public class Parser {
     }
 
     private static ArrayList<Token> tokenize(String command) {
-        command = command.strip().replaceAll("\\s+", " ");
+        command = command.strip();
 
         ArrayList<Token> tokenList = new ArrayList<>();
         Token token;
@@ -44,19 +40,29 @@ public class Parser {
             // ---------- Parentheses ---------- \\
             if (command.startsWith("(")) {
                 token = Token.parseBracket(command, '(', ')', TokenType.PAREN);
-                tokenList.add(token);
+                if (token.type() == TokenType.ERR) {
+                    tokenList.add(new Token(TokenType.ERR, "imbalanced parentheses"));
+                    command = command.substring(token.value().length() + 1).stripLeading();
+                }
+                else {
+                    tokenList.add(token);
+                    command = command.substring(token.value().length() + 2).stripLeading();
+                }
                 addedToken = true;
-
-                command = command.substring(token.value().length() + 2).strip();
             }
 
             // ---------- Matrix ---------- \\
             else if (command.startsWith("[")) {
                 token = Token.parseBracket(command, '[', ']', TokenType.MAT);
-                tokenList.add(token);
+                if (token.type() == TokenType.ERR) {
+                    tokenList.add(new Token(TokenType.ERR, "imbalanced matrix brackets"));
+                    command = command.substring(token.value().length() + 1).stripLeading();
+                }
+                else {
+                    tokenList.add(token);
+                    command = command.substring(token.value().length() + 2).stripLeading();
+                }
                 addedToken = true;
-
-                command = command.substring(token.value().length() + 2).strip();
             }
 
             // ---------- Subtraction & Negation ---------- \\
@@ -64,13 +70,13 @@ public class Parser {
                 TokenType prevType = tokenList.isEmpty() ? null : tokenList.get(tokenList.size() - 1).type();
                 List<TokenType> subtractables =
                         Arrays.asList(TokenType.PAREN, TokenType.MAT, TokenType.NUM, TokenType.BOOL);
-                if (command.substring(1, 2).matches("\\s") || subtractables.contains(prevType))
+                if (subtractables.contains(prevType))
                     tokenList.add(new Token(TokenType.SUB, "-"));
                 else
                     tokenList.add(new Token(TokenType.NEG, "-"));
 
                 addedToken = true;
-                command = command.substring(1).strip();
+                command = command.substring(1).stripLeading();
             }
 
             // ---------- Key Words & Symbols ---------- \\
@@ -78,11 +84,15 @@ public class Parser {
                 for (TokenType type : Token.equivalentSymbols.keySet()) {
                     Matcher m = Token.equivalentSymbols.get(type).matcher(command);
                     if (m.find() && m.start() == 0) {
-                        token = new Token(type, m.group(1));
+                        int g = 0; // identify which group in the regex was matched
+                        for (int i = 1; i <= m.groupCount(); i++)
+                            if (m.start(i) > -1) g = i;
+
+                        token = new Token(type, m.group(g));
                         tokenList.add(token);
                         addedToken = true;
 
-                        command = command.substring(m.end(1)).strip();
+                        command = command.substring(m.end(g)).stripLeading();
                         break;
                     }
                 }
@@ -93,7 +103,7 @@ public class Parser {
                 Matcher m = Pattern.compile("[a-zA-Z_]\\w*").matcher(command);
                 if (m.find() && m.start() == 0) {
                     tokenList.add(new Token(TokenType.VAR, m.group()));
-                    command = command.substring(m.end()).strip();
+                    command = command.substring(m.end()).stripLeading();
                 }
 
                 // error text
@@ -102,9 +112,9 @@ public class Parser {
                     List<Character> stoppers = Arrays.asList(' ', '\t', '+', '-', '*', '/', '^', '!', ':',
                             '=', '<', '>', '~', ',', '(', '[');
 
-                    while (!stoppers.contains(command.charAt(0))) {
+                    while (command.length() > 0 && !stoppers.contains(command.charAt(0))) {
                         errorText.append(command.charAt(0));
-                        command = command.substring(1).strip();
+                        command = command.substring(1).stripLeading();
                     }
 
                     tokenList.add(new Token(TokenType.ERR, errorText.toString()));
@@ -135,11 +145,13 @@ public class Parser {
                 return parseTokens(tokenize(t.value()));
             else if (t.type() == TokenType.VAR)
                 return new Var(t.value());
+            else if (t.type() == TokenType.ERR)
+                return new Err(t.value());
         }
 
         // ---------- COMMANDS ---------- \\
 
-        index = findFirstToken(tokens, TokenType.DECLARE);
+        index = findFirstToken(tokens, TokenType.DECLARE, 0);
         if (index > -1) {
             if (index != 1)
                 return new Err("invalid variable declaration");
@@ -147,29 +159,50 @@ public class Parser {
             return new Declare(tokens.get(0).value(), parseTokens(tokens.subList(2, tokens.size())));
         }
 
-        index = findFirstToken(tokens, TokenType.COMMA);
-        if (index > -1)
-            return new Tuple(parseTokens(tokens.subList(0, index)), parseTokens(tokens.subList(index + 1, tokens.size())));
+        index = findLastToken(tokens, TokenType.FROM);
+        if (tokens.get(0).type() == TokenType.GET && index > 0)
+            return new Get(parseTokens(tokens.subList(1, index)), parseTokens(tokens.subList(index + 1, tokens.size())));
+
+        if (tokens.get(0).type() == TokenType.DIM)
+            return new Dim(parseTokens(tokens.subList(1, tokens.size())));
+
+        // ---------- TUPLES ---------- \\
+
+        index = findFirstToken(tokens, TokenType.COMMA, 0);
+        if (index > -1) {
+            List<Interpreter> tupleValues = new ArrayList<>();
+            int prevIndex = -1;
+
+            while (index > -1) {
+                tupleValues.add(parseTokens(tokens.subList(prevIndex + 1, index)));
+
+                prevIndex = index;
+                index = findFirstToken(tokens, TokenType.COMMA, index + 1);
+            }
+            tupleValues.add(parseTokens(tokens.subList(prevIndex + 1, tokens.size())));
+
+            return new Tuple(tupleValues);
+        }
 
         // ---------- COMPARISONS ---------- \\
 
-        index = findFirstToken(tokens, TokenType.EQUAL);
+        index = findFirstToken(tokens, TokenType.EQUAL, 0);
         if (index > -1)
             return new Equal(parseTokens(tokens.subList(0, index)), parseTokens(tokens.subList(index + 1, tokens.size())));
 
-        index = findFirstToken(tokens, TokenType.GREAT);
+        index = findFirstToken(tokens, TokenType.GREAT, 0);
         if (index > -1)
             return new Great(parseTokens(tokens.subList(0, index)), parseTokens(tokens.subList(index + 1, tokens.size())));
 
-        index = findFirstToken(tokens, TokenType.LESS);
+        index = findFirstToken(tokens, TokenType.LESS, 0);
         if (index > -1)
             return new Less(parseTokens(tokens.subList(0, index)), parseTokens(tokens.subList(index + 1, tokens.size())));
 
-        index = findFirstToken(tokens, TokenType.GTEQUAL);
+        index = findFirstToken(tokens, TokenType.GTEQUAL, 0);
         if (index > -1)
             return new GTEqual(parseTokens(tokens.subList(0, index)), parseTokens(tokens.subList(index + 1, tokens.size())));
 
-        index = findFirstToken(tokens, TokenType.LTEQUAL);
+        index = findFirstToken(tokens, TokenType.LTEQUAL, 0);
         if (index > -1)
             return new LTEqual(parseTokens(tokens.subList(0, index)), parseTokens(tokens.subList(index + 1, tokens.size())));
 
@@ -191,11 +224,11 @@ public class Parser {
         if (index > -1)
             return new Div(parseTokens(tokens.subList(0, index)), parseTokens(tokens.subList(index + 1, tokens.size())));
 
-        index = findFirstToken(tokens, TokenType.MERGE);
+        index = findFirstToken(tokens, TokenType.MERGE, 0);
         if (index > -1)
             return new Merge(parseTokens(tokens.subList(0, index)), parseTokens(tokens.subList(index + 1, tokens.size())));
 
-        index = findFirstToken(tokens, TokenType.POW);
+        index = findFirstToken(tokens, TokenType.POW, 0);
         if (index > -1)
             return new Pow(parseTokens(tokens.subList(0, index)), parseTokens(tokens.subList(index + 1, tokens.size())));
 
@@ -284,8 +317,8 @@ public class Parser {
         }
     }
 
-    private static int findFirstToken(List<Token> tokens, TokenType type) {
-        for (int i = 0; i < tokens.size(); i++)
+    private static int findFirstToken(List<Token> tokens, TokenType type, int start) {
+        for (int i = start; i < tokens.size(); i++)
             if (tokens.get(i).type() == type)
                 return i;
 

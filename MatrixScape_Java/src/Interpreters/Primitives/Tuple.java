@@ -3,22 +3,26 @@ package Interpreters.Primitives;
 import Interpreters.Interpreter;
 import Interpreters.Primitive;
 
-public class Tuple extends Primitive {
-    private final Primitive v1;
-    private final Primitive v2;
+import java.util.ArrayList;
+import java.util.List;
 
-    public Tuple(Interpreter v1, Interpreter v2) {
-        this.v1 = v1.solve();
-        this.v2 = v2.solve();
+public class Tuple extends Primitive {
+
+    private final List<Primitive> pList;
+
+    public Tuple(List<Interpreter> iList) {
+        pList = new ArrayList<>();
+        for (Interpreter i : iList)
+            pList.add(i.solve());
     }
 
     /* Base Methods */
 
     public Primitive solve() {
-        if (v1.id().equals("err"))
-            return v1;
-        if (v2.id().equals("err"))
-            return v2;
+        for (Primitive p : pList) {
+            if (p.id().equals("err"))
+                return p;
+        }
 
         return this;
     }
@@ -28,7 +32,17 @@ public class Tuple extends Primitive {
     }
 
     public String string() {
-        return v1.string() + ", " + v2.string();
+        StringBuilder s = new StringBuilder("(");
+        for (Primitive p : pList)
+            s.append(p.string()).append(", ");
+        s.delete(s.length() - 2, s.length());
+        s.append(")");
+
+        return s.toString();
+    }
+
+    public int length() {
+        return pList.size();
     }
 
     public boolean equals(Primitive p) {
@@ -36,20 +50,66 @@ public class Tuple extends Primitive {
             return false;
 
         Tuple t = (Tuple) p;
-        return v1.equals(t.v1) && v2.equals(t.v2);
+        if (pList.size() != t.pList.size())
+            return false;
+
+        for (int i = 0; i < pList.size(); i++) {
+            if (!pList.get(i).equals(t.pList.get(i)))
+                return false;
+        }
+
+        return true;
     }
 
     /* Logic Methods */
 
     public Tuple negate() {
-        Interpreter newV1 = v1;
-        Interpreter newV2 = v2;
+        List<Interpreter> newPList = new ArrayList<>();
+        for (int i = pList.size() - 1; i >= 0; i--)
+            newPList.add(pList.get(i));
 
-        if (newV1.id().equals("tuple"))
-            newV1 = ((Tuple) newV1).negate();
-        if (newV2.id().equals("tuple"))
-            newV2 = ((Tuple) newV2).negate();
+        return new Tuple(newPList);
+    }
 
-        return new Tuple(newV2, newV1);
+    public Primitive get(Num index) {
+        if (!index.isInteger())
+            return new Err("index must be integer");
+
+        int i = index.num().intValue();
+        if (i < 0 || i > length())
+            return new Err("outside tuple bounds");
+
+        return pList.get(i);
+
+    }
+
+    public Primitive get(Range range) {
+        List<Interpreter> newTuple = new ArrayList<>();
+
+        for (int i : range.fullRange()) {
+            if (i < 0 || i > length())
+                return new Err("outside tuple bounds");
+
+            newTuple.add(pList.get(i));
+        }
+
+        return new Tuple(newTuple);
+    }
+
+    public Primitive get(Tuple tuple) {
+        List<Interpreter> newTuple = new ArrayList<>();
+
+        for (Primitive p : tuple.pList) {
+            if (!p.id().equals("num") || !((Num) p).isInteger())
+                return new Err("index must be integer");
+
+            int i = ((Num) p).num().intValue();
+            if (i < 0 || i > length())
+                return new Err("outside tuple bounds");
+
+            newTuple.add(pList.get(i));
+        }
+
+        return new Tuple(newTuple);
     }
 }

@@ -15,11 +15,16 @@ public class Token {
             {TokenType.FACT, Pattern.compile("(!)")}, {TokenType.MERGE, Pattern.compile("(:)")},
             {TokenType.COMMA, Pattern.compile("(,)")},
             {TokenType.EQUAL, Pattern.compile("(==)")}, {TokenType.GTEQUAL, Pattern.compile("(>=)")},
-            {TokenType.LTEQUAL, Pattern.compile("(<=)")}, {TokenType.GREAT, Pattern.compile("(>)")},
-            {TokenType.LESS, Pattern.compile("(<)")}, {TokenType.NOT, Pattern.compile("(~)")},
-            {TokenType.DECLARE, Pattern.compile("(=)[^=]")},
+            {TokenType.LTEQUAL, Pattern.compile("(<=)")}, {TokenType.GREAT, Pattern.compile("(>)[^=]|(>)$")},
+            {TokenType.LESS, Pattern.compile("(<)[^=]|(<)$")}, {TokenType.NOT, Pattern.compile("(~)")},
+            {TokenType.DECLARE, Pattern.compile("(=)[^=]|(=)$")},
+            {TokenType.GET, Pattern.compile("(get)\\s|(get)$")},
+            {TokenType.FROM, Pattern.compile("(from)\\s|(from)$")},
+            {TokenType.SET, Pattern.compile("(set)\\s|(set)$")},
+            {TokenType.TO, Pattern.compile("(to)\\s|(to)$")},
+            {TokenType.DIM, Pattern.compile("(dim)\\s|(dim)$")},
             {TokenType.NUM, Pattern.compile("(\\d+\\.\\d+|\\.\\d+|\\d+\\.|\\d+)")},
-            {TokenType.BOOL, Pattern.compile("(true\\s|false\\s|true$|false$)")}
+            {TokenType.BOOL, Pattern.compile("(true)\\s|(false)\\s|(true)$|(false)$")}
     }).collect(Collectors.toMap(t -> (TokenType)t[0], t -> (Pattern)t[1]));
 
     public Token(TokenType t, String v) {
@@ -42,10 +47,13 @@ public class Token {
 
             phrase.append(c);
             index++;
-        } while (depth > 0);
+        } while (depth > 0 && index < command.length());
 
         String phraseString = phrase.toString();
-        return new Token(type, phraseString.substring(1, phraseString.length() - 1));
+        if (depth != 0)
+            return new Token(TokenType.ERR, phraseString.substring(1));
+        else
+            return new Token(type, phraseString.substring(1, phraseString.length() - 1));
     }
 }
 
@@ -53,7 +61,7 @@ enum TokenType {
     PAREN, MAT,
     ADD, SUB, MULT, DIV, POW, FACT, MERGE, COMMA, NEG,
     EQUAL, GREAT, LESS, GTEQUAL, LTEQUAL, NOT,
-    DECLARE,
+    DECLARE, GET, FROM, SET, TO, DIM,
     NUM, BOOL, ERR,
     VAR
 }

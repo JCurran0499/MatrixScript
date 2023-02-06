@@ -12,7 +12,7 @@ public class Null extends Primitive {
     }
 
     public String string() {
-        return null;
+        return "";
     }
 
     public boolean equals(Primitive p) {

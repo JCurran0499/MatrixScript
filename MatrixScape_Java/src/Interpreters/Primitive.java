@@ -2,7 +2,7 @@ package Interpreters;
 
 public abstract class Primitive implements Interpreter {
 
-    public String declaration = null;
+    public boolean printValue = true;
 
     public Primitive solve() {
         return this;

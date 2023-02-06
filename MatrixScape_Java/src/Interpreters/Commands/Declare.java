@@ -3,6 +3,7 @@ package Interpreters.Commands;
 import Interpreters.Interpreter;
 import Interpreters.Primitive;
 import Interpreters.Primitives.Err;
+import Interpreters.Primitives.Null;
 import Interpreters.Variables.Variables;
 
 import java.util.Arrays;
@@ -16,7 +17,7 @@ public class Declare implements Interpreter {
                     "identity", "zerovector", "transpose", "append", "inverse", "rank");
 
     private final String varName;
-    private final Interpreter expression;
+    private Interpreter expression;
 
 
     public Declare(String v, Interpreter e) {
@@ -31,13 +32,15 @@ public class Declare implements Interpreter {
             return new Err("invalid variable name");
 
         Primitive p = expression.solve();
+
         if (p.id().equals("err"))
             return p;
         if (p.id().equals("null"))
             return new Err("variable '" + varName + "' must be set to a value");
 
+        p.printValue = false;
+
         Declare.addVariable(varName, p);
-        p.declaration = varName;
         return p;
     }
 

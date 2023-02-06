@@ -126,6 +126,10 @@ public class Mat extends Primitive {
         else return new Err("exponent must be an integer");
     }
 
+    public Primitive get(Tuple t) {
+        return null;
+    }
+
     public Mat negate() {
         return new Mat(mat.multiply(-1));
     }
