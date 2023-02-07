@@ -27,6 +27,11 @@ cd MatrixScape
 chmod u+x start.sh
 chmod u+x install_java.sh
 ./install_java.sh
+sudo tee /etc/profile.d/jdk18.sh <<EOF
+export JAVA_HOME=/opt/jdk-18
+export PATH=\$PATH:\$JAVA_HOME/bin
+EOF
+source /etc/profile.d/jdk18.sh
 java --version
 ```
 
