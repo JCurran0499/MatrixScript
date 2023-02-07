@@ -39,3 +39,5 @@ java --version
 ```
 ./start.sh
 ```
+
+From here, the program can be accessed on `localhost:4567`.
