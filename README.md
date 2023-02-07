@@ -16,9 +16,10 @@ If not, then you must install Git and Java in a way that matches your OS. Once t
 sudo yum install git-all
 git --version
 ```
+
 <br/>
 <br/>
 #### Download Project Repo
 ```
-git clone 
+git --version
 ```
