@@ -9,7 +9,7 @@ import static spark.Spark.*;
 public class MatrixScape {
 
     public static void main(String[] args) {
-        port(80);
+        port(4567);
         get("/", (req, res) -> "Hello World!");
         /*Scanner scanner = new Scanner(System.in);
 
