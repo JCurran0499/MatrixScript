@@ -4,12 +4,13 @@ import java.util.Scanner;
 import Interpreters.*;
 import Parser.Parser;
 
-import static spark.Spark.get;
+import static spark.Spark.*;
 
 public class MatrixScape {
 
     public static void main(String[] args) {
-        get("/hello", (req, res) -> "Hello World!");
+        port(80);
+        get("/", (req, res) -> "Hello World!");
         /*Scanner scanner = new Scanner(System.in);
 
         while (true) {
