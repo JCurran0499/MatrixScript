@@ -9,9 +9,19 @@ import static spark.Spark.*;
 public class MatrixScape {
 
     public static void main(String[] args) {
-        port(4567);
-        get("/", (req, res) -> "Hello World!");
-        /*Scanner scanner = new Scanner(System.in);
+        if (args.length > 0 && args[0].equals("run"))
+            run();
+        else {
+            port(4567);
+            get("/", (req, res) -> {
+                String command = req.queryParams("command");
+                return execute(command);
+            });
+        }
+    }
+
+    public static void run() {
+        Scanner scanner = new Scanner(System.in);
 
         while (true) {
             System.out.print(">> ");
@@ -33,6 +43,25 @@ public class MatrixScape {
                 System.out.println(result.string());
                 System.out.println();
             } else result.printValue = true;
-        }*/
+        }
+    }
+
+    private static String execute(String command) {
+        if (command.contains("//"))
+            command = command.substring(0, command.indexOf("//")).stripTrailing();
+
+        if (command.equals("quit") || command.equals("exit"))
+            return "<quit program>";
+
+        // ---------- Command Processing ---------- \\
+        Primitive result = Parser.parse(command).solve();
+
+        if (result.id().equals("null"))
+            return "NULL";
+
+        if (result.printValue)
+            return result.string();
+        else
+            return "";
     }
 }
