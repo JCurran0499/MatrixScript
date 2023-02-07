@@ -27,6 +27,7 @@ cd MatrixScape
 chmod u+x start.sh
 chmod u+x install_java.sh
 ./install_java.sh
+java --version
 ```
 
 #### Run the Program
