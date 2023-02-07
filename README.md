@@ -10,15 +10,26 @@ To check that your OS matches this, run `yum --version` and verify that your OS 
 If not, then you must install Git and Java in a way that matches your OS. Once this is done, the project will run on your OS perfectly fine. 
 <br/>
 <br/>
-<br/>
 #### Download Git
 ```
 sudo yum install git-all
 git --version
 ```
 
-
 #### Download Project Repo
 ```
-git --version
+git clone https://github.com/JCurran0499/MatrixScape.git
+```
+
+#### Give .sh Permissions and Install Java
+```
+cd MatrixScape
+chmod u+x start.sh
+chmod u+x install_java.sh
+./install_java.sh
+```
+
+#### Run the Program
+```
+./start.sh
 ```
