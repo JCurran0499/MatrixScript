@@ -1,16 +1,16 @@
 package Program;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 import Interpreters.*;
-import Interpreters.Variables.Variables;
 import Parser.Parser;
-import Parser.Token;
+
+import static spark.Spark.get;
 
 public class MatrixScape {
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        get("/hello", (req, res) -> "Hello World!");
+        /*Scanner scanner = new Scanner(System.in);
 
         while (true) {
             System.out.print(">> ");
@@ -32,6 +32,6 @@ public class MatrixScape {
                 System.out.println(result.string());
                 System.out.println();
             } else result.printValue = true;
-        }
+        }*/
     }
 }
