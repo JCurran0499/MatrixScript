@@ -17,8 +17,7 @@ sudo yum install git-all
 git --version
 ```
 
-<br/>
-<br/>
+
 #### Download Project Repo
 ```
 git --version
