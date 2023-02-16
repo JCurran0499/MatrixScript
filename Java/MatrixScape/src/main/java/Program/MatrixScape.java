@@ -7,7 +7,7 @@ import Interpreters.*;
 import Parser.Parser;
 import Interpreters.Variables.VarHandler;
 
-import static spark.Spark.get;
+import static spark.Spark.post;
 import static spark.Spark.port;
 import spark.Request;
 import spark.Response;
@@ -27,7 +27,7 @@ public class MatrixScape {
 
     public static void runAPI() {
         port(4567);
-        get("/", (req, res) -> {
+        post("/", (req, res) -> {
             VarHandler.api = true;
             VarHandler.session = req.session();
 
@@ -39,6 +39,8 @@ public class MatrixScape {
                 e.printStackTrace();
                 return "";
             }
+
+            res.header("Access-Control-Allow-Origin", "*");
 
             String command = body.asText();
             return execute(command);
