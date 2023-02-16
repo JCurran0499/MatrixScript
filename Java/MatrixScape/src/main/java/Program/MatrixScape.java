@@ -6,62 +6,73 @@ import Parser.Parser;
 
 import static spark.Spark.*;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class MatrixScape {
 
     public static void main(String[] args) {
-        if (args.length > 0 && args[0].equals("run"))
-            run();
+        execute("[1 2 3]");
+        /*if (args.length > 0 && args[0].equals("run"))
+            runCommands();
         else {
-            port(4567);
-            get("/", (req, res) -> {
-                String command = req.queryParams("command");
-                return execute(command);
-            });
-        }
+            runAPI();
+        }*/
     }
 
-    public static void run() {
+    public static void runAPI() {
+        port(4567);
+        get("/", (req, res) -> {
+            ObjectMapper mapper = new ObjectMapper();
+            try {
+                JsonNode body = mapper.readValue(req.body(), JsonNode.class);
+                System.out.println(body.size());
+                /*for (int i = 0; i < body.size(); i++)
+                    System.out.println(body.get(i).get("name").toString() + " : " + body.get(i).get("value").toString());*/
+            } catch (Exception e) {System.out.println("error!!");}
+
+            String command = req.queryParams("command");
+            return execute(command);
+        });
+    }
+
+    public static void runCommands() {
         Scanner scanner = new Scanner(System.in);
 
-        while (true) {
+        boolean end = false;
+        while (!end) {
             System.out.print(">> ");
             String command = scanner.nextLine().strip();
+            String output = execute(command);
 
-            if (command.contains("//"))
-                command = command.substring(0, command.indexOf("//")).stripTrailing();
-
-            if (command.equals("quit") || command.equals("exit"))
-                break;
-
-            // ---------- Command Processing ---------- \\
-            Primitive result = Parser.parse(command).solve();
-
-            if (result.id().equals("null"))
-                continue;
-
-            if (result.printValue) {
-                System.out.println(result.string());
-                System.out.println();
-            } else result.printValue = true;
+            if (output == null)
+                end = true;
+            else System.out.print(output);
         }
+
+        System.out.println();
     }
 
     private static String execute(String command) {
         if (command.contains("//"))
             command = command.substring(0, command.indexOf("//")).stripTrailing();
 
-        if (command.equals("quit") || command.equals("exit"))
-            return "<quit program>";
+        if (command.equals("quit") || command.equals("exit")) {
+            return null;
+        }
 
         // ---------- Command Processing ---------- \\
         Primitive result = Parser.parse(command).solve();
 
         if (result.id().equals("null"))
-            return "NULL";
-
-        if (result.printValue)
-            return result.string();
-        else
             return "";
+
+        if (result.printValue) {
+            return result.string() + "\n\n";
+        }
+        else {
+            result.printValue = true;
+            return "";
+        }
     }
 }
