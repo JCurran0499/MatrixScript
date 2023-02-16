@@ -14,10 +14,10 @@ public class Var implements Interpreter {
     /* Base Methods */
 
     public Primitive solve() {
-        if (!Variables.containsVar(name))
+        if (!VarHandler.varExists(name))
             return new Err("variable '" + name + "' does not exist");
 
-        return Variables.getVar(name);
+        return VarHandler.getVar(name);
     }
 
     public String id() {

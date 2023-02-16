@@ -1,4 +1,5 @@
 C:\Users\jackc\OneDrive\Personal Files\Projects\Software\MatrixScape\Java\MatrixScape\src\main\java\Interpreters\Interpreter.java
+C:\Users\jackc\OneDrive\Personal Files\Projects\Software\MatrixScape\Java\MatrixScape\src\main\java\Interpreters\Variables\VarHandler.java
 C:\Users\jackc\OneDrive\Personal Files\Projects\Software\MatrixScape\Java\MatrixScape\src\main\java\Interpreters\Comparisons\GTEqual.java
 C:\Users\jackc\OneDrive\Personal Files\Projects\Software\MatrixScape\Java\MatrixScape\src\main\java\Interpreters\Arithmetic\Fact.java
 C:\Users\jackc\OneDrive\Personal Files\Projects\Software\MatrixScape\Java\MatrixScape\src\main\java\Interpreters\Primitives\Bool.java
@@ -6,7 +7,6 @@ C:\Users\jackc\OneDrive\Personal Files\Projects\Software\MatrixScape\Java\Matrix
 C:\Users\jackc\OneDrive\Personal Files\Projects\Software\MatrixScape\Java\MatrixScape\src\main\java\Parser\Token.java
 C:\Users\jackc\OneDrive\Personal Files\Projects\Software\MatrixScape\Java\MatrixScape\src\main\java\Interpreters\Commands\Dim.java
 C:\Users\jackc\OneDrive\Personal Files\Projects\Software\MatrixScape\Java\MatrixScape\src\main\java\Interpreters\Primitives\Err.java
-C:\Users\jackc\OneDrive\Personal Files\Projects\Software\MatrixScape\Java\MatrixScape\src\main\java\Interpreters\Variables\Variables.java
 C:\Users\jackc\OneDrive\Personal Files\Projects\Software\MatrixScape\Java\MatrixScape\src\main\java\Interpreters\Primitive.java
 C:\Users\jackc\OneDrive\Personal Files\Projects\Software\MatrixScape\Java\MatrixScape\src\main\java\Interpreters\Comparisons\Great.java
 C:\Users\jackc\OneDrive\Personal Files\Projects\Software\MatrixScape\Java\MatrixScape\src\main\java\Interpreters\Arithmetic\Add.java
