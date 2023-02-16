@@ -9,8 +9,6 @@ import Interpreters.Variables.VarHandler;
 
 import static spark.Spark.post;
 import static spark.Spark.port;
-import spark.Request;
-import spark.Response;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,9 +39,10 @@ public class MatrixScape {
             }
 
             res.header("Access-Control-Allow-Origin", "*");
+            res.header("Content-Type", "application/json");
 
             String command = body.asText();
-            return execute(command);
+            return String.format("{\"response\": \"%s\"}", execute(command).strip());
         });
     }
 

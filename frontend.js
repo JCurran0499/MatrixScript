@@ -1,10 +1,13 @@
-const userAction = async () => {
-  const response = await fetch('http://localhost:4567/', { 
+const userAction = async (command) => {
+  const response = await fetch('http://localhost:4567/', {
+    credentials: 'same-origin', 
     method: 'POST',
-    body: '{"command": "2+3"}'
+    body: `{"command": "${command}"}`,
   });
   const myJson = await response.json(); //extract JSON from the http response
-  console.log(myJson)
+  console.log(myJson.response)
 }
 
-userAction()
+command = prompt("Enter command:")
+userAction(command)
+
