@@ -4,6 +4,9 @@ import java.util.Scanner;
 import java.util.TreeMap;
 
 import Interpreters.*;
+import Interpreters.Primitives.Null;
+import Interpreters.Primitives.Mat;
+import Matrix.Matrix;
 import Parser.Parser;
 import Interpreters.Variables.VarHandler;
 
@@ -32,7 +35,7 @@ public class MatrixScape {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode body;
             try {
-                body = mapper.readValue(req.body(), JsonNode.class).get("command");
+                body = mapper.readTree(req.body()).get("command");
             } catch (Exception e) {
                 e.printStackTrace();
                 return "";
@@ -40,9 +43,18 @@ public class MatrixScape {
 
             res.header("Access-Control-Allow-Origin", "*");
             res.header("Content-Type", "application/json");
-
             String command = body.asText();
-            return String.format("{\"response\": \"%s\"}", execute(command).strip());
+            Primitive result = execute(command);
+
+            if (result.id().equals("mat") && result.printValue) {
+                String matString = result.string().replaceAll("\n", "n");
+                String response = String.format("{\"response\": {\"matrix\": \"%s\"}}", matString);
+                return mapper.readTree(response);
+            }
+            else {
+                String response = String.format("{\"response\": \"%s\"}", result.printValue ? result.string() : "");
+                return mapper.readTree(response);
+            }
         });
     }
 
@@ -52,40 +64,35 @@ public class MatrixScape {
 
         Scanner scanner = new Scanner(System.in);
 
-        boolean end = false;
-        while (!end) {
+        boolean end = true;
+        while (end) {
             System.out.print(">> ");
             String command = scanner.nextLine().strip();
-            String output = execute(command);
 
-            if (output == null)
-                end = true;
-            else System.out.print(output);
+            if (command.equals("quit") || command.equals("exit"))
+                end = false;
+            else {
+
+                Primitive result = execute(command);
+                if (!result.id().equals("null") && result.printValue)
+                    System.out.println(result.string() + "\n");
+                else
+                    result.printValue = true;
+
+            }
         }
 
         System.out.println();
     }
 
-    private static String execute(String command) {
+    private static Primitive execute(String command) {
         if (command.contains("//"))
             command = command.substring(0, command.indexOf("//")).stripTrailing();
 
         if (command.equals("quit") || command.equals("exit")) {
-            return null;
+            return Null.returnNull();
         }
 
-        // ---------- Command Processing ---------- \\
-        Primitive result = Parser.parse(command).solve();
-
-        if (result.id().equals("null"))
-            return "";
-
-        if (result.printValue) {
-            return result.string() + "\n\n";
-        }
-        else {
-            result.printValue = true;
-            return "";
-        }
+        return Parser.parse(command).solve();
     }
 }
