@@ -5,13 +5,11 @@ import java.util.TreeMap;
 
 import Interpreters.*;
 import Interpreters.Primitives.Null;
-import Interpreters.Primitives.Mat;
-import Matrix.Matrix;
 import Parser.Parser;
 import Interpreters.Variables.VarHandler;
 
-import static spark.Spark.post;
 import static spark.Spark.port;
+import static spark.Spark.post;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,6 +41,7 @@ public class MatrixScape {
 
             res.header("Access-Control-Allow-Origin", "*");
             res.header("Content-Type", "application/json");
+
             String command = body.asText();
             Primitive result = execute(command);
 
@@ -78,7 +77,6 @@ public class MatrixScape {
                     System.out.println(result.string() + "\n");
                 else
                     result.printValue = true;
-
             }
         }
 

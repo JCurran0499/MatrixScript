@@ -16,7 +16,7 @@ public class Declare implements Interpreter {
                     "identity", "zerovector", "transpose", "append", "inverse", "rank");
 
     private final String varName;
-    private Interpreter expression;
+    private final Interpreter expression;
 
 
     public Declare(String v, Interpreter e) {
