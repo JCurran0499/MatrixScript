@@ -8,11 +8,10 @@ import Interpreters.Primitives.Null;
 import Parser.Parser;
 import Interpreters.Variables.VarHandler;
 
-import static spark.Spark.port;
-import static spark.Spark.post;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import static spark.Spark.*;
 
 public class MatrixScape {
 
@@ -26,6 +25,12 @@ public class MatrixScape {
 
     public static void runAPI() {
         port(4567);
+
+        options("/", (req, res) -> {
+            res.header("Access-Control-Allow-Origin", "*");
+            return "";
+        });
+
         post("/", (req, res) -> {
             VarHandler.api = true;
             VarHandler.session = req.session();
