@@ -25,8 +25,8 @@ git clone https://github.com/JCurran0499/MatrixScape.git
 ```
 cd MatrixScape
 chmod u+x start.sh
-chmod u+x install_java.sh
-./install_java.sh
+chmod u+x install.sh
+./install.sh
 sudo tee /etc/profile.d/jdk18.sh <<EOF
 export JAVA_HOME=/opt/jdk-18
 export PATH=\$PATH:\$JAVA_HOME/bin
