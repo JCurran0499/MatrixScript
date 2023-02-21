@@ -8,8 +8,7 @@ There are two versions of MatrixScape. One is written in [Java](https://github.c
 The download tools provided to you in this repository are based on the Linux OS distributions popular with basic AWS EC2 instances, specifically Red Hat, AWS Linux, CentOS, Fedora, and others. For other servers and virtual machines, the commands may be slightly different. <br/> <br/>
 To check that your OS matches this distribution, run `yum --version` and verify that your OS recognizes the YUM package installer. <br/>
 If not, then you must install Git and Java in a way that matches your OS. Once this is done, the project will run on your OS perfectly fine. 
-<br/>
-<br/>
+
 ### Frontend and Backend Servers
 
 This project is designed to be run on two different servers, a frontend and backend. Below are instructions for setting up and running both of these servers. In many cases, especially your local device, it is acceptable to run both on the same host. However, it is best practice to set up independent public servers (ex: virtual machines) for this purpose.
