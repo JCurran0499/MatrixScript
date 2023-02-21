@@ -12,7 +12,7 @@ If not, then you must install Git and Java in a way that matches your OS. Once t
 ### Frontend and Backend Servers
 
 This project is designed to be run on two different servers, a frontend and backend. Below are instructions for setting up and running both of these servers. In many cases, especially your local device, it is acceptable to run both on the same host. However, it is best practice to set up independent public servers (ex: virtual machines) for this purpose. <br/> <br/>
-The frontend will be accessed by users through the internet, and the backend will be accessed exclusively by the frontend. Configure your Security Groups as such.
+The frontend will be accessed by users through the internet on HTTP port 80, and the backend will be accessed exclusively by the frontend on port 4567. Configure your Security Groups as such.
 <br/>
 <br/>
 ### Backend Setup
