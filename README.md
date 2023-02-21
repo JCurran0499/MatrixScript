@@ -78,6 +78,7 @@ npm --version
 
 #### Run the Program
 ```
+cd frontend
 npm start
 ```
 
