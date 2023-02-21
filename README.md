@@ -32,7 +32,6 @@ git clone https://github.com/JCurran0499/MatrixScape.git
 cd MatrixScape
 chmod u+x backend/start.sh
 chmod u+x install_backend.sh
-chmod u+x install_frontend.sh
 ./install_backend.sh
 ```
 
