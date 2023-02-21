@@ -1,13 +1,17 @@
+fs = require("fs")
+prompt = require("prompt");
+
 const responseString = (json) => {
   if (json.response.matrix) {
-    return json.response.matrix.replaceAll("n", "<br>").replaceAll(" ", "&nbsp;")
+    return json.response.matrix.replaceAll("n", "<br>")
   }
 
   return json.response
 }
 
-const userAction = async (command) => {
-  const response = await fetch('http://localhost:4567/', {
+const backendCall = async (command, backend) => {
+  console.log(backend)
+  const response = await fetch(`http://${backend}:4567/`, {
     credentials: 'same-origin', 
     method: 'POST',
     body: `{"command": "${command}"}`,
@@ -16,6 +20,10 @@ const userAction = async (command) => {
   .then((json) => document.getElementById("output").innerHTML = responseString(json));
 }
 
-command = prompt("Enter command:")
-userAction(command)
+
+
+command = "5"
+fs.readFile('backend_call.json', function(err, data) {
+  console.log(data.backend)
+});
 
