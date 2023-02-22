@@ -77,7 +77,7 @@ npm --version
 #### Run the Program
 ```
 cd frontend
-npm start
+sudo npm start
 ```
 
 From here, the MatrixScape UI can be accessed on your standard HTTP port, at `<server_domain_or_ip>`.
