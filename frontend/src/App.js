@@ -1,11 +1,10 @@
+import { Title } from './components/title/Title'
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <p>
-        MatrixScape
-      </p>
+      <Title/>
     </div>
   );
 }
