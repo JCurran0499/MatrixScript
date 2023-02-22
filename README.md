@@ -47,10 +47,8 @@ cd backend
 ```
 
 From here, the MatrixScape API can be accessed on port 4567, at `<server_domain_or_ip>:4567`.
-
 <br/>
 <br/>
-
 ### Frontend Setup
 #### Download Git
 ```
