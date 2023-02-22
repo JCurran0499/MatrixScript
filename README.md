@@ -61,7 +61,7 @@ git --version
 git clone https://github.com/JCurran0499/MatrixScape.git
 ```
 
-#### Give .sh Permissions and Install Java
+#### Give .sh Permissions and Install Node
 ```
 cd MatrixScape
 chmod u+x install_frontend.sh
