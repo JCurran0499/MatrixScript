@@ -61,7 +61,7 @@ git --version
 git clone https://github.com/JCurran0499/MatrixScape.git
 ```
 
-#### Give .sh Permissions and Install Java
+#### Give .sh Permissions and Install Node
 ```
 cd MatrixScape
 chmod u+x install_frontend.sh
@@ -77,7 +77,7 @@ npm --version
 #### Run the Program
 ```
 cd frontend
-npm start
+sudo npm start
 ```
 
 From here, the MatrixScape UI can be accessed on your standard HTTP port, at `<server_domain_or_ip>`.
