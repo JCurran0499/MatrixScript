@@ -75,7 +75,8 @@ npm --version
 ```
 
 #### Integrate Backend
-Use `cd frontend` to enter the frontend directory. From here, edit the *.env* file, and fill in your backend server's IP address or domain in the `REACT_APP_BACKEND` value. This way, your web app frontend will be able to communicate with your backend.
+Use `cd frontend` to enter the frontend directory. From here, edit the **.env** file, and fill in your backend server's IP address or domain in the `REACT_APP_BACKEND` value. This way, your web app frontend will be able to communicate with your backend.
+<br/>
 
 #### Run the Program
 ```
