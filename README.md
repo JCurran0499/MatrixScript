@@ -40,7 +40,7 @@ chmod u+x install_backend.sh
 java --version
 ```
 
-#### Integrate Backend
+#### Allow Frontend CORS Permissions
 Use `cd backend` to enter the backend directory. From here, edit the **.env** file, and fill in your front server's IP address or domain in the `FRONTEND` value. This way, your web app backend will be able send CORS permissions to your frontend.
 <br/>
 <br/>
