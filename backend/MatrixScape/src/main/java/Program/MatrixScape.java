@@ -11,6 +11,8 @@ import Interpreters.Variables.VarHandler;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 import static spark.Spark.*;
 
 public class MatrixScape {
@@ -24,11 +26,13 @@ public class MatrixScape {
     }
 
     public static void runAPI() {
+        Dotenv dotenv = Dotenv.load();
+
         port(4567);
 
         options("/", (req, res) -> {
             res.header("Access-Control-Allow-Methods", "POST,OPTIONS");
-            res.header("Access-Control-Allow-Origin", "http://localhost");
+            res.header("Access-Control-Allow-Origin", "http://" + dotenv.get("FRONTEND"));
             res.header("Access-Control-Allow-Credentials", "true");
             return "";
         });
@@ -47,7 +51,7 @@ public class MatrixScape {
             }
 
             res.header("Access-Control-Allow-Methods", "POST,OPTIONS");
-            res.header("Access-Control-Allow-Origin", "http://localhost");
+            res.header("Access-Control-Allow-Origin", "http://" + dotenv.get("FRONTEND"));
             res.header("Access-Control-Allow-Credentials", "true");
             res.header("Content-Type", "application/json");
 
