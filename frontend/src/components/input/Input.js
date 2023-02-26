@@ -1,9 +1,10 @@
 import { useState } from 'react'
 
 export const Input = () => {
+    const [command, handleCommand] = useState('')
     const [commandResponse, handleCommandResponse] = useState('')
 
-    const handleJsonResponse = (json) => {
+    const processJsonResponse = (json) => {
         if (json.response.matrix) {
             return json.response.matrix
         }
@@ -12,16 +13,31 @@ export const Input = () => {
         }
     }
 
-    fetch(`http://${process.env.REACT_APP_BACKEND}:4567/`, {
-        credentials: 'same-origin', 
-        method: 'POST',
-        body: '{"command": "[1 2 3 ; 4 5 6]"}',
-    })
-    .then((res) => res.json())
-    .then((json) => handleJsonResponse(json))
-    .then((resp) => handleCommandResponse(resp));
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        fetch(`http://${process.env.REACT_APP_BACKEND}:4567/`, {
+            credentials: 'include', 
+            method: 'POST',
+            body: `{"command": "${command}"}`,
+        })
+        .then((res) => res.json())
+        .then((json) => processJsonResponse(json))
+        .then((resp) => handleCommandResponse(resp));
+    }
 
     return (
-        <h3>{commandResponse}</h3>
+        <div>
+            <form onSubmit={handleSubmit}>
+                <input 
+                    type="input"
+                    value={command}
+                    onChange={(e) => handleCommand(e.target.value)}
+                />
+                <input
+                    type="submit"
+                />
+            </form>
+            <h3>{commandResponse}</h3>
+        </div>
     )
 }
