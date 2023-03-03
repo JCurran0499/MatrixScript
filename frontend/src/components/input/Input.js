@@ -20,6 +20,10 @@ export const Input = () => {
             method: 'POST',
             body: `{"command": "${command}"}`,
         })
+        .then((res) => {
+            res.headers.forEach((v, k, p) => console.log(k + " : " + v))
+            return res
+        })
         .then((res) => res.json())
         .then((json) => processJsonResponse(json))
         .then((resp) => handleCommandResponse(resp));
