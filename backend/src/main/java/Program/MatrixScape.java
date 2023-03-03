@@ -58,13 +58,19 @@ public class MatrixScape {
             String command = body.asText();
             Primitive result = execute(command);
 
+            String response;
             if (result.id().equals("mat") && result.printValue) {
                 String matString = result.string().replaceAll("\n", "n");
-                String response = String.format("{\"response\": {\"matrix\": \"%s\"}}", matString);
+                response = String.format("{\"response\": {\"matrix\": \"%s\"}}", matString);
+                return mapper.readTree(response);
+            }
+            else if (result.printValue) {
+                response = String.format("{\"response\": \"%s\"}", result.string());
                 return mapper.readTree(response);
             }
             else {
-                String response = String.format("{\"response\": \"%s\"}", result.printValue ? result.string() : "");
+                result.printValue = true;
+                response = String.format("{\"response\": \"%s\"}", "");
                 return mapper.readTree(response);
             }
         });
