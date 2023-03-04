@@ -61,6 +61,8 @@ public class MatrixScape {
             res.header("Access-Control-Allow-Headers", "content-type");
             res.header("Access-Control-Expose-Headers", "set-cookie");
 
+            res.header("Cache-Control", "no-cache");
+
             res.header("Content-Type", "application/json");
 
             res.cookie("SESSIONID", req.session().id(), 3600, false);

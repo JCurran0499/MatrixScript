@@ -19,6 +19,9 @@ export const Input = () => {
         axios({
             method: 'post',
             url: `http://${process.env.REACT_APP_BACKEND}:4567/`,
+            headers: {
+                'Cache-Control': 'no-cache'
+            },
             data: {
               command: command
             },
