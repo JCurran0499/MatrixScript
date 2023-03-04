@@ -58,7 +58,7 @@ public class MatrixScape {
             res.header("Access-Control-Allow-Methods", "POST,OPTIONS");
             res.header("Access-Control-Allow-Origin", "http://" + dotenv.get("FRONTEND"));
             res.header("Access-Control-Allow-Credentials", "true");
-            res.header("Access-Control-Allow-Headers", "content-type");
+            res.header("Access-Control-Allow-Headers", "content-type,cache-control");
             res.header("Access-Control-Expose-Headers", "set-cookie");
 
             res.header("Cache-Control", "no-cache");
