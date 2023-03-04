@@ -42,6 +42,8 @@ public class MatrixScape {
             VarHandler.api = true;
             VarHandler.session = req.session();
 
+            System.out.println(req.session().isNew());
+
             ObjectMapper mapper = new ObjectMapper();
             JsonNode body;
             try {
