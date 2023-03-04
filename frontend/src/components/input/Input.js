@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import axios from 'axios'
 
 export const Input = () => {
     const [command, handleCommand] = useState('')
@@ -15,16 +16,19 @@ export const Input = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        fetch(`http://${process.env.REACT_APP_BACKEND}:4567/`, {
-            credentials: 'include', 
-            method: 'POST',
-            body: `{"command": "${command}"}`,
+        axios({
+            method: 'post',
+            url: `http://${process.env.REACT_APP_BACKEND}:4567/`,
+            data: {
+              command: command
+            },
+            withCredentials: true
         })
         .then((res) => {
-            res.headers.forEach((v, k, p) => console.log(k + " : " + v))
+            console.log(res.headers)
             return res
         })
-        .then((res) => res.json())
+        .then((res) => res.data)
         .then((json) => processJsonResponse(json))
         .then((resp) => handleCommandResponse(resp));
     }
