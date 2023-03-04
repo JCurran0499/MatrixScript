@@ -35,6 +35,7 @@ public class MatrixScape {
             res.header("Access-Control-Allow-Origin", "http://" + dotenv.get("FRONTEND"));
             res.header("Access-Control-Allow-Credentials", "true");
             res.header("Access-Control-Allow-Headers", "content-type");
+            res.header("Access-Control-Expose-Headers", "set-cookie");
             return "";
         });
 
@@ -57,6 +58,7 @@ public class MatrixScape {
             res.header("Access-Control-Allow-Origin", "http://" + dotenv.get("FRONTEND"));
             res.header("Access-Control-Allow-Credentials", "true");
             res.header("Access-Control-Allow-Headers", "content-type");
+            res.header("Access-Control-Expose-Headers", "set-cookie");
             res.header("Content-Type", "application/json");
 
             String command = body.asText();
