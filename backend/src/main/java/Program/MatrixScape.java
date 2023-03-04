@@ -28,7 +28,7 @@ public class MatrixScape {
     public static void runAPI() {
         Dotenv dotenv = Dotenv.load();
 
-        port(4567);
+        port(80);
 
         options("/*", (req, res) -> {
             res.header("Access-Control-Allow-Methods", "POST,OPTIONS");
@@ -54,6 +54,12 @@ public class MatrixScape {
                 e.printStackTrace();
                 return "";
             }
+
+            res.header("Access-Control-Allow-Methods", "POST,OPTIONS");
+            res.header("Access-Control-Allow-Origin", "http://" + dotenv.get("FRONTEND"));
+            res.header("Access-Control-Allow-Credentials", "true");
+            res.header("Access-Control-Allow-Headers", "content-type");
+            res.header("Access-Control-Expose-Headers", "set-cookie");
 
             res.header("Content-Type", "application/json");
 
