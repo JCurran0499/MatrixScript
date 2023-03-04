@@ -28,7 +28,7 @@ public class MatrixScape {
     public static void runAPI() {
         Dotenv dotenv = Dotenv.load();
 
-        port(80);
+        port(4567);
 
         options("/*", (req, res) -> {
             res.header("Access-Control-Allow-Methods", "POST,OPTIONS");
@@ -37,7 +37,7 @@ public class MatrixScape {
             res.header("Access-Control-Allow-Headers", "content-type");
             res.header("Access-Control-Expose-Headers", "set-cookie");
 
-            return "";
+            return "OK";
         });
 
         post("/", (req, res) -> {
@@ -62,6 +62,9 @@ public class MatrixScape {
             res.header("Access-Control-Expose-Headers", "set-cookie");
 
             res.header("Content-Type", "application/json");
+
+            res.cookie("SESSIONID", req.session().id(), 3600, false);
+            res.cookie("SESSIONIDsecure", req.session().id(), 3600, true);
 
             String command = body.asText();
             Primitive result = execute(command);
