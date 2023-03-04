@@ -45,8 +45,6 @@ public class MatrixScape {
             VarHandler.session = req.session();
 
             System.out.println(req.session().isNew());
-            if (req.session().isNew())
-                res.cookie("foo", req.session().id(), 3600, false, true);
 
             ObjectMapper mapper = new ObjectMapper();
             JsonNode body;
@@ -57,11 +55,6 @@ public class MatrixScape {
                 return "";
             }
 
-            res.header("Access-Control-Allow-Methods", "POST,OPTIONS");
-            res.header("Access-Control-Allow-Origin", "http://" + dotenv.get("FRONTEND"));
-            res.header("Access-Control-Allow-Credentials", "true");
-            res.header("Access-Control-Allow-Headers", "content-type");
-            res.header("Access-Control-Expose-Headers", "set-cookie");
             res.header("Content-Type", "application/json");
 
             String command = body.asText();
