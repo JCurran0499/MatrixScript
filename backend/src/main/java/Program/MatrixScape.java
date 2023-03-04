@@ -30,7 +30,7 @@ public class MatrixScape {
 
         port(4567);
 
-        options("/", (req, res) -> {
+        options("/*", (req, res) -> {
             res.header("Access-Control-Allow-Methods", "POST,OPTIONS");
             res.header("Access-Control-Allow-Origin", "http://" + dotenv.get("FRONTEND"));
             res.header("Access-Control-Allow-Credentials", "true");
