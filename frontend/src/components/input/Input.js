@@ -27,13 +27,10 @@ export const Input = (props) => {
             },
             withCredentials: true
         })
-        .then((res) => {
-            console.log(res.headers)
-            return res
-        })
         .then((res) => res.data)
         .then((json) => processJsonResponse(json))
-        .then((resp) => handleCommandResponse(resp));
+        .then((resp) => handleCommandResponse(resp))
+        .then(() => handleCommand(''));
     }
 
     return (
