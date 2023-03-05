@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import axios from 'axios'
 
-export const Input = () => {
+export const Input = (props) => {
     const [command, handleCommand] = useState('')
     const [commandResponse, handleCommandResponse] = useState('')
 
@@ -19,8 +19,8 @@ export const Input = () => {
         axios({
             method: 'post',
             url: `http://${process.env.REACT_APP_BACKEND}:4567/`,
-            headers: {
-                'Cache-Control': 'no-cache'
+            params: {
+                'token': props.sessionToken
             },
             data: {
               command: command

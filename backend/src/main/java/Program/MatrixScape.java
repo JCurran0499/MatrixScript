@@ -3,6 +3,8 @@ package Program;
 import java.util.Scanner;
 import java.util.TreeMap;
 
+import java.util.UUID;
+
 import Interpreters.*;
 import Interpreters.Primitives.Null;
 import Parser.Parser;
@@ -31,22 +33,56 @@ public class MatrixScape {
         port(4567);
 
         options("/*", (req, res) -> {
-            res.header("Access-Control-Allow-Methods", "POST,OPTIONS");
+            res.header("Access-Control-Allow-Methods", "POST,GET,DELETE");
             res.header("Access-Control-Allow-Origin", "http://" + dotenv.get("FRONTEND"));
             res.header("Access-Control-Allow-Credentials", "true");
-            res.header("Access-Control-Allow-Headers", "content-type, cache-control");
-            res.header("Access-Control-Expose-Headers", "set-cookie");
+            res.header("Access-Control-Allow-Headers", "content-type");
+
+            return "OK";
+        });
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        get("/token", (req, res) -> {
+            String sessionToken = UUID.randomUUID().toString();
+            int success = VarHandler.createSession(sessionToken);
+            if (success == -1)
+                halt(500, "error generating token");
+
+            res.header("Access-Control-Allow-Methods", "POST,GET,DELETE");
+            res.header("Access-Control-Allow-Origin", "http://" + dotenv.get("FRONTEND"));
+            res.header("Access-Control-Allow-Credentials", "true");
+            res.header("Access-Control-Allow-Headers", "content-type");
+
+            res.header("Content-Type", "application/json");
+
+            return mapper.readTree(String.format("{\"sessionToken\": \"%s\"}", sessionToken));
+        });
+
+        delete("/token/:token", (req, res) -> {
+            int success = VarHandler.invalidateSession(req.params(":token"));
+            if (success == -1)
+                halt(404, "invalid session token");
+
+            res.header("Access-Control-Allow-Methods", "POST,GET,DELETE");
+            res.header("Access-Control-Allow-Origin", "http://" + dotenv.get("FRONTEND"));
+            res.header("Access-Control-Allow-Credentials", "true");
+            res.header("Access-Control-Allow-Headers", "content-type");
 
             return "OK";
         });
 
         post("/", (req, res) -> {
-            VarHandler.api = true;
-            VarHandler.session = req.session();
+            String sessionToken = req.queryParams("token");
+            if (sessionToken == null) {
+                sessionToken = req.session().id();
+                VarHandler.createSession(sessionToken);
+            }
 
-            System.out.println(req.session().isNew());
+            if (!VarHandler.validSession(sessionToken))
+                halt(401, "invalid session token");
+            VarHandler.variables = VarHandler.variableMap.get(sessionToken);
 
-            ObjectMapper mapper = new ObjectMapper();
             JsonNode body;
             try {
                 body = mapper.readTree(req.body()).get("command");
@@ -55,18 +91,12 @@ public class MatrixScape {
                 return "";
             }
 
-            res.header("Access-Control-Allow-Methods", "POST,OPTIONS");
+            res.header("Access-Control-Allow-Methods", "POST,GET,DELETE");
             res.header("Access-Control-Allow-Origin", "http://" + dotenv.get("FRONTEND"));
             res.header("Access-Control-Allow-Credentials", "true");
-            res.header("Access-Control-Allow-Headers", "content-type, cache-control");
-            res.header("Access-Control-Expose-Headers", "set-cookie");
-
-            res.header("Cache-Control", "no-cache");
+            res.header("Access-Control-Allow-Headers", "content-type");
 
             res.header("Content-Type", "application/json");
-
-            res.cookie("SESSIONID", req.session().id(), 3600, false);
-            res.cookie("SESSIONIDsecure", req.session().id(), 3600, true);
 
             String command = body.asText();
             Primitive result = execute(command);
@@ -90,7 +120,6 @@ public class MatrixScape {
     }
 
     public static void runCommands() {
-        VarHandler.api = false;
         VarHandler.variables = new TreeMap<>();
 
         Scanner scanner = new Scanner(System.in);
