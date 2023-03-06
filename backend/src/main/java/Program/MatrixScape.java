@@ -13,7 +13,11 @@ import Interpreters.Variables.VarHandler;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import io.github.cdimascio.dotenv.Dotenv;
+import spark.Response;
 
 import static spark.Spark.*;
 
@@ -29,74 +33,74 @@ public class MatrixScape {
 
     public static void runAPI() {
         Dotenv dotenv = Dotenv.load();
+        Logger logger = LoggerFactory.getLogger(MatrixScape.class);
+        ObjectMapper mapper = new ObjectMapper();
 
         port(4567);
 
         options("/*", (req, res) -> {
-            res.header("Access-Control-Allow-Methods", "POST,GET,DELETE");
-            res.header("Access-Control-Allow-Origin", "http://" + dotenv.get("FRONTEND"));
-            res.header("Access-Control-Allow-Credentials", "true");
-            res.header("Access-Control-Allow-Headers", "content-type");
-
+            setCORSHeaders(res, dotenv.get("FRONTEND"));
             return "OK";
         });
 
-        ObjectMapper mapper = new ObjectMapper();
-
         get("/token", (req, res) -> {
+            setCORSHeaders(res, dotenv.get("FRONTEND"));
+            res.header("Content-Type", "application/json");
+
             String sessionToken = UUID.randomUUID().toString();
             int success = VarHandler.createSession(sessionToken);
-            if (success == -1)
+            if (success == -1) {
+                logger.error("500 ERROR - token generation error on server side");
                 halt(500, "error generating token");
+            }
 
-            res.header("Access-Control-Allow-Methods", "POST,GET,DELETE");
-            res.header("Access-Control-Allow-Origin", "http://" + dotenv.get("FRONTEND"));
-            res.header("Access-Control-Allow-Credentials", "true");
-            res.header("Access-Control-Allow-Headers", "content-type");
-
-            res.header("Content-Type", "application/json");
+            logger.info("new token generated - " + sessionToken);
+            logger.info(VarHandler.variableMap.size() + " open sessions");
 
             return mapper.readTree(String.format("{\"sessionToken\": \"%s\"}", sessionToken));
         });
 
         delete("/token/:token", (req, res) -> {
-            int success = VarHandler.invalidateSession(req.params(":token"));
-            if (success == -1)
-                halt(404, "invalid session token");
+            setCORSHeaders(res, dotenv.get("FRONTEND"));
 
-            res.header("Access-Control-Allow-Methods", "POST,GET,DELETE");
-            res.header("Access-Control-Allow-Origin", "http://" + dotenv.get("FRONTEND"));
-            res.header("Access-Control-Allow-Credentials", "true");
-            res.header("Access-Control-Allow-Headers", "content-type");
+            String sessionToken = req.params(":token");
+            int success = VarHandler.invalidateSession(sessionToken);
+            if (success == -1) {
+                logger.error("404 ERROR - tried to delete invalid token");
+                halt(404, "invalid session token");
+            }
+
+            logger.info("token ~" + sessionToken + "~ deleted");
+            logger.info(VarHandler.variableMap.size() + " open sessions");
 
             return "OK";
         });
 
         post("/", (req, res) -> {
+            setCORSHeaders(res, dotenv.get("FRONTEND"));
+            res.header("Content-Type", "application/json");
+
             String sessionToken = req.queryParams("token");
             if (sessionToken == null) {
+                logger.info("no session token provided - using session id instead");
                 sessionToken = req.session().id();
                 VarHandler.createSession(sessionToken);
             }
 
-            if (!VarHandler.validSession(sessionToken))
+            if (!VarHandler.validSession(sessionToken)) {
+                logger.error("401 ERROR - invalid session token provided");
                 halt(401, "invalid session token");
+            }
             VarHandler.variables = VarHandler.variableMap.get(sessionToken);
 
             JsonNode body;
             try {
                 body = mapper.readTree(req.body()).get("command");
             } catch (Exception e) {
-                e.printStackTrace();
+                logger.error("error in request body format");
+                halt(400, "invalid request body format");
                 return "";
             }
-
-            res.header("Access-Control-Allow-Methods", "POST,GET,DELETE");
-            res.header("Access-Control-Allow-Origin", "http://" + dotenv.get("FRONTEND"));
-            res.header("Access-Control-Allow-Credentials", "true");
-            res.header("Access-Control-Allow-Headers", "content-type");
-
-            res.header("Content-Type", "application/json");
 
             String command = body.asText();
             Primitive result = execute(command);
@@ -153,5 +157,12 @@ public class MatrixScape {
         }
 
         return Parser.parse(command).solve();
+    }
+
+    private static void setCORSHeaders(Response res, String frontend) {
+        res.header("Access-Control-Allow-Methods", "POST,GET,DELETE");
+        res.header("Access-Control-Allow-Origin", "http://" + frontend); //dotenv.get("FRONTEND"));
+        res.header("Access-Control-Allow-Credentials", "true");
+        res.header("Access-Control-Allow-Headers", "content-type");
     }
 }

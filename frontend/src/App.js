@@ -1,5 +1,6 @@
 import { Title } from './components/title/Title'
 import { Input } from './components/input/Input'
+import { Box } from './components/box/Box'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import './App.css';
@@ -43,7 +44,7 @@ function App() {
   return (
     <div className="App">
       <Title/>
-      <Input sessionToken={session}/>
+      <Box sessionToken={session}/>
     </div>
   );
 }
