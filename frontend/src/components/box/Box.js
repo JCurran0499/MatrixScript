@@ -1,13 +1,20 @@
 import { Input } from '../input/Input'
+import { History } from '../history/History'
 import { useState } from 'react'
 import './Box.css'
 
 export const Box = (props) => {
     const [history, handleHistory] = useState([])
     
-    const addCommandHistory = (res) => {
+    const addCommandHistory = (res, isCommand) => {
         const k = history.length.toString()
-        const pastCommand = <p key={k} className="history">{res}</p>
+        const pastCommand = (
+            <History 
+                key={k} 
+                className="history"
+                isCommand={isCommand}
+                text={res}/>
+            )
         
         handleHistory([...history, pastCommand])
     }
