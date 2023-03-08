@@ -6,9 +6,19 @@ import './Box.css'
 export const Box = (props) => {
     const [history, handleHistory] = useState([])
 
+    const commandInput = document.getElementById("commandInput")
+    const focusInput = () => {
+        commandInput.focus()
+    }
+
     const updateScroll = () => {
         const box = document.getElementById("outputbox");
         box.scrollTop = box.scrollHeight;
+    }
+
+    const clearBox = (e) => {
+        handleHistory([])
+        focusInput()
     }
     
     const addCommandHistory = (c) => {
@@ -55,7 +65,7 @@ export const Box = (props) => {
 
     return (
         <div>
-            <div id="outputbox">
+            <div id="outputbox" onClick={focusInput}>
                 {history}
                 <Input
                     id="input"
@@ -65,8 +75,8 @@ export const Box = (props) => {
                 />
             </div>
             <button 
-                onClick={(e) => handleHistory([])}
-            >RESET</button>
+                onClick={clearBox}
+            >CLEAR</button>
         </div>
     )
 }

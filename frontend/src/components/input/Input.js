@@ -7,7 +7,9 @@ export const Input = (props) => {
     const [commandResponse, handleCommandResponse] = useState({})
     const [triggerCommand, toggleTriggerCommand] = useState(false)
     const [triggerCommandResponse, toggleTriggerCommandResponse] = useState(false)
-    
+
+    const [disabled, toggleDisabled] = useState(false)
+
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -24,9 +26,12 @@ export const Input = (props) => {
             withCredentials: true
         })
         .then((res) => res.data)
-        //.then((json) => processJsonResponse(json))
         .then((json) => handleCommandResponse(json))
         .then(() => toggleTriggerCommand(true))
+        .catch((err) => {
+            toggleDisabled(true)
+            alert("There was a system error, please refresh your page")
+        })
     }
 
     /* Waterfall Effect */
@@ -55,8 +60,10 @@ export const Input = (props) => {
             <p>{">> "}</p>
             <form onSubmit={handleSubmit}>
                 <input
+                    id="commandInput"
                     type="input"
                     value={command}
+                    disabled={disabled}
                     onChange={(e) => handleCommand(e.target.value)}
                     autoFocus
                 />
