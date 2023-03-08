@@ -4,16 +4,10 @@ import './Input.css'
 
 export const Input = (props) => {
     const [command, handleCommand] = useState('')
-    const [commandResponse, handleCommandResponse] = useState('')
-
-    const processJsonResponse = (json) => {
-        if (json.response.matrix) {
-            return json.response.matrix
-        }
-        else {
-            return json.response
-        }
-    }
+    const [commandResponse, handleCommandResponse] = useState({})
+    const [triggerCommand, toggleTriggerCommand] = useState(false)
+    const [triggerCommandResponse, toggleTriggerCommandResponse] = useState(false)
+    
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -30,17 +24,31 @@ export const Input = (props) => {
             withCredentials: true
         })
         .then((res) => res.data)
-        .then((json) => processJsonResponse(json))
-        .then((resp) => handleCommandResponse(resp))
-        .then(() => props.onSubmit(command, true))
-        .then(() => handleCommand(''));
+        //.then((json) => processJsonResponse(json))
+        .then((json) => handleCommandResponse(json))
+        .then(() => toggleTriggerCommand(true))
     }
 
+    /* Waterfall Effect */
     useEffect(() => {
-        if (commandResponse.length > 0) {
-            props.onSubmit(commandResponse, false)
+        if (triggerCommand) {
+            props.onSubmitCommand(command)
+            handleCommand('')
+            
+            toggleTriggerCommandResponse(true)
         }
-    }, [commandResponse])
+    }, [triggerCommand])
+
+    useEffect(() => {
+        if (triggerCommandResponse) {
+            props.onSubmitCommandResponse(commandResponse)
+
+            toggleTriggerCommand(false)
+            toggleTriggerCommandResponse(false)
+        }
+    }, [triggerCommandResponse])
+    /* ----------------- */
+
 
     return (
         <div>
@@ -50,6 +58,7 @@ export const Input = (props) => {
                     type="input"
                     value={command}
                     onChange={(e) => handleCommand(e.target.value)}
+                    autoFocus
                 />
                 <br/>
             </form>

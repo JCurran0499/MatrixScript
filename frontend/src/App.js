@@ -9,7 +9,7 @@ function App() {
   const [session, handleSession] = useState('')
 
   const getCookie = (cookie) => {
-    let cookieList = document.cookie.split(";")
+    const cookieList = document.cookie.split(";")
     for (let i = 0; i < cookieList.length; i++) {
       let c = cookieList[i].trim()
       if (c.startsWith(cookie + '='))
@@ -20,7 +20,7 @@ function App() {
   }
 
   useEffect(() => {
-    let oldToken = getCookie("token")
+    const oldToken = getCookie("token")
     if (oldToken.length > 0) {
       axios({
         method: 'delete',
@@ -34,7 +34,7 @@ function App() {
     })
     .then((res) => res.data)
     .then((json) => {
-      let token = json.sessionToken
+      const token = json.sessionToken
       document.cookie = `token=${token}`
       return token
     })
