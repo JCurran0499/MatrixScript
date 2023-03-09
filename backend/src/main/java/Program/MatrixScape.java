@@ -1,14 +1,12 @@
 package Program;
 
 import java.util.Scanner;
-import java.util.TreeMap;
-
 import java.util.UUID;
 
 import Interpreters.*;
 import Interpreters.Primitives.Null;
 import Parser.Parser;
-import Interpreters.Variables.VarHandler;
+import Interpreters.Variables.SessionHandler;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -48,14 +46,15 @@ public class MatrixScape {
             res.header("Content-Type", "application/json");
 
             String sessionToken = UUID.randomUUID().toString();
-            int success = VarHandler.createSession(sessionToken);
+            int success = SessionHandler.createSession(sessionToken);
             if (success == -1) {
                 logger.error("500 ERROR - token generation error on server side");
                 halt(500, "error generating token");
             }
 
-            logger.info("new token generated - " + sessionToken);
-            logger.info(VarHandler.variableMap.size() + " open sessions");
+            logger.info("new token generated: ~" + sessionToken + "~");
+            logger.info(SessionHandler.sessionCount() + " open session" +
+                    (SessionHandler.sessionCount() != 1 ? "s" : ""));
 
             return mapper.readTree(String.format("{\"sessionToken\": \"%s\"}", sessionToken));
         });
@@ -64,14 +63,15 @@ public class MatrixScape {
             setCORSHeaders(res, dotenv.get("FRONTEND"));
 
             String sessionToken = req.params(":token");
-            int success = VarHandler.invalidateSession(sessionToken);
+            int success = SessionHandler.invalidateSession(sessionToken);
             if (success == -1) {
                 logger.error("404 ERROR - tried to delete invalid token");
                 halt(404, "invalid session token");
             }
 
             logger.info("token ~" + sessionToken + "~ deleted");
-            logger.info(VarHandler.variableMap.size() + " open sessions");
+            logger.info(SessionHandler.sessionCount() + " open session" +
+                    (SessionHandler.sessionCount() != 1 ? "s" : ""));
 
             return "OK";
         });
@@ -84,14 +84,14 @@ public class MatrixScape {
             if (sessionToken == null) {
                 logger.info("no session token provided - using session id instead");
                 sessionToken = req.session().id();
-                VarHandler.createSession(sessionToken);
+                SessionHandler.createSession(sessionToken);
             }
 
-            if (!VarHandler.validSession(sessionToken)) {
+            if (!SessionHandler.validSession(sessionToken)) {
                 logger.error("401 ERROR - invalid session token provided");
                 halt(401, "invalid session token");
             }
-            VarHandler.variables = VarHandler.variableMap.get(sessionToken);
+            SessionHandler.setSession(sessionToken);
 
             JsonNode body;
             try {
@@ -124,8 +124,6 @@ public class MatrixScape {
     }
 
     public static void runCommands() {
-        VarHandler.variables = new TreeMap<>();
-
         Scanner scanner = new Scanner(System.in);
 
         boolean end = true;

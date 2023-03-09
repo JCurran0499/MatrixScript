@@ -58,7 +58,7 @@ export const Input = (props) => {
     return (
         <div>
             <p>{">> "}</p>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} autoComplete="off" spellCheck="false">
                 <input
                     id="commandInput"
                     type="input"

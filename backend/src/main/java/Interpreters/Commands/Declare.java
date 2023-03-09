@@ -3,7 +3,7 @@ package Interpreters.Commands;
 import Interpreters.Interpreter;
 import Interpreters.Primitive;
 import Interpreters.Primitives.Err;
-import Interpreters.Variables.VarHandler;
+import Interpreters.Variables.SessionHandler;
 
 import java.util.Arrays;
 import java.util.List;
@@ -49,7 +49,7 @@ public class Declare implements Interpreter {
 
     /* Logic Methods */
     public static void addVariable(String varName, Primitive value) {
-        VarHandler.setVar(varName, value);
+        SessionHandler.setVar(varName, value);
     }
 
     private static boolean isValidVariable(String name) {
