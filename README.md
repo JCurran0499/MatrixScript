@@ -1,7 +1,7 @@
-## MatrixScape
-#### MatrixScape is a simple and straightforward interpreted command language for calculating linear algebra problems
+## MatrixScript
+#### MatrixScript is a simple and straightforward interpreted command language for calculating linear algebra problems
 
-There are two versions of MatrixScape. One is written in [Java](https://github.com/JCurran0499/MatrixScape/tree/master/backend/Java/MatrixScape) and serves as an API. The other is in Python (coming soon) and will serve as a Lambda function behind an AWS API Gateway.
+There are two versions of MatrixScript. One is written in [Java](https://github.com/JCurran0499/MatrixScript/tree/master/backend) and serves as an API. The other is in Python (coming soon) and will serve as a Lambda function behind an AWS API Gateway.
 
 ### Download and Installation
 
@@ -24,12 +24,12 @@ git --version
 
 #### Download Project Repo
 ```
-git clone https://github.com/JCurran0499/MatrixScape.git
+git clone https://github.com/JCurran0499/MatrixScript.git
 ```
 
 #### Give .sh Permissions and Install Java
 ```
-cd MatrixScape
+cd MatrixScript
 chmod u+x backend/start.sh
 chmod u+x install_backend.sh
 ./install_backend.sh
@@ -51,7 +51,7 @@ cd backend
 ./start.sh
 ```
 
-From here, the MatrixScape API can be accessed on port 4567, at `<server_domain_or_ip>:4567`.
+From here, the MatrixScript API can be accessed on port 4567, at `<server_domain_or_ip>:4567`.
 <br/>
 <br/>
 ### Frontend Setup
@@ -63,12 +63,12 @@ git --version
 
 #### Download Project Repo
 ```
-git clone https://github.com/JCurran0499/MatrixScape.git
+git clone https://github.com/JCurran0499/MatrixScript.git
 ```
 
 #### Give .sh Permissions and Install Node
 ```
-cd MatrixScape
+cd MatrixScript
 chmod u+x install_frontend.sh
 ./install_frontend.sh
 ```
@@ -90,4 +90,4 @@ cd frontend
 sudo npm start
 ```
 
-From here, the MatrixScape UI can be accessed on your standard HTTP port, at `<server_domain_or_ip>`.
+From here, the MatrixScript UI can be accessed on your standard HTTP port, at `<server_domain_or_ip>`.
