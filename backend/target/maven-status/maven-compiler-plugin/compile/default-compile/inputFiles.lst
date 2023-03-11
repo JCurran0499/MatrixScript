@@ -9,6 +9,7 @@ C:\Users\jackc\OneDrive\Personal Files\Projects\Software\MatrixScape\backend\src
 C:\Users\jackc\OneDrive\Personal Files\Projects\Software\MatrixScape\backend\src\main\java\Interpreters\Variables\Var.java
 C:\Users\jackc\OneDrive\Personal Files\Projects\Software\MatrixScape\backend\src\main\java\Interpreters\Primitives\Err.java
 C:\Users\jackc\OneDrive\Personal Files\Projects\Software\MatrixScape\backend\src\main\java\Interpreters\Comparisons\LTEqual.java
+C:\Users\jackc\OneDrive\Personal Files\Projects\Software\MatrixScape\backend\src\main\java\Program\MatrixScript.java
 C:\Users\jackc\OneDrive\Personal Files\Projects\Software\MatrixScape\backend\src\main\java\Interpreters\Arithmetic\Mult.java
 C:\Users\jackc\OneDrive\Personal Files\Projects\Software\MatrixScape\backend\src\main\java\Interpreters\Arithmetic\Div.java
 C:\Users\jackc\OneDrive\Personal Files\Projects\Software\MatrixScape\backend\src\main\java\Interpreters\Comparisons\Equal.java
@@ -22,7 +23,6 @@ C:\Users\jackc\OneDrive\Personal Files\Projects\Software\MatrixScape\backend\src
 C:\Users\jackc\OneDrive\Personal Files\Projects\Software\MatrixScape\backend\src\main\java\Interpreters\Commands\Get.java
 C:\Users\jackc\OneDrive\Personal Files\Projects\Software\MatrixScape\backend\src\main\java\Interpreters\Primitives\Num.java
 C:\Users\jackc\OneDrive\Personal Files\Projects\Software\MatrixScape\backend\src\main\java\Interpreters\Comparisons\GTEqual.java
-C:\Users\jackc\OneDrive\Personal Files\Projects\Software\MatrixScape\backend\src\main\java\Program\MatrixScape.java
 C:\Users\jackc\OneDrive\Personal Files\Projects\Software\MatrixScape\backend\src\main\java\Interpreters\Arithmetic\Fact.java
 C:\Users\jackc\OneDrive\Personal Files\Projects\Software\MatrixScape\backend\src\main\java\Interpreters\Arithmetic\Pow.java
 C:\Users\jackc\OneDrive\Personal Files\Projects\Software\MatrixScape\backend\src\main\java\Interpreters\Comparisons\Less.java

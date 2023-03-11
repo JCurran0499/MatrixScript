@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.example</groupId>
-    <artifactId>MatrixScape</artifactId>
+    <artifactId>MatrixScript</artifactId>
     <version>1.0</version>
 
     <properties>
@@ -25,7 +25,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>Program.MatrixScape</mainClass>
+                            <mainClass>Program.MatrixScript</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
