@@ -1,7 +1,7 @@
 ## MatrixScript
 #### MatrixScript is a simple and straightforward interpreted command language for calculating linear algebra problems
 
-There are two versions of MatrixScript. One is written in [Java](https://github.com/JCurran0499/MatrixScript/tree/master/backend/Java/MatrixScript) and serves as an API. The other is in Python (coming soon) and will serve as a Lambda function behind an AWS API Gateway.
+There are two versions of MatrixScript. One is written in [Java](https://github.com/JCurran0499/MatrixScript/tree/master/backend) and serves as an API. The other is in Python (coming soon) and will serve as a Lambda function behind an AWS API Gateway.
 
 ### Download and Installation
 
