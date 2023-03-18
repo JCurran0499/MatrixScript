@@ -12,7 +12,7 @@ export const Box = (props) => {
     }
 
     const updateScroll = () => {
-        const box = document.getElementById("outputbox");
+        const box = document.getElementById("box");
         box.scrollTop = box.scrollHeight;
     }
 
@@ -65,7 +65,7 @@ export const Box = (props) => {
 
     return (
         <div>
-            <div id="outputbox" onClick={focusInput}>
+            <div id="box" onClick={focusInput}>
                 {history}
                 <Input
                     id="input"

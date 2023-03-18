@@ -34,6 +34,8 @@ public class MatrixScript {
         Logger logger = LoggerFactory.getLogger(MatrixScript.class);
         ObjectMapper mapper = new ObjectMapper();
 
+        SessionHandler.initiateSessionManager();
+
         port(4567);
 
         options("/*", (req, res) -> {
@@ -58,26 +60,17 @@ public class MatrixScript {
                 halt(500, "error generating token");
             }
 
-            logger.info("new token generated: ~" + sessionToken + "~");
-            logger.info(SessionHandler.sessionCount() + " open session" +
-                    (SessionHandler.sessionCount() != 1 ? "s" : ""));
-
             return mapper.readTree(String.format("{\"sessionToken\": \"%s\"}", sessionToken));
         });
 
         delete("/token/:token", (req, res) -> {
             setCORSHeaders(res, dotenv.get("FRONTEND"));
 
-            String sessionToken = req.params(":token");
-            int success = SessionHandler.invalidateSession(sessionToken);
+            int success = SessionHandler.invalidateSession(req.params(":token"));
             if (success == -1) {
                 logger.error("404 ERROR - tried to delete invalid token");
                 halt(404, "invalid session token");
             }
-
-            logger.info("token ~" + sessionToken + "~ deleted");
-            logger.info(SessionHandler.sessionCount() + " open session" +
-                    (SessionHandler.sessionCount() != 1 ? "s" : ""));
 
             return "OK";
         });
@@ -88,11 +81,9 @@ public class MatrixScript {
 
             String sessionToken = req.queryParams("token");
             if (sessionToken == null) {
-                logger.info("no session token provided - using session id instead");
-                sessionToken = req.session().id();
-                SessionHandler.createSession(sessionToken);
+                logger.error("401 ERROR - no session token provided");
+                halt(401, "no session token");
             }
-
             if (!SessionHandler.validSession(sessionToken)) {
                 logger.error("401 ERROR - invalid session token provided");
                 halt(401, "invalid session token");

@@ -30,7 +30,7 @@ export const Input = (props) => {
         .then(() => toggleTriggerCommand(true))
         .catch((err) => {
             toggleDisabled(true)
-            alert("There was a system error, please refresh your page")
+            alert("Your session has expired. Please refresh your page to generate a new session")
         })
     }
 
@@ -56,7 +56,7 @@ export const Input = (props) => {
 
 
     return (
-        <div>
+        <div id="input">
             <p>{">> "}</p>
             <form onSubmit={handleSubmit} autoComplete="off" spellCheck="false">
                 <input

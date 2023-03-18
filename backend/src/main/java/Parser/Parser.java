@@ -19,8 +19,6 @@ import Interpreters.Primitives.*;
 import Interpreters.Variables.Var;
 import Matrix.Matrix;
 
-import spark.Request;
-
 public class Parser {
     public static Interpreter parse(String command) {
         if (command.isEmpty())

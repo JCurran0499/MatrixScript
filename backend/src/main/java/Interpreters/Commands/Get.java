@@ -31,16 +31,8 @@ public class Get implements Interpreter {
 
         }
 
-        if (p2.id().equals("tuple")) {
-            if (p1.id().equals("num"))
-                return ((Tuple) p2).get((Num) p1);
-
-            if (p1.id().equals("range"))
-                return ((Tuple) p2).get((Range) p1);
-
-            if (p1.id().equals("tuple"))
-                return ((Tuple) p2).get((Tuple) p1);
-        }
+        if (p2.id().equals("tuple"))
+            return ((Tuple) p2).get(p1);
 
         return new Err("invalid 'get' command");
     }

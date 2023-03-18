@@ -2,6 +2,8 @@ import './Title.css'
 
 export const Title = () => {
     return (
-        <h1>MatrixScript</h1>
+        <div id="title">
+            <h1>MatrixScript</h1>
+        </div>
     )
 }

@@ -71,7 +71,21 @@ public class Tuple extends Primitive {
         return new Tuple(newPList);
     }
 
-    public Primitive get(Num index) {
+    public Primitive get(Primitive index) {
+        if (index.id().equals("num"))
+            return get((Num) index);
+
+        else if (index.id().equals("range"))
+            return get((Range) index);
+
+        else if (index.id().equals("tuple"))
+            return get((Tuple) index);
+
+        else
+            return new Err("invalid 'get' command on tuple");
+    }
+
+    private Primitive get(Num index) {
         if (!index.isInteger())
             return new Err("index must be integer");
 
@@ -83,7 +97,7 @@ public class Tuple extends Primitive {
 
     }
 
-    public Primitive get(Range range) {
+    private Primitive get(Range range) {
         List<Interpreter> newTuple = new ArrayList<>();
 
         for (int i : range.fullRange()) {
@@ -96,7 +110,7 @@ public class Tuple extends Primitive {
         return new Tuple(newTuple);
     }
 
-    public Primitive get(Tuple tuple) {
+    private Primitive get(Tuple tuple) {
         List<Interpreter> newTuple = new ArrayList<>();
 
         for (Primitive p : tuple.pList) {
