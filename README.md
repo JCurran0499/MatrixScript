@@ -16,7 +16,6 @@ To check that your OS matches this distribution, run `yum --version` and verify 
 If not, then you must install Git and Java in a way that matches your OS. Once this is done, the project will run on your OS perfectly fine. 
 
 <br/>
-<br/>
 
 ### Backend Setup
 #### Download Git
