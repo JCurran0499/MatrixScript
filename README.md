@@ -26,15 +26,15 @@ git --version
 
 #### Download Project Repo
 ```
-git clone https://github.com/JCurran0499/MatrixScript.git
+git clone https://github.com/JCurran0499/MatrixScript-Backend.git
 ```
 
 #### Give .sh Permissions and Install Java
 ```
-cd MatrixScript
-chmod u+x backend/start.sh
-chmod u+x install_backend.sh
-./install_backend.sh
+cd MatrixScript-Backend
+chmod u+x start.sh
+chmod u+x install.sh
+./install.sh
 ```
 
 #### Check Version
@@ -43,13 +43,12 @@ java --version
 ```
 
 #### Allow Frontend CORS Permissions
-Use `cd backend` to enter the backend directory. From here, edit the **.env** file, and fill in your front server's IP address or domain in the `FRONTEND` value. This way, your web app backend will be able send CORS permissions to your frontend.
+Edit the **.env** file, and fill in your frontend server's IP address or domain in the `FRONTEND` value. This way, your web app backend will be able send CORS permissions to your frontend.
 <br/>
 <br/>
 
 #### Run the Program
 ```
-cd backend
 ./start.sh
 ```
 
