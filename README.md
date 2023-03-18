@@ -14,7 +14,6 @@ The backend will be accessed exclusively by the frontend on port 4567. Configure
 The download tools provided to you in this repository are based on the Red Hat Linux OS distributions popular with basic AWS EC2 instances, including AWS Linux, CentOS, and Fedora. For other servers and virtual machines, the commands may be slightly different. <br/> <br/>
 To check that your OS matches this distribution, run `yum --version` and verify that your OS recognizes the YUM package installer. <br/>
 If not, then you must install Git and Java in a way that matches your OS. Once this is done, the project will run on your OS perfectly fine. 
-
 <br/>
 
 ### Backend Setup
