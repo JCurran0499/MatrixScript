@@ -88,7 +88,6 @@ public class MatrixScript {
                 logger.error("401 ERROR - invalid session token provided");
                 halt(401, "invalid session token");
             }
-            SessionHandler.setSession(sessionToken);
 
             JsonNode body;
             try {
@@ -100,7 +99,7 @@ public class MatrixScript {
             }
 
             String command = body.asText();
-            Primitive result = execute(command);
+            Primitive result = execute(sessionToken, command);
 
             String response;
             if (result.id().equals("mat") && result.printValue) {
@@ -121,6 +120,7 @@ public class MatrixScript {
     }
 
     public static void runCommands() {
+        SessionHandler.createSession("console_session_token");
         Scanner scanner = new Scanner(System.in);
 
         boolean end = true;
@@ -132,7 +132,7 @@ public class MatrixScript {
                 end = false;
             else {
 
-                Primitive result = execute(command);
+                Primitive result = execute("console_session_token", command);
                 if (!result.id().equals("null") && result.printValue)
                     System.out.println(result.string() + "\n");
                 else
@@ -143,7 +143,7 @@ public class MatrixScript {
         System.out.println();
     }
 
-    private static Primitive execute(String command) {
+    private static Primitive execute(String sessionToken, String command) {
         if (command.contains("//"))
             command = command.substring(0, command.indexOf("//")).stripTrailing();
 
@@ -151,7 +151,7 @@ public class MatrixScript {
             return Null.returnNull();
         }
 
-        return Parser.parse(command).solve();
+        return Parser.parse(sessionToken, command).solve();
     }
 
     private static void setCORSHeaders(Response res, String frontend) {

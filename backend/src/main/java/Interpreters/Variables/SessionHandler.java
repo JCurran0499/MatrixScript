@@ -21,7 +21,6 @@ public class SessionHandler {
 
     private static final Map<String, LocalDateTime> sessionExpirations = new LinkedHashMap<>(); //Sessions are expired in their order of insertion
     private static final Map<String, Map<String, Primitive>> sessionMap = new HashMap<>();
-    private static Map<String, Primitive> variables = new HashMap<>();
 
     private static Logger logger = LoggerFactory.getLogger(MatrixScript.class);
 
@@ -62,26 +61,22 @@ public class SessionHandler {
         return sessionMap.containsKey(sessionToken);
     }
 
-    public static void setSession(String sessionToken) {
-        variables = sessionMap.get(sessionToken);
-    }
-
     public static int sessionCount() {
         return sessionMap.size();
     }
 
     /* ---------- Variable Methods ---------- */
 
-    public static boolean varExists(String var) {
-        return variables.containsKey(var);
+    public static boolean varExists(String sessionToken, String var) {
+        return sessionMap.get(sessionToken).containsKey(var);
     }
 
-    public static Primitive getVar(String var) {
-        return variables.get(var);
+    public static Primitive getVar(String sessionToken, String var) {
+        return sessionMap.get(sessionToken).get(var);
     }
 
-    public static void setVar(String varName, Primitive val) {
-        variables.put(varName, val);
+    public static void setVar(String sessionToken, String varName, Primitive val) {
+        sessionMap.get(sessionToken).put(varName, val);
     }
 
     /* ---------- Session Manager Thread ---------- */

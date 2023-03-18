@@ -15,11 +15,13 @@ public class Declare implements Interpreter {
             Arrays.asList("true", "false", "get", "set", "from", "to", "rref", "det", "row", "col", "size",
                     "identity", "zerovector", "transpose", "append", "inverse", "rank");
 
+    private final String token;
     private final String varName;
     private final Interpreter expression;
 
 
-    public Declare(String v, Interpreter e) {
+    public Declare(String t, String v, Interpreter e) {
+        token = t;
         varName = v;
         expression = e;
     }
@@ -39,7 +41,7 @@ public class Declare implements Interpreter {
 
         p.printValue = false;
 
-        Declare.addVariable(varName, p);
+        addVariable(varName, p);
         return p;
     }
 
@@ -48,8 +50,8 @@ public class Declare implements Interpreter {
     }
 
     /* Logic Methods */
-    public static void addVariable(String varName, Primitive value) {
-        SessionHandler.setVar(varName, value);
+    public void addVariable(String varName, Primitive value) {
+        SessionHandler.setVar(token, varName, value);
     }
 
     private static boolean isValidVariable(String name) {

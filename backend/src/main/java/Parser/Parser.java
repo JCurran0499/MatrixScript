@@ -19,12 +19,14 @@ import Interpreters.Primitives.*;
 import Interpreters.Variables.Var;
 import Matrix.Matrix;
 
+import Program.Payload;
+
 public class Parser {
-    public static Interpreter parse(String command) {
+    public static Interpreter parse(String sessionToken, String command) {
         if (command.isEmpty())
             return Null.returnNull();
 
-        return parseTokens(tokenize(command));
+        return parseTokens(sessionToken, tokenize(command));
     }
 
     private static ArrayList<Token> tokenize(String command) {
@@ -125,7 +127,7 @@ public class Parser {
         return tokenList;
     }
 
-    private static Interpreter parseTokens(List<Token> tokens) {
+    private static Interpreter parseTokens(String sessionToken, List<Token> tokens) {
         int index;
 
         // ---------- PRIMITIVES ---------- \\
@@ -140,11 +142,11 @@ public class Parser {
             else if (t.type() == TokenType.BOOL)
                 return new Bool(t.value().strip().equals("true"));
             else if (t.type() == TokenType.MAT)
-                return parseMatrixTokens(t.value());
+                return parseMatrixTokens(sessionToken, t.value());
             else if (t.type() == TokenType.PAREN)
-                return parseTokens(tokenize(t.value()));
+                return parseTokens(sessionToken, tokenize(t.value()));
             else if (t.type() == TokenType.VAR)
-                return new Var(t.value());
+                return new Var(sessionToken, t.value());
             else if (t.type() == TokenType.ERR)
                 return new Err(t.value());
         }
@@ -156,15 +158,17 @@ public class Parser {
             if (index != 1)
                 return new Err("invalid variable declaration");
 
-            return new Declare(tokens.get(0).value(), parseTokens(tokens.subList(2, tokens.size())));
+            return new Declare(sessionToken, tokens.get(0).value(),
+                    parseTokens(sessionToken, tokens.subList(2, tokens.size())));
         }
 
         index = findLastToken(tokens, TokenType.FROM);
         if (tokens.get(0).type() == TokenType.GET && index > 0)
-            return new Get(parseTokens(tokens.subList(1, index)), parseTokens(tokens.subList(index + 1, tokens.size())));
+            return new Get(parseTokens(sessionToken, tokens.subList(1, index)),
+                    parseTokens(sessionToken, tokens.subList(index + 1, tokens.size())));
 
         if (tokens.get(0).type() == TokenType.DIM)
-            return new Dim(parseTokens(tokens.subList(1, tokens.size())));
+            return new Dim(parseTokens(sessionToken, tokens.subList(1, tokens.size())));
 
         // ---------- TUPLES ---------- \\
 
@@ -174,12 +178,12 @@ public class Parser {
             int prevIndex = -1;
 
             while (index > -1) {
-                tupleValues.add(parseTokens(tokens.subList(prevIndex + 1, index)));
+                tupleValues.add(parseTokens(sessionToken, tokens.subList(prevIndex + 1, index)));
 
                 prevIndex = index;
                 index = findFirstToken(tokens, TokenType.COMMA, index + 1);
             }
-            tupleValues.add(parseTokens(tokens.subList(prevIndex + 1, tokens.size())));
+            tupleValues.add(parseTokens(sessionToken, tokens.subList(prevIndex + 1, tokens.size())));
 
             return new Tuple(tupleValues);
         }
@@ -188,58 +192,69 @@ public class Parser {
 
         index = findFirstToken(tokens, TokenType.EQUAL, 0);
         if (index > -1)
-            return new Equal(parseTokens(tokens.subList(0, index)), parseTokens(tokens.subList(index + 1, tokens.size())));
+            return new Equal(parseTokens(sessionToken, tokens.subList(0, index)),
+                    parseTokens(sessionToken, tokens.subList(index + 1, tokens.size())));
 
         index = findFirstToken(tokens, TokenType.GREAT, 0);
         if (index > -1)
-            return new Great(parseTokens(tokens.subList(0, index)), parseTokens(tokens.subList(index + 1, tokens.size())));
+            return new Great(parseTokens(sessionToken, tokens.subList(0, index)),
+                    parseTokens(sessionToken, tokens.subList(index + 1, tokens.size())));
 
         index = findFirstToken(tokens, TokenType.LESS, 0);
         if (index > -1)
-            return new Less(parseTokens(tokens.subList(0, index)), parseTokens(tokens.subList(index + 1, tokens.size())));
+            return new Less(parseTokens(sessionToken, tokens.subList(0, index)),
+                    parseTokens(sessionToken, tokens.subList(index + 1, tokens.size())));
 
         index = findFirstToken(tokens, TokenType.GTEQUAL, 0);
         if (index > -1)
-            return new GTEqual(parseTokens(tokens.subList(0, index)), parseTokens(tokens.subList(index + 1, tokens.size())));
+            return new GTEqual(parseTokens(sessionToken, tokens.subList(0, index)),
+                    parseTokens(sessionToken, tokens.subList(index + 1, tokens.size())));
 
         index = findFirstToken(tokens, TokenType.LTEQUAL, 0);
         if (index > -1)
-            return new LTEqual(parseTokens(tokens.subList(0, index)), parseTokens(tokens.subList(index + 1, tokens.size())));
+            return new LTEqual(parseTokens(sessionToken, tokens.subList(0, index)),
+                    parseTokens(sessionToken, tokens.subList(index + 1, tokens.size())));
 
         // ---------- ARITHMETIC ---------- \\
 
         index = findLastToken(tokens, TokenType.ADD);
         if (index > -1)
-            return new Add(parseTokens(tokens.subList(0, index)), parseTokens(tokens.subList(index + 1, tokens.size())));
+            return new Add(parseTokens(sessionToken, tokens.subList(0, index)),
+                    parseTokens(sessionToken, tokens.subList(index + 1, tokens.size())));
 
         index = findLastToken(tokens, TokenType.SUB);
         if (index > -1)
-            return new Sub(parseTokens(tokens.subList(0, index)), parseTokens(tokens.subList(index + 1, tokens.size())));
+            return new Sub(parseTokens(sessionToken, tokens.subList(0, index)),
+                    parseTokens(sessionToken, tokens.subList(index + 1, tokens.size())));
 
         index = findLastToken(tokens, TokenType.MULT);
         if (index > -1)
-            return new Mult(parseTokens(tokens.subList(0, index)), parseTokens(tokens.subList(index + 1, tokens.size())));
+            return new Mult(parseTokens(sessionToken, tokens.subList(0, index)),
+                    parseTokens(sessionToken, tokens.subList(index + 1, tokens.size())));
 
         index = findLastToken(tokens, TokenType.DIV);
         if (index > -1)
-            return new Div(parseTokens(tokens.subList(0, index)), parseTokens(tokens.subList(index + 1, tokens.size())));
+            return new Div(parseTokens(sessionToken, tokens.subList(0, index)),
+                    parseTokens(sessionToken, tokens.subList(index + 1, tokens.size())));
 
         index = findFirstToken(tokens, TokenType.MERGE, 0);
         if (index > -1)
-            return new Merge(parseTokens(tokens.subList(0, index)), parseTokens(tokens.subList(index + 1, tokens.size())));
+            return new Merge(parseTokens(sessionToken, tokens.subList(0, index)),
+                    parseTokens(sessionToken, tokens.subList(index + 1, tokens.size())));
 
         index = findFirstToken(tokens, TokenType.POW, 0);
         if (index > -1)
-            return new Pow(parseTokens(tokens.subList(0, index)), parseTokens(tokens.subList(index + 1, tokens.size())));
+            return new Pow(parseTokens(sessionToken, tokens.subList(0, index)),
+                    parseTokens(sessionToken, tokens.subList(index + 1, tokens.size())));
 
         if (tokens.get(tokens.size() - 1).type() == TokenType.FACT)
-            return new Fact(parseTokens(tokens.subList(0, tokens.size() -1)));
+            return new Fact(parseTokens(sessionToken, tokens.subList(0, tokens.size() -1)));
 
         if (tokens.get(0).type() == TokenType.NEG)
-            return new Neg(parseTokens(tokens.subList(1, tokens.size())));
+            return new Neg(parseTokens(sessionToken, tokens.subList(1, tokens.size())));
 
         if (tokens.get(0).type() == TokenType.NOT)
-            return new Not(parseTokens(tokens.subList(1, tokens.size())));
+            return new Not(parseTokens(sessionToken, tokens.subList(1, tokens.size())));
 
         // ---------- ERROR ---------- \\
 
@@ -276,7 +291,7 @@ public class Parser {
         return commandParts;
     }
 
-    private static Primitive parseMatrixTokens(String m) {
+    private static Primitive parseMatrixTokens(String sessionToken, String m) {
         List<List<BigDecimal>> matrixList = new ArrayList<>();
 
         // break into rows
@@ -288,7 +303,7 @@ public class Parser {
             // break into individual items in the row
             List<String> rowItems = spaceSplit(s);
             for (String item : rowItems) {
-                Primitive itemValue = parseTokens(tokenize(item)).solve();
+                Primitive itemValue = parseTokens(sessionToken, tokenize(item)).solve();
 
                 // add each item to the matrix
                 if (itemValue.id().equals("num")) {
