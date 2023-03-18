@@ -19,8 +19,6 @@ import Interpreters.Primitives.*;
 import Interpreters.Variables.Var;
 import Matrix.Matrix;
 
-import Program.Payload;
-
 public class Parser {
     public static Interpreter parse(String sessionToken, String command) {
         if (command.isEmpty())
