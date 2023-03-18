@@ -19,7 +19,6 @@ Interpreters\Arithmetic\Mult.class
 Interpreters\Arithmetic\Div.class
 Interpreters\Commands\Dim.class
 Program\MatrixScript.class
-Program\Payload.class
 Interpreters\Variables\SessionHandler$1.class
 Interpreters\Primitives\Range.class
 Interpreters\Comparisons\Not.class
