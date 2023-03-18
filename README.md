@@ -15,6 +15,7 @@ The download tools provided to you in this repository are based on the Red Hat L
 To check that your OS matches this distribution, run `yum --version` and verify that your OS recognizes the YUM package installer. <br/>
 If not, then you must install Git and Java in a way that matches your OS. Once this is done, the project will run on your OS perfectly fine. 
 <br/>
+<br/>
 
 ### Backend Setup
 #### Download Git
