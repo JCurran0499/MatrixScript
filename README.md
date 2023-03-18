@@ -1,7 +1,7 @@
 ## MatrixScript
 #### MatrixScript is a simple and straightforward interpreted command language for calculating linear algebra problems
 
-There are two versions of MatrixScript. One is written in [Java](https://github.com/JCurran0499/MatrixScript/tree/master/backend) and serves as an API. The other is in Python (coming soon) and will serve as a Lambda function behind an AWS API Gateway.
+There are two versions of MatrixScript. One is written in Java (here) and serves as an API. The other is in Python (coming soon) and will serve as a Lambda function behind an AWS API Gateway.
 
 ### Download and Installation
 
@@ -11,8 +11,9 @@ If not, then you must install Git and Java in a way that matches your OS. Once t
 
 ### Frontend and Backend Servers
 
-This project is designed to be run on two different servers, a frontend and backend. Below are instructions for setting up and running both of these servers. In many cases, especially your local device, it is acceptable to run both on the same host. However, it is best practice to set up independent public servers (ex: virtual machines) for this purpose. <br/> <br/>
-The frontend will be accessed by users through the internet on HTTP port 80, and the backend will be accessed exclusively by the frontend on port 4567. Configure your Security Groups as such.
+This project is designed to be run on two different servers, a frontend and backend. This repository represents the backend, and below are instructions for setting up and running the backend server. The frontend can be found [here](https://github.com/JCurran0499/MatrixScript-Frontend)<br/>
+In many cases, especially your local device, it is acceptable to run both on the same host. However, it is best practice to set up independent public servers (ex: virtual machines) for this purpose. <br/> <br/>
+The backend will be accessed exclusively by the frontend on port 4567. Configure your Security Group as such.
 <br/>
 <br/>
 ### Backend Setup
@@ -52,42 +53,3 @@ cd backend
 ```
 
 From here, the MatrixScript API can be accessed on port 4567, at `<server_domain_or_ip>:4567`.
-<br/>
-<br/>
-### Frontend Setup
-#### Download Git
-```
-sudo yum install git
-git --version
-```
-
-#### Download Project Repo
-```
-git clone https://github.com/JCurran0499/MatrixScript.git
-```
-
-#### Give .sh Permissions and Install Node
-```
-cd MatrixScript
-chmod u+x install_frontend.sh
-./install_frontend.sh
-```
-
-#### Check Versions
-```
-node --version
-npm --version
-```
-
-#### Integrate Backend
-Use `cd frontend` to enter the frontend directory. From here, edit the **.env** file, and fill in your backend server's IP address or domain in the `REACT_APP_BACKEND` value. This way, your web app frontend will be able to communicate with your backend.
-<br/>
-<br/>
-
-#### Run the Program
-```
-cd frontend
-sudo npm start
-```
-
-From here, the MatrixScript UI can be accessed on your standard HTTP port, at `<server_domain_or_ip>`.
