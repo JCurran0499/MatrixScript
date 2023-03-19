@@ -30,7 +30,7 @@ public class MatrixScript {
     }
 
     public static void runAPI() {
-        Dotenv dotenv = Dotenv.load();
+        Dotenv env = Dotenv.load();
         Logger logger = LoggerFactory.getLogger(MatrixScript.class);
         ObjectMapper mapper = new ObjectMapper();
 
@@ -39,18 +39,18 @@ public class MatrixScript {
         port(4567);
 
         options("/*", (req, res) -> {
-            setCORSHeaders(res, dotenv.get("FRONTEND"));
+            setCORSHeaders(res, env);
             return "OK";
         });
 
         get("/health", (req, res) -> {
-            setCORSHeaders(res, dotenv.get("FRONTEND"));
+            setCORSHeaders(res, env);
             logger.info("Health confirmed: " + req.queryParams("message"));
             return "OK";
         });
 
         get("/token", (req, res) -> {
-            setCORSHeaders(res, dotenv.get("FRONTEND"));
+            setCORSHeaders(res, env);
             res.header("Content-Type", "application/json");
 
             String sessionToken = UUID.randomUUID().toString();
@@ -64,7 +64,7 @@ public class MatrixScript {
         });
 
         delete("/token/:token", (req, res) -> {
-            setCORSHeaders(res, dotenv.get("FRONTEND"));
+            setCORSHeaders(res, env);
 
             int success = SessionHandler.invalidateSession(req.params(":token"));
             if (success == -1) {
@@ -76,7 +76,7 @@ public class MatrixScript {
         });
 
         post("/", (req, res) -> {
-            setCORSHeaders(res, dotenv.get("FRONTEND"));
+            setCORSHeaders(res, env);
             res.header("Content-Type", "application/json");
 
             String sessionToken = req.queryParams("token");
@@ -154,9 +154,9 @@ public class MatrixScript {
         return Parser.parse(sessionToken, command).solve();
     }
 
-    private static void setCORSHeaders(Response res, String frontend) {
+    private static void setCORSHeaders(Response res, Dotenv env) {
         res.header("Access-Control-Allow-Methods", "POST,GET,DELETE");
-        res.header("Access-Control-Allow-Origin", "http://" + frontend); //dotenv.get("FRONTEND"));
+        res.header("Access-Control-Allow-Origin", "http://" + env.get("FRONTEND") + ":" + env.get("PORT")); //dotenv.get("FRONTEND"));
         res.header("Access-Control-Allow-Credentials", "true");
         res.header("Access-Control-Allow-Headers", "content-type");
     }
