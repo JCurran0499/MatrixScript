@@ -43,7 +43,7 @@ java --version
 ```
 
 #### Allow Frontend CORS Permissions
-Edit the **.env** file, and fill in your frontend server's IP address or domain in the `FRONTEND` value. This way, your web app backend will be able send CORS permissions to your frontend.
+Edit the **.env** file, and fill in your frontend server's IP address or domain in the `FRONTEND` value. In addition, fill in the port your frontend server is using for the web app in the `PORT` value. By default, this is port 8080. This way, your web app backend will be able send CORS permissions to your frontend.
 <br/>
 <br/>
 
