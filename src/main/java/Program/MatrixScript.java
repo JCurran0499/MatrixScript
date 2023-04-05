@@ -107,6 +107,10 @@ public class MatrixScript {
                 response = String.format("{\"response\": {\"matrix\": \"%s\"}}", matString);
                 return mapper.readTree(response);
             }
+            else if (result.id().equals("err") && result.printValue) {
+                response = String.format("{\"response\": {\"error\": \"%s\"}}", result.string());
+                return mapper.readTree(response);
+            }
             else if (result.printValue) {
                 response = String.format("{\"response\": \"%s\"}", result.string());
                 return mapper.readTree(response);
@@ -155,8 +159,12 @@ public class MatrixScript {
     }
 
     private static void setCORSHeaders(Response res, Dotenv env) {
+        String protocol = Boolean.valueOf(env.get("SECURE")) ? "https://" : "http://";
+        String domain = env.get("FRONTEND");
+        String port = (env.get("PORT").equals("80") || env.get("PORT").equals("443")) ? "" : ":" + env.get("PORT");
+
         res.header("Access-Control-Allow-Methods", "POST,GET,DELETE");
-        res.header("Access-Control-Allow-Origin", "http://" + env.get("FRONTEND") + ":" + env.get("PORT")); //dotenv.get("FRONTEND"));
+        res.header("Access-Control-Allow-Origin", (protocol + domain + port));
         res.header("Access-Control-Allow-Credentials", "true");
         res.header("Access-Control-Allow-Headers", "content-type");
     }
