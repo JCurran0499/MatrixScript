@@ -111,7 +111,7 @@ public class MatrixScript {
                 return mapper.readTree(response);
             }
             else if (result.printValue) {
-                response = String.format("{\"response\": \"%s\"}", result.string());
+                response = String.format("{\"response\": \"%s\"}", "hello world!");
                 return mapper.readTree(response);
             }
             else {
