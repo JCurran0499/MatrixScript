@@ -4,7 +4,5 @@ files:
   - source: /
     destination: /home/ec2-user/MatrixScript
 hooks:
-  BeforeInstall:
-    - location: install.sh
   ApplicationStart:
     - location: start.sh
