@@ -3,6 +3,3 @@ os: linux
 files:
   - source: /
     destination: /home/ec2-user/MatrixScript
-hooks:
-  ApplicationStart:
-    - location: start.sh
