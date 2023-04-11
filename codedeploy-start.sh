@@ -1,3 +1,3 @@
 #!/bin/bash
 
-./home/ec2-users/MatrixScript/start.sh
+./home/ec2-user/MatrixScript/start.sh
