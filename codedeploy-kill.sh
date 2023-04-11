@@ -1,4 +1,7 @@
 #!/bin/bash
 
 cd /home/ec2-user/MatrixScript
-kill -9 $(<pid.txt)
+if [ ps -p $(<pid.txt) ]
+then
+   kill $(<pid.txt)
+fi
