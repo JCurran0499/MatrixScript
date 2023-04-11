@@ -10,6 +10,4 @@ files:
 hooks:
   BeforeInstall:
     - location: install.sh
-  ApplicationStart:
-    - location: start.sh
 
