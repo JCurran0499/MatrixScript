@@ -45,7 +45,6 @@ public class MatrixScript {
 
         get("/health", (req, res) -> {
             setCORSHeaders(res, env);
-            logger.info("Health confirmed: " + req.queryParams("message"));
             return "OK";
         });
 

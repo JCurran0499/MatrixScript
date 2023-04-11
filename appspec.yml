@@ -1,0 +1,15 @@
+version: 0.0
+os: linux
+files:
+  - source: target/MatrixScript-1.0-jar-with-dependencies.jar
+    destination: /home/ec2-user
+  - source: install.sh
+    destination: /home/ec2-user
+  - source: start.sh
+    destination: /home/ec2-user
+hooks:
+  BeforeInstall:
+    - location: install.sh
+  ApplicationStart:
+    - location: start.sh
+
