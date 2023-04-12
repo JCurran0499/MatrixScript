@@ -42,8 +42,8 @@ chmod u+x install.sh
 java --version
 ```
 
-#### Allow Frontend CORS Permissions
-Edit the **.env** file, and fill in your frontend server's IP address or domain in the `FRONTEND` value. In addition, fill in the port your frontend server is using for the web app in the `PORT` value. By default, this is port 8080. This way, your web app backend will be able send CORS permissions to your frontend.
+#### Frontend CORS Permissions
+If desired, edit the **.env** file, and fill in your frontend server's IP address or domain in the `FRONTEND` value. This way, your web app backend will be able send CORS permissions to your frontend. By default, this value is set to * and therefore allows all domains to access the backend. This step is optional, and is only used for security purposes to restrict backend access to your frontend domain alone.
 <br/>
 <br/>
 
