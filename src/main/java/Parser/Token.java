@@ -1,5 +1,7 @@
 package Parser;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -26,6 +28,10 @@ public class Token {
             {TokenType.NUM, Pattern.compile("(\\d+\\.\\d+|\\.\\d+|\\d+\\.|\\d+)")},
             {TokenType.BOOL, Pattern.compile("(true)\\s|(false)\\s|(true)$|(false)$")}
     }).collect(Collectors.toMap(t -> (TokenType)t[0], t -> (Pattern)t[1]));
+
+    public static final List<TokenType> subtractables = Arrays.asList(
+            TokenType.PAREN, TokenType.MAT, TokenType.NUM, TokenType.FACT,
+            TokenType.BOOL, TokenType.VAR);
 
     public Token(TokenType t, String v) {
         type = t;

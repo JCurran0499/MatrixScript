@@ -68,9 +68,7 @@ public class Parser {
             // ---------- Subtraction & Negation ---------- \\
             else if (command.startsWith("-")) {
                 TokenType prevType = tokenList.isEmpty() ? null : tokenList.get(tokenList.size() - 1).type();
-                List<TokenType> subtractables =
-                        Arrays.asList(TokenType.PAREN, TokenType.MAT, TokenType.NUM, TokenType.BOOL);
-                if (subtractables.contains(prevType))
+                if (Token.subtractables.contains(prevType))
                     tokenList.add(new Token(TokenType.SUB, "-"));
                 else
                     tokenList.add(new Token(TokenType.NEG, "-"));
