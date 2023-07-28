@@ -19,6 +19,8 @@ import java.time.LocalDateTime;
 
 public class SessionHandler {
 
+    public static final String RUN_TOKEN = "default-run-token";
+
     private static final Map<String, LocalDateTime> sessionExpirations = new LinkedHashMap<>(); //Sessions are expired in their order of insertion
     private static final Map<String, Map<String, Primitive>> sessionMap = new HashMap<>();
 
@@ -30,11 +32,13 @@ public class SessionHandler {
     public static synchronized int createSession(String sessionToken) {
         if (!sessionMap.containsKey(sessionToken)) {
             sessionMap.put(sessionToken, new HashMap<>());
-            sessionExpirations.put(sessionToken, LocalDateTime.now().plusHours(12));
 
-            logger.info("new token generated: ~" + sessionToken + "~");
-            logger.info(SessionHandler.sessionCount() + " open session" +
-                    (SessionHandler.sessionCount() != 1 ? "s" : ""));
+            if (!sessionToken.equals(RUN_TOKEN)) {
+                sessionExpirations.put(sessionToken, LocalDateTime.now().plusHours(12));
+                logger.info("new token generated: ~" + sessionToken + "~");
+                logger.info(SessionHandler.sessionCount() + " open session" +
+                        (SessionHandler.sessionCount() != 1 ? "s" : ""));
+            }
 
             return 0;
         }

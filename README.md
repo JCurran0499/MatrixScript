@@ -23,7 +23,6 @@ If not, then you must install Git and Java in a way that matches your OS. Once t
 - Java: ```OpenJDK 17```
 - Maven: ```Maven 3.9```
 <br/>
-<br/>
 
 #### Download Project Repo
 ```
