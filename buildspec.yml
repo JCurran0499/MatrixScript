@@ -6,3 +6,4 @@ phases:
 artifacts:
   files:
     - '**/*'
+  base-directory: '/home/ec2-user/MatrixScript'
