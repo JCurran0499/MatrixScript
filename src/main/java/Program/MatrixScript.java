@@ -2,18 +2,14 @@ package Program;
 
 import java.util.Scanner;
 import java.util.UUID;
-
 import Interpreters.*;
 import Interpreters.Primitives.Null;
 import Parser.Parser;
 import Interpreters.Variables.SessionHandler;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import io.github.cdimascio.dotenv.Dotenv;
 import spark.Response;
 
