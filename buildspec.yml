@@ -2,8 +2,8 @@ version: 0.2
 phases:
   build:
     commands:
-      - mv .env .local.env
-      - mv .prod.env .env
+      - mv .env .env.dev
+      - mv .env.prod .env
       - mvn clean package
 artifacts:
   files:
