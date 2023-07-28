@@ -3,9 +3,6 @@ package Interpreters.Arithmetic;
 import Interpreters.Interpreter;
 import Interpreters.Primitive;
 import Interpreters.Primitives.*;
-import Matrix.Matrix;
-
-import java.math.BigDecimal;
 
 public class Sub implements Interpreter {
     private final Interpreter i1;

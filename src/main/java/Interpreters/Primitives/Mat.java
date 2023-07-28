@@ -4,7 +4,6 @@ import Interpreters.Primitive;
 import Interpreters.Interpreter;
 import Matrix.Matrix;
 import java.math.BigDecimal;
-import java.util.List;
 
 public class Mat extends Primitive {
     private Matrix mat;
@@ -127,6 +126,23 @@ public class Mat extends Primitive {
     }
 
     public Primitive get(Tuple t) {
+        if (t.length() != 2)
+            return new Err("invalid 'get' command");
+
+        if (t.get(new Num(0)).id().equals("num") && t.get(new Num(1)).id().equals("num")) {
+            Num r = (Num) t.get(new Num(0));
+            Num c = (Num) t.get(new Num(1));
+            if (!r.isInteger() || !c.isInteger())
+                return new Err("integers are required to index a matrix");
+
+            int rint = r.num().intValue();
+            int cint = c.num().intValue();
+            if (rint < 0 || rint >= mat.rows() || cint < 0 || cint >= mat.cols())
+                return new Err("out of matrix bounds");
+
+            return new Num(mat.getValue(rint, cint));
+        }
+
         return null;
     }
 

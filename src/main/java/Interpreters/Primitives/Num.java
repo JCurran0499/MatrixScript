@@ -12,6 +12,10 @@ public class Num extends Primitive {
         num = n;
     }
 
+    public Num(double n) {
+        num = new BigDecimal(n);
+    }
+
     /* Base Methods */
 
     public String id() {

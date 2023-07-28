@@ -28,7 +28,7 @@ public class Get implements Interpreter {
 
         // --------- Computation --------- \\
         if (p1.id().equals("tuple") && p2.id().equals("mat")) {
-
+            return ((Mat) p2).get((Tuple) p1);
         }
 
         if (p2.id().equals("tuple"))

@@ -4,16 +4,12 @@ import Interpreters.Interpreter;
 import Interpreters.Primitive;
 import Interpreters.Primitives.Err;
 import Interpreters.Variables.SessionHandler;
+import Parser.Token;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Declare implements Interpreter {
-    private static final List<String> invalidTerms =
-            Arrays.asList("true", "false", "get", "set", "from", "to", "rref", "det", "row", "col", "size",
-                    "identity", "zerovector", "transpose", "append", "inverse", "rank");
 
     private final String token;
     private final String varName;
@@ -55,8 +51,10 @@ public class Declare implements Interpreter {
     }
 
     private static boolean isValidVariable(String name) {
-        if (invalidTerms.contains(name))
-            return false;
+        Matcher m;
+        for (Pattern p : Token.equivalentSymbols.values())
+            if (p.matcher(name).matches())
+                return false;
 
         Pattern validVariable = Pattern.compile("[a-zA-Z_]\\w*");
         Matcher matcher = validVariable.matcher(name);

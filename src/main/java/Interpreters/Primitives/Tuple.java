@@ -101,7 +101,7 @@ public class Tuple extends Primitive {
         List<Interpreter> newTuple = new ArrayList<>();
 
         for (int i : range.fullRange()) {
-            if (i < 0 || i > length())
+            if (i < 0 || i >= length())
                 return new Err("outside tuple bounds");
 
             newTuple.add(pList.get(i));
@@ -118,7 +118,7 @@ public class Tuple extends Primitive {
                 return new Err("index must be integer");
 
             int i = ((Num) p).num().intValue();
-            if (i < 0 || i > length())
+            if (i < 0 || i >= length())
                 return new Err("outside tuple bounds");
 
             newTuple.add(pList.get(i));
