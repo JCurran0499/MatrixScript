@@ -21,7 +21,6 @@ then
   echo " "
 
   read -p "Select: " CHOICE
-  echo " "
 
 else
   CHOICE="$1"
@@ -46,11 +45,11 @@ case $CHOICE in
     java -jar target/MatrixScript-1.0-jar-with-dependencies.jar run
     ;;
   6)
-    mvn surefire:test
+    mvn test
     ;;
   7)
     read -p "Test class name: " TEST_CLASS
-    mvn surefire:test -Dtest="$TEST_CLASS"
+    mvn test -Dtest="$TEST_CLASS"
     ;;
   *)
     echo "Invalid selection!"

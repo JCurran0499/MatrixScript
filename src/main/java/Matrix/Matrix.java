@@ -39,11 +39,28 @@ public class Matrix {
 			for (int j = 0; j < cols; j++)
 				matrix[i][j] = new BigDecimal(0);
 	}
+
+	public Matrix(int[][] m) {
+		if (m == null)
+			throw new NullPointerException("Invalid argument: null");
+
+		for (int i = 0; i < m.length; i++)
+			if (m[i] == null || m[i].length == 0 || m[i].length != m[0].length)
+				throw new ArrayIndexOutOfBoundsException("Invalid Dimensions");
+
+		matrix = new BigDecimal[m.length][m[0].length];
+		for (int i = 0; i < m.length; i++)
+			for (int j = 0; j < m[0].length; j++)
+				matrix[i][j] = new BigDecimal(m[i][j]);
+	}
 	
 	//creates a matrix from the corresponding two-dimensional array
 	public Matrix(double[][] m) {
-		for (int i = 1; i < m.length; i++) 
-			if (m[i] == null || m[i].length != m[0].length)
+		if (m == null)
+			throw new NullPointerException("Invalid argument: null");
+
+		for (int i = 0; i < m.length; i++)
+			if (m[i] == null || m[i].length == 0 || m[i].length != m[0].length)
 				throw new ArrayIndexOutOfBoundsException("Invalid Dimensions");
 		
 		matrix = new BigDecimal[m.length][m[0].length];
@@ -52,20 +69,12 @@ public class Matrix {
 				matrix[i][j] = BigDecimal.valueOf(m[i][j]);
 	}
 
-	public Matrix(int[][] m) {
-		for (int i = 1; i < m.length; i++)
-			if (m[i] == null || m[i].length != m[0].length)
-				throw new ArrayIndexOutOfBoundsException("Invalid Dimensions");
-
-		matrix = new BigDecimal[m.length][m[0].length];
-		for (int i = 0; i < m.length; i++)
-			for (int j = 0; j < m[0].length; j++)
-				matrix[i][j] = new BigDecimal(m[i][j]);
-	}
-
 	public Matrix(BigDecimal[][] m) {
-		for (int i = 1; i < m.length; i++)
-			if (m[i] == null || m[i].length != m[0].length)
+		if (m == null)
+			throw new NullPointerException("Invalid argument: null");
+
+		for (int i = 0; i < m.length; i++)
+			if (m[i] == null || m[i].length == 0 || m[i].length != m[0].length)
 				throw new ArrayIndexOutOfBoundsException("Invalid Dimensions");
 
 		matrix = new BigDecimal[m.length][m[0].length];
@@ -75,7 +84,10 @@ public class Matrix {
 	}
 	
 	//creates a deep copy of the given matrix
-	public Matrix(Matrix m) {	
+	public Matrix(Matrix m) {
+		if (m == null)
+			throw new NullPointerException("Invalid argument: null");
+
 		matrix = Arrays.copyOf(m.matrix, m.matrix.length);
 	}
 	
@@ -88,6 +100,9 @@ public class Matrix {
 	 * values */
 	
 	public Matrix(String s) {
+		if (s == null)
+			throw new NullPointerException("Invalid argument: null");
+
 		try {
 			String[] rows = s.split(";");
 			matrix = new BigDecimal[rows.length][];

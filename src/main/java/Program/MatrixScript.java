@@ -25,7 +25,7 @@ public class MatrixScript {
         }
     }
 
-    public static void runAPI() {
+    private static void runAPI() {
         Dotenv env = Dotenv.load();
         Logger logger = LoggerFactory.getLogger(MatrixScript.class);
         ObjectMapper mapper = new ObjectMapper();
@@ -118,7 +118,7 @@ public class MatrixScript {
         });
     }
 
-    public static void runCommands() {
+    private static void runCommands() {
         System.out.println("\n\n\n\n");
         System.out.println("|\\   /|  / \\ |_   _||  _|  | | \\ \\/ / / __|  / _| |  _|  | | | -  ||_   _|");
         System.out.println("| \\ / | / _ \\  | |  |   \\  | |  |  |  \\__ \\ | |_  |   \\  | | |  _/   | |");
