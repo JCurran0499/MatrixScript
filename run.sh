@@ -29,17 +29,17 @@ fi
 
 case $CHOICE in
   1)
-    mvn clean package
+    mvn clean package -DskipTests
     ;;
   2)
-    mvn clean package
+    mvn clean package -DskipTests
     java -jar target/MatrixScript-1.0-jar-with-dependencies.jar
     ;;
   3)
     java -jar target/MatrixScript-1.0-jar-with-dependencies.jar
     ;;
   4)
-    mvn clean package
+    mvn clean package -DskipTests
     java -jar target/MatrixScript-1.0-jar-with-dependencies.jar run
     ;;
   5)

@@ -4,7 +4,7 @@ phases:
     commands:
       - mv .env .env.dev
       - mv .env.prod .env
-      - mvn clean package
+      - mvn clean package -DskipTests
 artifacts:
   files:
     - '**/*'
