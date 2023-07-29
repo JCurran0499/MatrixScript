@@ -16,6 +16,8 @@ then
   echo "3: Run API locally (without a build)"
   echo "4: Build app and run command line"
   echo "5: Run command line (without a build)"
+  echo "6: Run full test suite"
+  echo "7: Run specific JUnit test"
   echo " "
 
   read -p "Select: " CHOICE
@@ -42,6 +44,13 @@ case $CHOICE in
     ;;
   5)
     java -jar target/MatrixScript-1.0-jar-with-dependencies.jar run
+    ;;
+  6)
+    mvn test
+    ;;
+  7)
+    read -p "Test class name: " TEST_CLASS
+    mvn test -Dtest="$TEST_CLASS"
     ;;
   *)
     echo "Invalid selection!"
