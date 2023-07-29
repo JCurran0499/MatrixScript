@@ -9,6 +9,6 @@ public class ArithmeticTests {
 
     @Test
     public void firstStep() {
-        assertTrue(true);
+        assertTrue(false);
     }
 }
