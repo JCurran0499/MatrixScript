@@ -17,6 +17,7 @@
 
 package Matrix;
 
+import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -43,6 +44,8 @@ public class Matrix {
 	public Matrix(int[][] m) {
 		if (m == null)
 			throw new NullPointerException("Invalid argument: null");
+		if (m.length == 0)
+			throw new ArrayIndexOutOfBoundsException("Invalid Dimensions");
 
 		for (int i = 0; i < m.length; i++)
 			if (m[i] == null || m[i].length == 0 || m[i].length != m[0].length)
@@ -58,6 +61,8 @@ public class Matrix {
 	public Matrix(double[][] m) {
 		if (m == null)
 			throw new NullPointerException("Invalid argument: null");
+		if (m.length == 0)
+			throw new ArrayIndexOutOfBoundsException("Invalid Dimensions");
 
 		for (int i = 0; i < m.length; i++)
 			if (m[i] == null || m[i].length == 0 || m[i].length != m[0].length)
@@ -72,6 +77,8 @@ public class Matrix {
 	public Matrix(BigDecimal[][] m) {
 		if (m == null)
 			throw new NullPointerException("Invalid argument: null");
+		if (m.length == 0)
+			throw new ArrayIndexOutOfBoundsException("Invalid Dimensions");
 
 		for (int i = 0; i < m.length; i++)
 			if (m[i] == null || m[i].length == 0 || m[i].length != m[0].length)

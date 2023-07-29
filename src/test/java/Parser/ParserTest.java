@@ -1,17 +1,13 @@
-package Interpreters.Arithmetic;
+package Parser;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import Interpreters.Interpreter;
 import Interpreters.Primitive;
-import org.junit.Before;
 import org.junit.jupiter.api.*;
-import Parser.Parser;
 import Interpreters.Primitives.*;
-import Interpreters.Arithmetic.*;
 import Interpreters.Variables.SessionHandler;
 
-public class ArithmeticTest {
+public class ParserTest {
 
     private static final String t = SessionHandler.RUN_TOKEN;
 

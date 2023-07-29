@@ -1,28 +1,35 @@
 ## MatrixScript Backend
 #### MatrixScript is a simple and straightforward interpreted command language for calculating linear algebra problems
 
-This version of MatrixScript is written in Java (here) and serves as an API, fronted by a [Node.js React web layer](https://github.com/JCurran0499/MatrixScript-Frontend) found in another repository.
+This version of MatrixScript is written in Java (here) and serves as an API, fronted by a [Node.js React web layer](https://github.com/JCurran0499/MatrixScript-Frontend) found in another repository.<br/>
+Each command is sent to the API with its corresponding token (assigned to users), and the API responds with the output.
+This allows for continuous communication with the frontend.
+<br/>
+<br/>
+**Note:** While MatrixScript is designed to run as an API with a separate frontend, this version can also be run as a **Command Line tool**.
+This way, you can run MatrixScript commands directly on your command line.
+<br/>
+<br/>
+⭐ The **official MatrixScript documentation** can be found [here](https://github.com/JCurran0499/MatrixScript-Docs/blob/main/docs.md).
 
 ### Frontend and Backend Servers
 
-This project is designed to be run on two different servers, a frontend and backend. This repository represents the **backend**, and below are instructions for setting up and running the backend server. The frontend can be found [here](https://github.com/JCurran0499/MatrixScript-Frontend).<br/>
+This project is designed to be run with a separate frontend and backend. This repository represents the **backend**, and below are instructions for setting up and running the backend server. 
+The frontend can be found [here](https://github.com/JCurran0499/MatrixScript-Frontend).<br/>
 
 ### Download and Installation
 
-The download tools provided to you in this repository are based on the Red Hat Linux OS distributions popular with basic AWS EC2 instances, including AWS Linux, CentOS, and Fedora. For other servers and virtual machines, the commands may be slightly different. <br/> <br/>
-To check that your OS matches this distribution, run `yum --version` and verify that your OS recognizes the YUM package installer. <br/>
-If not, then you must install Git and Java in a way that matches your OS. Once this is done, the project will run on your OS perfectly fine. 
-<br/>
-
-**Note**: this project runs on ```OpenJDK 17```, different version may be incompatible.
-<br/>
+The tools provided to you in this repository are based on Linux OS distributions. 
+This can include Amazon Linux, Red Hat, Debian, and more. 
+For other servers and virtual machines, the commands may be slightly different. <br/>
 <br/>
 
 ### Backend Setup
 #### Requirements
+- OS: ``Linux`` (preferred) or ```MacOS```
 - Java: ```OpenJDK 17```
 - Maven: ```Maven 3.9```
-<br/>
+<br/><br/><br/>
 
 #### Download Project Repo
 ```
@@ -32,7 +39,13 @@ cd MatrixScript-Backend
 <br/>
 
 #### Frontend CORS Permissions
-If desired, edit the **.env** file, and fill in your frontend server's IP address or domain in the `FRONTEND` value. This way, your web app backend will be able send CORS permissions to your frontend. By default, this value is set to * and therefore allows all domains to access the backend. This step is optional, and is only used for security purposes to restrict backend access to your frontend domain alone.
+If desired, edit the ```.env``` file, and fill in your frontend server's IP address or domain in the `FRONTEND` value. 
+This way, your web app backend will be able send CORS permissions to your frontend. 
+By default, this value is set to ```http://localhost``` and therefore allows your local frontend on HTTP port 80 to access the backend.
+<br/><br/>
+This step is optional, and is only used for security purposes to restrict backend access to your frontend domain alone.
+<br/>
+This is not needed if you are running MatrixScript from the command line, as there is no corresponding frontend.
 <br/>
 <br/>
 
@@ -44,8 +57,37 @@ mvn clean package
 <br/>
 
 #### Run the Program
+This script will offer you multiple options, simply select the one that is best for you.
 ```
 ./run.sh
 ```
 
 From here, the MatrixScript API can be accessed on port 4567, at `<server_domain_or_ip>:4567`.
+<br/><br/>
+
+### Commands for Windows
+Using the ```run.sh``` script will likely be difficult if running on Windows.
+Below are similar commands to be used to get around this limitation.
+<br/>
+All of these commands are to be run from the root folder.
+<br/>
+
+#### Build Program
+```mvn clean package```
+<br/>
+<br/>
+
+#### Run API Locally
+```java -jar target/MatrixScript-1.0-jar-with-dependencies.jar```
+<br/>
+<br/>
+
+#### Run Command Line Locally
+```java -jar target/MatrixScript-1.0-jar-with-dependencies.jar run```
+<br/>
+<br/>
+
+#### Run Full Test Suite
+```mvn test```
+<br/>
+<br/>
