@@ -49,11 +49,13 @@ public class SessionHandler {
     public static synchronized int invalidateSession(String sessionToken) {
         if (sessionMap.containsKey(sessionToken)) {
             sessionMap.remove(sessionToken);
-            sessionExpirations.remove(sessionToken);
 
-            logger.info("token ~" + sessionToken + "~ expired");
-            logger.info(SessionHandler.sessionCount() + " open session" +
+            if (!sessionToken.equals(RUN_TOKEN)) {
+                sessionExpirations.remove(sessionToken);
+                logger.info("token ~" + sessionToken + "~ expired");
+                logger.info(SessionHandler.sessionCount() + " open session" +
                     (SessionHandler.sessionCount() != 1 ? "s" : ""));
+            }
 
             return 0;
         }

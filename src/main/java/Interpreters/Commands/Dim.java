@@ -25,7 +25,7 @@ public class Dim implements Interpreter {
         if (p.id().equals("mat")) {
             Matrix m = ((Mat) p).mat();
             return new Tuple(Arrays.asList(new Interpreter[]
-                    {new Num(new BigDecimal(m.rows())), new Num(new BigDecimal(m.cols()))}));
+                    {new Num(BigDecimal.valueOf(m.rows())), new Num(BigDecimal.valueOf(m.cols()))}));
         }
 
         return new Err("invalid 'dim' command");

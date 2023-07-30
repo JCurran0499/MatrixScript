@@ -310,7 +310,7 @@ public class Parser {
                     for (BigDecimal[] r : mat)
                         matrixList.add(Arrays.asList(r));
                 } else if (itemValue.id().equals("range")) {
-                    for (int v : ((Range) itemValue).fullRange()) row.add(new BigDecimal(v));
+                    for (int v : ((Range) itemValue).fullRange()) row.add(BigDecimal.valueOf(v));
                 } else if (itemValue.id().equals("err")) {
                     return itemValue;
                 } else return new Err("invalid matrix");

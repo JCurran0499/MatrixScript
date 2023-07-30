@@ -17,7 +17,9 @@
 
 package Matrix;
 
-import java.lang.reflect.Array;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Optional;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -33,40 +35,40 @@ public class Matrix {
 	//creates a matrix with the given dimensions, starting with all values at 0
 	public Matrix(int rows, int cols) {
 		if (rows <= 0 || cols <= 0)
-			throw new ArrayIndexOutOfBoundsException("Invalid Dimensions");
+			throw new MatrixException(MatrixExceptionMessage.INVALID_DIMENSIONS.name);
 		
 		matrix = new BigDecimal[rows][cols];
 		for (int i = 0; i < rows; i++)
 			for (int j = 0; j < cols; j++)
-				matrix[i][j] = new BigDecimal(0);
+				matrix[i][j] = BigDecimal.valueOf(0);
 	}
 
 	public Matrix(int[][] m) {
 		if (m == null)
-			throw new NullPointerException("Invalid argument: null");
+			throw new MatrixException(MatrixExceptionMessage.NULL_ARGUMENT.name);
 		if (m.length == 0)
-			throw new ArrayIndexOutOfBoundsException("Invalid Dimensions");
+			throw new MatrixException(MatrixExceptionMessage.INVALID_DIMENSIONS.name);
 
 		for (int i = 0; i < m.length; i++)
 			if (m[i] == null || m[i].length == 0 || m[i].length != m[0].length)
-				throw new ArrayIndexOutOfBoundsException("Invalid Dimensions");
+				throw new MatrixException(MatrixExceptionMessage.INVALID_DIMENSIONS.name);
 
 		matrix = new BigDecimal[m.length][m[0].length];
 		for (int i = 0; i < m.length; i++)
 			for (int j = 0; j < m[0].length; j++)
-				matrix[i][j] = new BigDecimal(m[i][j]);
+				matrix[i][j] = BigDecimal.valueOf(m[i][j]);
 	}
 	
 	//creates a matrix from the corresponding two-dimensional array
 	public Matrix(double[][] m) {
 		if (m == null)
-			throw new NullPointerException("Invalid argument: null");
+			throw new MatrixException(MatrixExceptionMessage.NULL_ARGUMENT.name);
 		if (m.length == 0)
-			throw new ArrayIndexOutOfBoundsException("Invalid Dimensions");
+			throw new MatrixException(MatrixExceptionMessage.INVALID_DIMENSIONS.name);
 
 		for (int i = 0; i < m.length; i++)
 			if (m[i] == null || m[i].length == 0 || m[i].length != m[0].length)
-				throw new ArrayIndexOutOfBoundsException("Invalid Dimensions");
+				throw new MatrixException(MatrixExceptionMessage.INVALID_DIMENSIONS.name);
 		
 		matrix = new BigDecimal[m.length][m[0].length];
 		for (int i = 0; i < m.length; i++)
@@ -76,13 +78,13 @@ public class Matrix {
 
 	public Matrix(BigDecimal[][] m) {
 		if (m == null)
-			throw new NullPointerException("Invalid argument: null");
+			throw new MatrixException(MatrixExceptionMessage.NULL_ARGUMENT.name);
 		if (m.length == 0)
-			throw new ArrayIndexOutOfBoundsException("Invalid Dimensions");
+			throw new MatrixException(MatrixExceptionMessage.INVALID_DIMENSIONS.name);
 
 		for (int i = 0; i < m.length; i++)
 			if (m[i] == null || m[i].length == 0 || m[i].length != m[0].length)
-				throw new ArrayIndexOutOfBoundsException("Invalid Dimensions");
+				throw new MatrixException(MatrixExceptionMessage.INVALID_DIMENSIONS.name);
 
 		matrix = new BigDecimal[m.length][m[0].length];
 		for (int i = 0; i < m.length; i++)
@@ -93,9 +95,11 @@ public class Matrix {
 	//creates a deep copy of the given matrix
 	public Matrix(Matrix m) {
 		if (m == null)
-			throw new NullPointerException("Invalid argument: null");
+			throw new MatrixException(MatrixExceptionMessage.NULL_ARGUMENT.name);
 
-		matrix = Arrays.copyOf(m.matrix, m.matrix.length);
+		matrix = new BigDecimal[m.matrix.length][];
+		for (int r = 0; r < m.matrix.length; r++)
+			matrix[r] = Arrays.copyOf(m.matrix[r], m.matrix[r].length);
 	}
 	
 	/* this is the most complex and most useful Matrix constructor. This creates
@@ -108,15 +112,18 @@ public class Matrix {
 	
 	public Matrix(String s) {
 		if (s == null)
-			throw new NullPointerException("Invalid argument: null");
+			throw new MatrixException(MatrixExceptionMessage.NULL_ARGUMENT.name);
 
 		try {
-			String[] rows = s.split(";");
+			String[] rows = s.split(";", -1);
 			matrix = new BigDecimal[rows.length][];
+
+			if (rows.length == 0)
+				throw new MatrixException(MatrixExceptionMessage.INVALID_STRING.name);
 
 			for (int i = 0; i < rows.length; i++) {
 				String row = rows[i];
-				String[] ints = row.strip().split("\\s+");
+				String[] ints = row.strip().split("\\s+", -1);
 				BigDecimal[] vals = new BigDecimal[ints.length];
 				for (int j = 0; j < ints.length; j++)
 					vals[j] = BigDecimal.valueOf(Double.parseDouble(ints[j]));
@@ -124,11 +131,14 @@ public class Matrix {
 				matrix[i] = vals;
 			}
 
-		} catch (Exception e) { throw new ArrayIndexOutOfBoundsException("Invalid String"); }
+		} catch (Exception e) { throw new MatrixException(MatrixExceptionMessage.INVALID_STRING.name); }
 
-		for (int i = 1; i < matrix.length; i++)
-			if (matrix[i].length != matrix[0].length)
-				throw new ArrayIndexOutOfBoundsException("Invalid Dimensions");
+		if (matrix.length == 0)
+			throw new MatrixException(MatrixExceptionMessage.INVALID_DIMENSIONS.name);
+
+		for (int i = 0; i < matrix.length; i++)
+			if (matrix[i].length == 0 || matrix[i].length != matrix[0].length)
+				throw new MatrixException(MatrixExceptionMessage.INVALID_DIMENSIONS.name);
 	}
 	
 	/* the following are the methods associated with Matrix class */
@@ -241,60 +251,63 @@ public class Matrix {
 	//Rows and columns begin at 0
 	public double getValue(int r, int c) {
 		if (r < 0 || c < 0 || r >= rows() || c >= cols())
-			throw new ArrayIndexOutOfBoundsException("Invalid Dimensions");
+			throw new MatrixException(MatrixExceptionMessage.OUT_OF_BOUNDS.name);
 		
 		return matrix[r][c].setScale(5,RoundingMode.HALF_UP).doubleValue();
 	}
-	
-	//returns a single-column matrix that represents the given column in the matrix.
-	//the returned column and original matrix are independent, and altering one
-	//will not alter the other
-	public Matrix getColumn(int c) {
-		if (c < 0 || c >= cols())
-			return null;
-		
-		Matrix m = new Matrix(rows(), 1);		
-		for (int i = 0; i < rows(); i++)
-			m.matrix[i][0] = matrix[i][c];
-		
-		return m;
-	}
-	
+
 	//returns a single-row matrix that represents the given row in the matrix.
 	//the returned row and original matrix are independent, and altering one
 	//will not alter the other
 	public Matrix getRow(int r) {
 		if (r < 0 || r >= rows())
 			return null;
-		
+
 		Matrix m = new Matrix(1, cols());
 		m.matrix[0] = Arrays.copyOf(matrix[r], matrix[r].length);
 		return m;
 	}
 	
+	//returns a single-column matrix that represents the given column in the matrix.
+	//the returned column and original matrix are independent, and altering one
+	//will not alter the other
+	public Matrix getColumn(int c) {
+		return Optional.ofNullable(transpose().getRow(c))
+			.map(Matrix::transpose)
+			.orElse(null);
+	}
+	
 	//alters the matrix by setting the given position to the given value 'd'
 	public void setValue(int r, int c, double d) {
 		if (r < 0 || c < 0 || r >= rows() || c >= cols())
-			throw new ArrayIndexOutOfBoundsException("Invalid Dimensions");
+			throw new MatrixException(MatrixExceptionMessage.OUT_OF_BOUNDS.name);
 		
 		matrix[r][c] = BigDecimal.valueOf(d);
+	}
+
+	//alters the matrix by setting the given row to the new matrix
+	public void setRow(int r, Matrix m) {
+		if (m == null)
+			throw new MatrixException(MatrixExceptionMessage.NULL_ARGUMENT.name);
+		if (r < 0 || r >= rows())
+			throw new MatrixException(MatrixExceptionMessage.OUT_OF_BOUNDS.name);
+		if (m.rows() != 1 || m.cols() != cols())
+			throw new MatrixException(MatrixExceptionMessage.INVALID_DIMENSIONS.name);
+
+		matrix[r] = Arrays.copyOf(m.matrix[0], m.matrix[0].length);
 	}
 	
 	//alters the matrix by setting the given column to the new matrix
 	public void setColumn(int c, Matrix m) {
+		if (m == null)
+			throw new MatrixException(MatrixExceptionMessage.NULL_ARGUMENT.name);
+		if (c < 0 || c >= cols())
+			throw new MatrixException(MatrixExceptionMessage.OUT_OF_BOUNDS.name);
 		if (m.cols() != 1 || m.rows() != rows())
-			throw new ArrayIndexOutOfBoundsException("Invalid Dimensions");
-		
+			throw new MatrixException(MatrixExceptionMessage.INVALID_DIMENSIONS.name);
+
 		for (int i = 0; i < rows(); i++)
 			matrix[i][c] = m.matrix[i][0];
-	}
-	
-	//alters the matrix by setting the given row to the new matrix
-	public void setRow(int r, Matrix m) {
-		if (m.rows() != 1 || m.cols() != cols())
-			throw new ArrayIndexOutOfBoundsException("Invalid Dimensions");
-
-		matrix[r] = Arrays.copyOf(m.matrix[0], m.matrix[0].length);
 	}
 	
 	//adds together the matrix with the argument matrix
@@ -335,7 +348,7 @@ public class Matrix {
 		for (int i = 0; i < rows(); i++) {
 			for (int j = 0; j < m.cols(); j++) {
 				
-				BigDecimal sum = new BigDecimal(0);
+				BigDecimal sum = BigDecimal.valueOf(0);
 				for (int k = 0; k < m.rows(); k++)
 					sum = sum.add(matrix[i][k].multiply(m.matrix[k][j], MathContext.DECIMAL128));
 				
@@ -485,7 +498,7 @@ public class Matrix {
 					}
 				
 				if (m.getValue(indexRow, indexCol) != 1) { //scale the row
-					scale = (new BigDecimal(1)).divide(m.matrix[indexRow][indexCol], MathContext.DECIMAL128);
+					scale = (BigDecimal.valueOf(1)).divide(m.matrix[indexRow][indexCol], MathContext.DECIMAL128);
 					m.setColumn(indexCol, m.getColumn(indexCol).multiply(scale.doubleValue()));
 				}
 				
@@ -503,7 +516,7 @@ public class Matrix {
 		if (!isSquare())
 			return 0;
 		
-		BigDecimal determinant = new BigDecimal(1);
+		BigDecimal determinant = BigDecimal.valueOf(1);
 		
 		Matrix m = transpose(); //it is simpler to work with columns rather than rows
 		BigDecimal scale; 
@@ -534,7 +547,7 @@ public class Matrix {
 					}
 				
 				if (m.getValue(indexRow, indexCol) != 1) { //scale the row
-					scale = (new BigDecimal(1)).divide(m.matrix[indexRow][indexCol], MathContext.DECIMAL128);
+					scale = (BigDecimal.valueOf(1)).divide(m.matrix[indexRow][indexCol], MathContext.DECIMAL128);
 					m.setColumn(indexCol, m.getColumn(indexCol).multiply(scale.doubleValue()));					
 					determinant = determinant.divide(scale, MathContext.DECIMAL128);
 				}

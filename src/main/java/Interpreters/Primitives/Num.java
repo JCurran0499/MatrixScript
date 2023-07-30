@@ -13,7 +13,7 @@ public class Num extends Primitive {
     }
 
     public Num(double n) {
-        num = new BigDecimal(n);
+        num = BigDecimal.valueOf(n);
     }
 
     /* Base Methods */
@@ -99,7 +99,7 @@ public class Num extends Primitive {
 
     public Primitive factorial() {
         if (isInteger() && isPositive()) {
-            BigDecimal factorial = new BigDecimal(1);
+            BigDecimal factorial = BigDecimal.valueOf(1);
             for (BigDecimal b = num; b.compareTo(BigDecimal.ZERO) > 0; b = b.subtract(BigDecimal.ONE))
                 factorial = factorial.multiply(b);
 

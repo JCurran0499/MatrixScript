@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import io.github.cdimascio.dotenv.Dotenv;
 import spark.Response;
+//import software.amazon.awssdk.*;
 
 import static spark.Spark.*;
 
@@ -119,7 +120,7 @@ public class MatrixScript {
     }
 
     private static void runCommands() {
-        System.out.println("\n\n\n\n");
+        System.out.println("\n\n");
         System.out.println("|\\   /|  / \\ |_   _||  _|  | | \\ \\/ / / __|  / _| |  _|  | | | -  ||_   _|");
         System.out.println("| \\ / | / _ \\  | |  |   \\  | |  |  |  \\__ \\ | |_  |   \\  | | |  _/   | |");
         System.out.println("|_| |_|/_/ \\_\\ |_|  |_||_| |_| /_/\\_\\ |___/  \\__| |_||_| |_| |_|     | |");
