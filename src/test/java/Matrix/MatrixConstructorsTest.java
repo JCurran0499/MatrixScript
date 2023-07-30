@@ -1,8 +1,9 @@
 package Matrix;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
-import static org.junit.jupiter.api.Assertions.*;
 
 public class MatrixConstructorsTest {
 
@@ -266,6 +267,10 @@ public class MatrixConstructorsTest {
 
         m = new Matrix("  4  5   ;               2 3");
         assertTrue(m.equals(new Matrix(new int[][] {{4, 5}, {2, 3}})));
+
+        m = new Matrix("4.00000 3.500000000 ; 003 000.003");
+        assertTrue(m.equals(new Matrix("4 3.5 ; 3 0.003")));
+        assertTrue(m.equals(new Matrix(new double[][] {{4, 3.5}, {3, 0.003}})));
     }
 
     @Test

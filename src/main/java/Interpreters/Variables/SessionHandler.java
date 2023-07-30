@@ -71,6 +71,14 @@ public class SessionHandler {
         return sessionMap.size();
     }
 
+    public static List<String> tokens() {
+        return sessionMap.keySet().stream().toList();
+    }
+
+    public static LocalDateTime getExpiration(String sessionToken) {
+        return sessionExpirations.get(sessionToken);
+    }
+
     /* ---------- Variable Methods ---------- */
 
     public static boolean varExists(String sessionToken, String var) {

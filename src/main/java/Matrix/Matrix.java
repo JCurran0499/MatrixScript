@@ -220,8 +220,22 @@ public class Matrix {
 		
 		return new Matrix(r, 1);
 	}
-	
-	
+
+
+	//returns whether the calling matrix is identical to the argument matrix,
+	//to at least the 5th decimal place
+	public boolean equals(Matrix m) {
+		if (m == null || m.rows() != rows() || m.cols() != cols())
+			return false;
+
+		for (int i = 0; i < rows(); i++)
+			for (int j = 0; j < cols(); j++)
+				if (matrix[i][j].setScale(5,RoundingMode.HALF_UP).doubleValue() != m.matrix[i][j].setScale(5,RoundingMode.HALF_UP).doubleValue())
+					return false;
+
+		return true;
+	}
+
 	//returns the number of rows in the matrix
 	public int rows() {
 		return matrix.length;
@@ -397,20 +411,6 @@ public class Matrix {
 			newMatrix = newMatrix.multiply(this);
 		
 		return newMatrix;
-	}
-	
-	//returns whether the calling matrix is identical to the argument matrix,
-	//to at least the 5th decimal place
-	public boolean equals(Matrix m) {
-		if (m == null || m.rows() != rows() || m.cols() != cols())
-			return false;
-		
-		for (int i = 0; i < rows(); i++)
-			for (int j = 0; j < cols(); j++) 
-				if (matrix[i][j].setScale(5,RoundingMode.HALF_UP).doubleValue() != m.matrix[i][j].setScale(5,RoundingMode.HALF_UP).doubleValue())
-					return false;
-		
-		return true;
 	}
 	
 	//returns the transpose of the matrix

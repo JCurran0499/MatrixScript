@@ -1,5 +1,6 @@
 package Program;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import java.util.UUID;
 import Interpreters.*;
@@ -35,6 +36,8 @@ public class MatrixScript {
 
         port(4567);
 
+        // --- Public Endpoints --- //
+
         options("/*", (req, res) -> {
             setCORSHeaders(res, env);
             return "OK";
@@ -47,7 +50,7 @@ public class MatrixScript {
 
         get("/token", (req, res) -> {
             setCORSHeaders(res, env);
-            res.header("Content-Type", "application/json");
+            setJSONHeader(res);
 
             String sessionToken = UUID.randomUUID().toString();
             int success = SessionHandler.createSession(sessionToken);
@@ -59,21 +62,9 @@ public class MatrixScript {
             return mapper.readTree(String.format("{\"sessionToken\": \"%s\"}", sessionToken));
         });
 
-        delete("/token/:token", (req, res) -> {
-            setCORSHeaders(res, env);
-
-            int success = SessionHandler.invalidateSession(req.params(":token"));
-            if (success == -1) {
-                logger.error("404 ERROR - tried to delete invalid token");
-                halt(404, "invalid session token");
-            }
-
-            return "OK";
-        });
-
         post("/", (req, res) -> {
             setCORSHeaders(res, env);
-            res.header("Content-Type", "application/json");
+            setJSONHeader(res);
 
             String sessionToken = req.queryParams("token");
             if (sessionToken == null) {
@@ -116,6 +107,42 @@ public class MatrixScript {
                 response = String.format("{\"response\": \"%s\"}", "");
                 return mapper.readTree(response);
             }
+        });
+
+
+        // --- Private Endpoints --- //
+
+        path("/private", () -> {
+            delete("/token/:token", (req, res) -> {
+                int success = SessionHandler.invalidateSession(req.params(":token"));
+                if (success == -1) {
+                    logger.error("404 ERROR - tried to delete invalid token");
+                    halt(404, "invalid session token");
+                }
+
+                return "OK";
+            });
+
+            get("/list-sessions", (req, res) -> {
+                setJSONHeader(res);
+
+                StringBuilder sessionList = new StringBuilder(
+                    "{\"sessionCount\": " + SessionHandler.sessionCount() + ", \"sessions\": ["
+                );
+
+                for (String t : SessionHandler.tokens()) {
+                    sessionList.append(String.format(
+                        "{\"token\": \"%s\", \"expiration\": \"%s\"},",
+                        t, SessionHandler.getExpiration(t).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                    );
+                }
+                if (SessionHandler.sessionCount() > 0) {
+                    sessionList.deleteCharAt(sessionList.length() - 1);
+                }
+                sessionList.append("]}");
+
+                return mapper.readTree(sessionList.toString());
+            });
         });
     }
 
@@ -165,5 +192,9 @@ public class MatrixScript {
         res.header("Access-Control-Allow-Origin", env.get("FRONTEND"));
         res.header("Access-Control-Allow-Credentials", "true");
         res.header("Access-Control-Allow-Headers", "content-type");
+    }
+
+    private static void setJSONHeader(Response res) {
+        res.header("Content-Type", "application/json");
     }
 }

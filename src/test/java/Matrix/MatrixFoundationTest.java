@@ -1,11 +1,13 @@
 package Matrix;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.Test;
 
-public class MatrixTest {
+public class MatrixFoundationTest {
 
     Matrix m;
+    Matrix m2;
 
     @Test
     public void identityMatrix() {
@@ -41,6 +43,35 @@ public class MatrixTest {
     public void zeroVectorUnhappyPath() {
         assertNull(Matrix.ZeroVector(0));
         assertNull(Matrix.ZeroVector(-1));
+    }
+
+    @Test
+    public void equals() {
+        m = new Matrix("1 2 3 ; 52 6 2 ; 9 0 0");
+        m2 = new Matrix("1 2 3 ; 52 6 2 ; 9 0 0");
+        assertTrue(m.equals(m2));
+
+        m2.setValue(0, 0, 0);
+        assertFalse(m.equals(m2));
+
+        m2 = new Matrix(" 0 0 0 ; 52 6 2 ; 9 0 0");
+        assertFalse(m.equals(m2));
+
+        m2 = new Matrix("1 2 ; 52 6 ; 9 0");
+        assertFalse(m.equals(m2));
+
+        assertFalse(m.equals(null));
+    }
+
+    @Test
+    public void equalsHighScale() {
+        m = new Matrix("1.00123456789 2.987654321  ; 52.5678904321 6.123456789");
+        m2 = new Matrix("1.00123456789 2.987654321  ; 52.5678904321 6.123456789");
+        assertTrue(m.equals(m2));
+
+        m = new Matrix(new double[][] {{1/3}});
+        m2 = new Matrix(new double[][] {{1/3}});
+        assertTrue(m.equals(m2));
     }
 
     @Test
