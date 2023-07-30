@@ -7,12 +7,12 @@ import Interpreters.*;
 import Interpreters.Primitives.Null;
 import Parser.Parser;
 import Interpreters.Variables.SessionHandler;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import io.github.cdimascio.dotenv.Dotenv;
-import spark.Response;
 //import software.amazon.awssdk.*;
 
 import static spark.Spark.*;
@@ -31,6 +31,7 @@ public class MatrixScript {
         Dotenv env = Dotenv.load();
         Logger logger = LoggerFactory.getLogger(MatrixScript.class);
         ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
         SessionHandler.initiateSessionManager();
 
@@ -91,21 +92,25 @@ public class MatrixScript {
             String response;
             if (result.id().equals("mat") && result.printValue) {
                 String matString = result.string().replaceAll("\n", "n");
-                response = String.format("{\"response\": {\"matrix\": \"%s\"}}", matString);
-                return mapper.readTree(response);
+                return mapper.valueToTree(
+                    new Response("success", null, matString, null)
+                );
             }
             else if (result.id().equals("err") && result.printValue) {
-                response = String.format("{\"response\": {\"error\": \"%s\"}}", result.string());
-                return mapper.readTree(response);
+                return mapper.valueToTree(
+                    new Response("error", null, null, result.string())
+                );
             }
             else if (result.printValue) {
-                response = String.format("{\"response\": \"%s\"}", result.string());
-                return mapper.readTree(response);
+                return mapper.valueToTree(
+                    new Response("success", result.string(), null, null)
+                );
             }
             else {
                 result.printValue = true;
-                response = String.format("{\"response\": \"%s\"}", "");
-                return mapper.readTree(response);
+                return mapper.valueToTree(
+                    new Response("success", "", null, null)
+                );
             }
         });
 
@@ -187,14 +192,14 @@ public class MatrixScript {
         return Parser.parse(sessionToken, command).solve();
     }
 
-    private static void setCORSHeaders(Response res, Dotenv env) {
+    private static void setCORSHeaders(spark.Response res, Dotenv env) {
         res.header("Access-Control-Allow-Methods", "POST,GET,DELETE");
         res.header("Access-Control-Allow-Origin", env.get("FRONTEND"));
         res.header("Access-Control-Allow-Credentials", "true");
         res.header("Access-Control-Allow-Headers", "content-type");
     }
 
-    private static void setJSONHeader(Response res) {
+    private static void setJSONHeader(spark.Response res) {
         res.header("Content-Type", "application/json");
     }
 }

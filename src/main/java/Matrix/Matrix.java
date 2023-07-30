@@ -351,26 +351,26 @@ public class Matrix {
 		
 		return new Matrix(m1);
 	}
-	
+
 	//multiplies the calling matrix by the argument matrix
 	public Matrix multiply(Matrix m) {
 		if (m == null || m.rows() != cols())
 			return null;
-		
+
 		BigDecimal[][] m1 = new BigDecimal[rows()][m.cols()];
-		
+
 		for (int i = 0; i < rows(); i++) {
 			for (int j = 0; j < m.cols(); j++) {
-				
+
 				BigDecimal sum = BigDecimal.valueOf(0);
 				for (int k = 0; k < m.rows(); k++)
 					sum = sum.add(matrix[i][k].multiply(m.matrix[k][j], MathContext.DECIMAL128));
-				
+
 				m1[i][j] = sum;
 			}
 		}
-		
-		return new Matrix(m1);		
+
+		return new Matrix(m1);
 	}
 	
 	//multiplies the matrix by the given value
