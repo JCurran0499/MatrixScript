@@ -2,6 +2,10 @@ package Matrix;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import Resources.Matrix.Exceptions.MatrixDimensionsException;
+import Resources.Matrix.Exceptions.MatrixNullException;
+import Resources.Matrix.Exceptions.MatrixStringException;
+import Resources.Matrix.Matrix;
 import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 
@@ -38,30 +42,22 @@ public class MatrixConstructorsTest {
         try {
             m = new Matrix(0, 0);
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_DIMENSIONS.name);
-        }
+        } catch (MatrixDimensionsException e) {}
 
         try {
             m = new Matrix(0, 5);
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_DIMENSIONS.name);
-        }
+        } catch (MatrixDimensionsException e) {}
 
         try {
             m = new Matrix(-3, 1);
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_DIMENSIONS.name);
-        }
+        } catch (MatrixDimensionsException e) {}
 
         try {
             m = new Matrix(2, -5);
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_DIMENSIONS.name);
-        }
+        } catch (MatrixDimensionsException e) {}
     }
 
     @Test
@@ -80,23 +76,17 @@ public class MatrixConstructorsTest {
         try {
             m = new Matrix(new int[][] {{}, {}});
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_DIMENSIONS.name);
-        }
+        } catch (MatrixDimensionsException e) {}
 
         try {
             m = new Matrix(new int[][] {{2}, {}});
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_DIMENSIONS.name);
-        }
+        } catch (MatrixDimensionsException e) {}
 
         try {
             m = new Matrix(new int[][] {{2, 3}, {4, 5}, {6, 7, 8}});
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_DIMENSIONS.name);
-        }
+        } catch (MatrixDimensionsException e) {}
     }
 
     @Test
@@ -112,44 +102,32 @@ public class MatrixConstructorsTest {
         try {
             m = new Matrix(new double[][] {{}});
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_DIMENSIONS.name);
-        }
+        } catch (MatrixDimensionsException e) {}
 
         try {
             m = new Matrix(new double[][] {{2.5838}, {}});
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_DIMENSIONS.name);
-        }
+        } catch (MatrixDimensionsException e) {}
 
         try {
             m = new Matrix(new double[][] {{}, {5.46}});
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_DIMENSIONS.name);
-        }
+        } catch (MatrixDimensionsException e) {}
 
         try {
             m = new Matrix(new double[][] {{2.23, 3}, {4, 5}, {6.67, 7, 8.891011}});
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_DIMENSIONS.name);
-        }
+        } catch (MatrixDimensionsException e) {}
 
         try {
             m = new Matrix(new double[][] {null, {4, 5}, {6.67, 7}});
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_DIMENSIONS.name);
-        }
+        } catch (MatrixDimensionsException e) {}
 
         try {
             m = new Matrix(new double[][] {{1, 2, 3}, {4, 5}, null});
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_DIMENSIONS.name);
-        }
+        } catch (MatrixDimensionsException e) {}
     }
 
     @Test
@@ -166,15 +144,12 @@ public class MatrixConstructorsTest {
         try {
             m = new Matrix(new BigDecimal[][] {{}});
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_DIMENSIONS.name);
-        }
+        } catch (MatrixDimensionsException e) {}
 
         try {
             m = new Matrix(new BigDecimal[][] {{}, {BigDecimal.valueOf(5.46)}});
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_DIMENSIONS.name);}
+        } catch (MatrixDimensionsException e) {}
 
         try {
             m = new Matrix(new BigDecimal[][] {
@@ -183,9 +158,7 @@ public class MatrixConstructorsTest {
                 {BigDecimal.valueOf(6.67), BigDecimal.valueOf(7), BigDecimal.valueOf(8.891011)}
             });
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_DIMENSIONS.name);
-        }
+        } catch (MatrixDimensionsException e) {}
 
         try {
             m = new Matrix(new BigDecimal[][] {
@@ -194,9 +167,7 @@ public class MatrixConstructorsTest {
                 {BigDecimal.valueOf(5), BigDecimal.valueOf(7)}
             });
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_DIMENSIONS.name);
-        }
+        } catch (MatrixDimensionsException e) {}
     }
 
     @Test
@@ -278,51 +249,37 @@ public class MatrixConstructorsTest {
         try {
             m = new Matrix("");
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_STRING.name);
-        }
+        } catch (MatrixStringException e) {}
 
         try {
             m = new Matrix("  ");
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_STRING.name);
-        }
+        } catch (MatrixStringException e) {}
 
         try {
             m = new Matrix(";");
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_STRING.name);
-        }
+        } catch (MatrixStringException e) {}
 
         try {
             m = new Matrix(" ; ");
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_STRING.name);
-        }
+        } catch (MatrixStringException e) {}
 
         try {
             m = new Matrix("5 ;   ; 6");
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_STRING.name);
-        }
+        } catch (MatrixStringException e) {}
 
         try {
             m = new Matrix(" 1 2 3 ; 4 5 6 ;");
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_STRING.name);
-        }
+        } catch (MatrixStringException e) {}
 
         try {
             m = new Matrix("; 1 2 ; 3 4");
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_STRING.name);
-        }
+        } catch (MatrixStringException e) {}
     }
 
     @Test
@@ -330,30 +287,22 @@ public class MatrixConstructorsTest {
         try {
             m = new Matrix("5 6 ; 4 invalid");
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_STRING.name);
-        }
+        } catch (MatrixStringException e) {}
 
         try {
             m = new Matrix("x");
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_STRING.name);
-        }
+        } catch (MatrixStringException e) {}
 
         try {
             m = new Matrix("5 6 5; 4 - 3");
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_STRING.name);
-        }
+        } catch (MatrixStringException e) {}
 
         try {
             m = new Matrix("[5 6] ; 4 2");
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_STRING.name);
-        }
+        } catch (MatrixStringException e) {}
     }
 
     @Test
@@ -361,9 +310,7 @@ public class MatrixConstructorsTest {
         try {
             m = new Matrix("5 6 ; 4 ");
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_DIMENSIONS.name);
-        }
+        } catch (MatrixDimensionsException e) {}
     }
 
     @Test
@@ -371,37 +318,27 @@ public class MatrixConstructorsTest {
         try {
             m = new Matrix((String) null);
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.NULL_ARGUMENT.name);
-        }
+        } catch (MatrixNullException e) {}
 
         try {
             m = new Matrix((int[][]) null);
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.NULL_ARGUMENT.name);
-        }
+        } catch (MatrixNullException e) {}
 
         try {
             m = new Matrix((double[][]) null);
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.NULL_ARGUMENT.name);
-        }
+        } catch (MatrixNullException e) {}
 
         try {
             m = new Matrix((BigDecimal[][]) null);
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.NULL_ARGUMENT.name);
-        }
+        } catch (MatrixNullException e) {}
 
         try {
             m = new Matrix((Matrix) null);
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.NULL_ARGUMENT.name);
-        }
+        } catch (MatrixNullException e) {}
     }
 
     @Test
@@ -409,22 +346,16 @@ public class MatrixConstructorsTest {
         try {
             m = new Matrix(new int[][] {});
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_DIMENSIONS.name);
-        }
+        } catch (MatrixDimensionsException e) {}
 
         try {
             m = new Matrix(new double[][] {});
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_DIMENSIONS.name);
-        }
+        } catch (MatrixDimensionsException e) {}
 
         try {
             m = new Matrix(new BigDecimal[][] {});
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_DIMENSIONS.name);
-        }
+        } catch (MatrixDimensionsException e) {}
     }
 }

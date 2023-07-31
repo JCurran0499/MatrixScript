@@ -1,6 +1,7 @@
 package Interpreters.Arithmetic;
 
-import Interpreters.Primitives.Num;
+import App.Parser.Interpreters.Arithmetic.Add;
+import App.Parser.Interpreters.Primitives.Num;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

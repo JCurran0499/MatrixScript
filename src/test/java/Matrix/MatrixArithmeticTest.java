@@ -2,6 +2,7 @@ package Matrix;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import Resources.Matrix.Matrix;
 import org.junit.jupiter.api.Test;
 
 

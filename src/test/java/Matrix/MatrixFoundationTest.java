@@ -2,6 +2,10 @@ package Matrix;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import Resources.Matrix.Exceptions.MatrixDimensionsException;
+import Resources.Matrix.Exceptions.MatrixNullException;
+import Resources.Matrix.Exceptions.MatrixOutOfBoundsException;
+import Resources.Matrix.Matrix;
 import org.junit.jupiter.api.Test;
 
 public class MatrixFoundationTest {
@@ -116,30 +120,22 @@ public class MatrixFoundationTest {
         try {
             m.getValue(-1, 1);
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.OUT_OF_BOUNDS.name);
-        }
+        } catch (MatrixOutOfBoundsException e) {}
 
         try {
             m.getValue(0, -1);
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.OUT_OF_BOUNDS.name);
-        }
+        } catch (MatrixOutOfBoundsException e) {}
 
         try {
             m.getValue(0, 4);
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.OUT_OF_BOUNDS.name);
-        }
+        } catch (MatrixOutOfBoundsException e) {}
 
         try {
             m.getValue(3, 1);
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.OUT_OF_BOUNDS.name);
-        }
+        } catch (MatrixOutOfBoundsException e) {}
     }
 
     @Test
@@ -242,30 +238,22 @@ public class MatrixFoundationTest {
         try {
             m.setValue(-1, 1, 0);
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.OUT_OF_BOUNDS.name);
-        }
+        } catch (MatrixOutOfBoundsException e) {}
 
         try {
             m.setValue(0, -1, 0);
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.OUT_OF_BOUNDS.name);
-        }
+        } catch (MatrixOutOfBoundsException e) {}
 
         try {
             m.setValue(0, 4, 0);
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.OUT_OF_BOUNDS.name);
-        }
+        } catch (MatrixOutOfBoundsException e) {}
 
         try {
             m.setValue(3, 1, 0);
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.OUT_OF_BOUNDS.name);
-        }
+        } catch (MatrixOutOfBoundsException e) {}
     }
 
     @Test
@@ -315,16 +303,12 @@ public class MatrixFoundationTest {
         try {
             m.setRow(0, null);
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.NULL_ARGUMENT.name);
-        }
+        } catch (MatrixNullException e) {}
 
         try {
             m.setRow(-1, null);
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.NULL_ARGUMENT.name);
-        }
+        } catch (MatrixNullException e) {}
     }
 
     @Test
@@ -339,23 +323,17 @@ public class MatrixFoundationTest {
         try {
             m.setRow(-1, new Matrix("0  0  0  0"));
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.OUT_OF_BOUNDS.name);
-        }
+        } catch (MatrixOutOfBoundsException e) {}
 
         try {
             m.setRow(4, new Matrix("0 0 0 0"));
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.OUT_OF_BOUNDS.name);
-        }
+        } catch (MatrixOutOfBoundsException e) {}
 
         try {
             m.setRow(6, new Matrix("0 0  0  0"));
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.OUT_OF_BOUNDS.name);
-        }
+        } catch (MatrixOutOfBoundsException e) {}
     }
 
     @Test
@@ -370,23 +348,17 @@ public class MatrixFoundationTest {
         try {
             m.setRow(0, new Matrix("0  0  0  0  0"));
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_DIMENSIONS.name);
-        }
+        } catch (MatrixDimensionsException e) {}
 
         try {
             m.setRow (0, new Matrix("0  0 "));
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_DIMENSIONS.name);
-        }
+        } catch (MatrixDimensionsException e) {}
 
         try {
             m.setRow(0, new Matrix("0 0  0 0 ; 0 0  0 0"));
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_DIMENSIONS.name);
-        }
+        } catch (MatrixDimensionsException e) {}
     }
 
     @Test
@@ -436,16 +408,12 @@ public class MatrixFoundationTest {
         try {
             m.setColumn(0, null);
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.NULL_ARGUMENT.name);
-        }
+        } catch (MatrixNullException e) {}
 
         try {
             m.setColumn(-1, null);
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.NULL_ARGUMENT.name);
-        }
+        } catch (MatrixNullException e) {}
     }
 
     @Test
@@ -460,23 +428,17 @@ public class MatrixFoundationTest {
         try {
             m.setColumn(-1, new Matrix("0 ; 0 ; 0 ; 0"));
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.OUT_OF_BOUNDS.name);
-        }
+        } catch (MatrixOutOfBoundsException e) {}
 
         try {
             m.setColumn(4, new Matrix("0 ; 0 ; 0 ; 0"));
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.OUT_OF_BOUNDS.name);
-        }
+        } catch (MatrixOutOfBoundsException e) {}
 
         try {
             m.setColumn(6, new Matrix("0 ; 0 ; 0 ; 0"));
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.OUT_OF_BOUNDS.name);
-        }
+        } catch (MatrixOutOfBoundsException e) {}
     }
 
     @Test
@@ -491,22 +453,16 @@ public class MatrixFoundationTest {
         try {
             m.setColumn(0, new Matrix("0 ; 0 ; 0 ; 0 ; 0"));
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_DIMENSIONS.name);
-        }
+        } catch (MatrixDimensionsException e) {}
 
         try {
             m.setColumn(0, new Matrix("0 ; 0 "));
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_DIMENSIONS.name);
-        }
+        } catch (MatrixDimensionsException e) {}
 
         try {
             m.setColumn(0, new Matrix("0 0 ; 0 0 ; 0 0 ; 0 0"));
             fail();
-        } catch (MatrixException e) {
-            assertEquals(e.getMessage(), MatrixExceptionMessage.INVALID_DIMENSIONS.name);
-        }
+        } catch (MatrixDimensionsException e) {}
     }
 }

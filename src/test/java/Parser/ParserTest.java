@@ -2,10 +2,11 @@ package Parser;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import Interpreters.Primitive;
+import App.Parser.Interpreters.Primitive;
+import App.Parser.Interpreters.Primitives.Num;
+import App.Parser.Parser;
 import org.junit.jupiter.api.*;
-import Interpreters.Primitives.*;
-import Interpreters.Variables.SessionHandler;
+import App.Parser.Interpreters.Variables.SessionHandler;
 
 public class ParserTest {
 
