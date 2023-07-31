@@ -175,17 +175,17 @@ public class MatrixConstructorsTest {
         try {
             m = new Matrix(new BigDecimal[][] {{new BigDecimal("")}});
             fail();
-        } catch (Exception e) {}
+        } catch (NumberFormatException e) {}
 
         try {
             m = new Matrix(new BigDecimal[][] {{new BigDecimal("invalid")}});
             fail();
-        } catch (Exception e) {}
+        } catch (NumberFormatException e) {}
 
         try {
             m = new Matrix(new BigDecimal[][] {{new BigDecimal(" 5  5")}});
             fail();
-        } catch (Exception e) {}
+        } catch (NumberFormatException e) {}
     }
 
     @Test

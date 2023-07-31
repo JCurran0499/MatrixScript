@@ -1,13 +1,8 @@
 package App.ResponsesJson;
 
-public class TokenResponse {
-    private final String sessionToken;
 
-    public TokenResponse(String sessionToken) {
-        this.sessionToken = sessionToken;
-    }
+import lombok.Getter;
 
-    public String getSessionToken() {
-        return sessionToken;
-    }
+public record TokenResponse(String sessionToken) {
+
 }

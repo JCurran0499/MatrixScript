@@ -2,6 +2,7 @@ package App.Parser.Interpreters.Primitives;
 
 import App.Parser.Interpreters.Primitive;
 import App.Parser.Interpreters.Interpreter;
+import Resources.Matrix.Exceptions.MatrixException;
 import Resources.Matrix.Matrix;
 import java.math.BigDecimal;
 
@@ -40,7 +41,7 @@ public class Mat extends Primitive {
 
         try {
             mat = new Matrix(matrixString.toString());
-        } catch (ArrayIndexOutOfBoundsException e) {
+        } catch (MatrixException e) {
             mat = null;
         }
     }

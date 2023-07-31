@@ -227,16 +227,22 @@ public class Matrix {
 
 	//returns whether the calling matrix is identical to the argument matrix,
 	//to at least the 5th decimal place
-	public boolean equals(Matrix m) {
+	public boolean equals(Matrix m, int scale) {
 		if (m == null || m.rows() != rows() || m.cols() != cols())
 			return false;
 
 		for (int i = 0; i < rows(); i++)
 			for (int j = 0; j < cols(); j++)
-				if (matrix[i][j].setScale(5,RoundingMode.HALF_UP).doubleValue() != m.matrix[i][j].setScale(5,RoundingMode.HALF_UP).doubleValue())
+				if (matrix[i][j].setScale(scale, RoundingMode.HALF_UP).compareTo(
+					m.matrix[i][j].setScale(scale, RoundingMode.HALF_UP)) != 0
+				)
 					return false;
 
 		return true;
+	}
+
+	public boolean equals(Matrix m) {
+		return equals(m, 20);
 	}
 
 	//returns the number of rows in the matrix
@@ -355,6 +361,17 @@ public class Matrix {
 		return new Matrix(m1);
 	}
 
+	//multiplies the matrix by the given value
+	public Matrix multiply(double c) {
+		BigDecimal[][] m = new BigDecimal[rows()][cols()];
+
+		for (int i = 0; i < rows(); i++)
+			for (int j = 0; j < cols(); j++)
+				m[i][j] = matrix[i][j].multiply(BigDecimal.valueOf(c), MathContext.DECIMAL128);
+
+		return new Matrix(m);
+	}
+
 	//multiplies the calling matrix by the argument matrix
 	public Matrix multiply(Matrix m) {
 		if (m == null || m.rows() != cols())
@@ -374,17 +391,6 @@ public class Matrix {
 		}
 
 		return new Matrix(m1);
-	}
-	
-	//multiplies the matrix by the given value
-	public Matrix multiply(double c) {
-		BigDecimal[][] m = new BigDecimal[rows()][cols()];
-		
-		for (int i = 0; i < rows(); i++)
-			for (int j = 0; j < cols(); j++)
-				m[i][j] = matrix[i][j].multiply(BigDecimal.valueOf(c), MathContext.DECIMAL128);
-		
-		return new Matrix(m);
 	}
 	
 	//divides the matrix by the given value

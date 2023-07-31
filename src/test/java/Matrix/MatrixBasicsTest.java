@@ -8,7 +8,7 @@ import Resources.Matrix.Exceptions.MatrixOutOfBoundsException;
 import Resources.Matrix.Matrix;
 import org.junit.jupiter.api.Test;
 
-public class MatrixFoundationTest {
+public class MatrixBasicsTest {
 
     Matrix m;
     Matrix m2;
@@ -76,6 +76,15 @@ public class MatrixFoundationTest {
         m = new Matrix(new double[][] {{1/3}});
         m2 = new Matrix(new double[][] {{1/3}});
         assertTrue(m.equals(m2));
+    }
+
+    @Test
+    public void equalsCustomScale() {
+        m = new Matrix("125.0012345678956 2.98765432112  ; 52.567890432123 6.12345678945");
+        m2 = new Matrix("125.001234567 2.98765432112  ; 52.567890432123 6.12345678945");
+        assertFalse(m.equals(m2));
+        assertFalse(m.equals(m2, 10));
+        assertTrue(m.equals(m2, 8));
     }
 
     @Test

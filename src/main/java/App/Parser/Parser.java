@@ -19,6 +19,7 @@ import App.Parser.Interpreters.Primitive;
 
 import App.Parser.Interpreters.Primitives.*;
 import App.Parser.Interpreters.Variables.Var;
+import Resources.Matrix.Exceptions.MatrixDimensionsException;
 import Resources.Matrix.Matrix;
 
 public class Parser {
@@ -325,7 +326,7 @@ public class Parser {
 
         try {
             return new Mat(new Matrix(matrixArray));
-        } catch (ArrayIndexOutOfBoundsException e) {
+        } catch (MatrixDimensionsException e) {
             return new Err("invalid matrix dimensions");
         }
     }
