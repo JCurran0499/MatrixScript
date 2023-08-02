@@ -49,14 +49,14 @@ This is not needed if you are running MatrixScript from the command line, as the
 <br/>
 <br/>
 
-#### Build the App
+#### Build the app
 This is an optional manual step, as it can be covered by the run script below.
 ```
 mvn clean package
 ```
 <br/>
 
-#### Run the App
+#### Run the app
 This script will offer you multiple options, simply select the one that is best for you.
 ```
 ./run.sh
@@ -72,7 +72,7 @@ Below are similar commands to be used to get around this limitation.
 All of these commands are to be run from the root folder.
 <br/>
 
-#### Build App
+#### Build app
 ```mvn clean package```
 <br/>
 <br/>

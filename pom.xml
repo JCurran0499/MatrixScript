@@ -25,7 +25,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>App.MatrixScript</mainClass>
+                            <mainClass>app.MatrixScript</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
