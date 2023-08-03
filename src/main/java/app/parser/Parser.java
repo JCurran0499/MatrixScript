@@ -309,7 +309,7 @@ public class Parser {
                     row.add(((Num) itemValue).num());
                 } else if (itemValue.id().equals("mat")) {
                     matrixList.remove(matrixList.size() - 1);
-                    BigDecimal[][] mat = ((Mat) itemValue).mat().toArray(new BigDecimal[0][], new BigDecimal[0]);
+                    BigDecimal[][] mat = ((Mat) itemValue).mat().mapToArray(new BigDecimal(0), BigDecimal::valueOf);
                     for (BigDecimal[] r : mat)
                         matrixList.add(Arrays.asList(r));
                 } else if (itemValue.id().equals("range")) {

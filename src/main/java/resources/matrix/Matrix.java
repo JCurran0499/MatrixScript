@@ -22,6 +22,8 @@ import resources.matrix.exceptions.MatrixNullException;
 import resources.matrix.exceptions.MatrixOutOfBoundsException;
 import resources.matrix.exceptions.MatrixStringException;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -439,17 +441,18 @@ public class Matrix {
 		
 		return new Matrix(m1);
 	}
-	
-	//returns a 2D array representation of the matrix of the given type
+
 	@SuppressWarnings("unchecked")
-	public <T> T[][] toArray(T[][] a1, T[] a2) {
-		T[][] arr = (T[][]) Arrays.copyOf(new BigDecimal[rows()][], rows(), a1.getClass());
+	public <T> T[][] mapToArray(T a, ConvertFunction<T> fun) {
+		T[] a1 = (T[]) Array.newInstance(a.getClass(), 0);
+
+		T[][] arr = (T[][]) Array.newInstance(a1.getClass(), rows());
 		for (int i = 0; i < rows(); i++)
-			arr[i] = (T[]) Arrays.copyOf(new BigDecimal[cols()], cols(), a2.getClass());
+			arr[i] = (T[]) Array.newInstance(a.getClass(), cols());
 
 		for (int i = 0; i < rows(); i++)
 			for (int j = 0; j < cols(); j++)
-				arr[i][j] = (T) matrix[i][j];
+				arr[i][j] = fun.call(matrix[i][j].doubleValue());
 
 		return arr;
 	}
@@ -683,5 +686,9 @@ public class Matrix {
 		}
 		
 		return ws;
+	}
+
+	public interface ConvertFunction<T> {
+		T call(double d);
 	}
 }

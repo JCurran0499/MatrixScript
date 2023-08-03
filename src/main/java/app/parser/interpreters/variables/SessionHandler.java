@@ -15,13 +15,13 @@ import app.MatrixScript;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 public class SessionHandler {
 
     public static final String RUN_TOKEN = "default-run-token";
 
-    private static final Map<String, LocalDateTime> sessionExpirations = new LinkedHashMap<>(); //Sessions are expired in their order of insertion
+    private static final Map<String, ZonedDateTime> sessionExpirations = new LinkedHashMap<>(); //Sessions are expired in their order of insertion
     private static final Map<String, Map<String, Primitive>> sessionMap = new HashMap<>();
 
     private static Logger logger = LoggerFactory.getLogger(MatrixScript.class);
@@ -34,7 +34,7 @@ public class SessionHandler {
             sessionMap.put(sessionToken, new HashMap<>());
 
             if (!sessionToken.equals(RUN_TOKEN)) {
-                sessionExpirations.put(sessionToken, LocalDateTime.now().plusHours(12));
+                sessionExpirations.put(sessionToken, ZonedDateTime.now().plusHours(12));
                 logger.info("new token generated: ~" + sessionToken + "~");
                 logger.info(SessionHandler.sessionCount() + " open session" +
                         (SessionHandler.sessionCount() != 1 ? "s" : ""));
@@ -75,7 +75,7 @@ public class SessionHandler {
         return sessionMap.keySet().stream().toList();
     }
 
-    public static LocalDateTime getExpiration(String sessionToken) {
+    public static ZonedDateTime getExpiration(String sessionToken) {
         return sessionExpirations.get(sessionToken);
     }
 
@@ -100,7 +100,7 @@ public class SessionHandler {
             public void run() {
                 List<String> invalidSessions = new ArrayList<>();
                 for (String s : sessionExpirations.keySet()) {
-                    if (LocalDateTime.now().isAfter(sessionExpirations.get(s)))
+                    if (ZonedDateTime.now().isAfter(sessionExpirations.get(s)))
                         invalidSessions.add(s);
                     else break;
                 }

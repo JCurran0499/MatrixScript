@@ -163,7 +163,8 @@ public class MatrixScript {
         System.out.println("|\\   /|  / \\ |_   _||  _|  | | \\ \\/ / / __|  / _| |  _|  | | | -  ||_   _|");
         System.out.println("| \\ / | / _ \\  | |  |   \\  | |  |  |  \\__ \\ | |_  |   \\  | | |  _/   | |");
         System.out.println("|_| |_|/_/ \\_\\ |_|  |_||_| |_| /_/\\_\\ |___/  \\__| |_||_| |_| |_|     | |");
-        System.out.println("\n\n");
+        System.out.println("========================================================================");
+        System.out.println("\n");
 
         SessionHandler.createSession(SessionHandler.RUN_TOKEN);
         Scanner scanner = new Scanner(System.in);

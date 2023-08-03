@@ -18,7 +18,7 @@ public class SessionListResponse {
         for (int i = 0; i < sessionCount; i++) {
             String s = sessionList.get(i);
             this.sessions[i] = new SessionJson(
-                s, SessionHandler.getExpiration(s).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                s, SessionHandler.getExpiration(s).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss z"))
             );
         }
     }
