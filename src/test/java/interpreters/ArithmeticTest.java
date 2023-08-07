@@ -1,4 +1,4 @@
-package interpreters.arithmetic;
+package interpreters;
 
 import app.parser.interpreters.arithmetic.Add;
 import app.parser.interpreters.primitives.Num;
@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class AddTest {
+public class ArithmeticTest {
 
     Add a;
 

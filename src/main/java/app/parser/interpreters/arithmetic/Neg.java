@@ -21,16 +21,16 @@ public class Neg implements Interpreter {
             return p;
 
         if (p.id().equals("num"))
-            return ((Num) p).negate();
+            return Num.cast(p).negate();
 
         if (p.id().equals("mat"))
-            return ((Mat) p).negate();
+            return Mat.cast(p).negate();
 
         if (p.id().equals("range"))
-            return ((Range) p).negate();
+            return Range.cast(p).negate();
 
         if (p.id().equals("tuple"))
-            return ((Tuple) p).negate();
+            return Tuple.cast(p).negate();
 
         return new Err("cannot negate this command");
     }

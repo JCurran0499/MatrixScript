@@ -22,7 +22,7 @@ public class Not implements Interpreter {
             return p;
 
         if (p.id().equals("bool")) {
-            return ((Bool) p).not();
+            return Bool.cast(p).not();
         }
 
         return new Err("can only reverse booleans");

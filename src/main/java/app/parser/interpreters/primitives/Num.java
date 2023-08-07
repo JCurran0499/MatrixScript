@@ -30,7 +30,7 @@ public class Num extends Primitive {
         if (!id().equals(p.id()))
             return false;
 
-        return num.compareTo(((Num) p).num) == 0;
+        return num.compareTo(Num.cast(p).num) == 0;
     }
 
     /* Logic Methods */
@@ -41,7 +41,7 @@ public class Num extends Primitive {
 
     public Primitive add(Primitive a) {
         if (a.id().equals("num")) {
-            BigDecimal n = ((Num) a).num;
+            BigDecimal n = Num.cast(a).num;
             return new Num(num.add(n));
         }
 
@@ -50,7 +50,7 @@ public class Num extends Primitive {
 
     public Primitive subtract(Primitive a) {
         if (a.id().equals("num")) {
-            BigDecimal n = ((Num) a).num;
+            BigDecimal n = Num.cast(a).num;
             return new Num(num.subtract(n));
         }
 
@@ -59,12 +59,12 @@ public class Num extends Primitive {
 
     public Primitive multiply(Primitive a) {
         if (a.id().equals("num")) {
-            BigDecimal n = ((Num) a).num;
+            BigDecimal n = Num.cast(a).num;
             return new Num(num.multiply(n));
         }
 
         else if (a.id().equals("mat")) {
-            Matrix m = ((Mat) a).mat();
+            Matrix m = Mat.cast(a).mat();
             return new Mat(m.multiply(num.doubleValue()));
         }
 
@@ -73,7 +73,7 @@ public class Num extends Primitive {
 
     public Primitive divide(Primitive a) {
         if (a.id().equals("num")) {
-            BigDecimal n = ((Num) a).num;
+            BigDecimal n = Num.cast(a).num;
             try {
                 return new Num(num.divide(n, MathContext.DECIMAL128));
             } catch (ArithmeticException e) {
@@ -85,8 +85,8 @@ public class Num extends Primitive {
     }
 
     public Primitive power(Primitive a) {
-        if (a.id().equals("num") && ((Num) a).isInteger()) {
-            BigDecimal n = ((Num) a).num;
+        if (a.id().equals("num") && Num.cast(a).isInteger()) {
+            BigDecimal n = Num.cast(a).num;
             return new Num(num.pow(n.intValue()));
         }
 
@@ -111,10 +111,10 @@ public class Num extends Primitive {
 
     public Integer compareTo(Primitive a) {
         if (a.id().equals("num"))
-            return num.compareTo(((Num) a).num);
+            return num.compareTo(Num.cast(a).num);
 
         if (a.id().equals("range"))
-            return num.compareTo(BigDecimal.valueOf(((Range) a).range()));
+            return num.compareTo(BigDecimal.valueOf(Range.cast(a).range()));
 
         return null;
     }
@@ -124,4 +124,11 @@ public class Num extends Primitive {
     }
 
     public boolean isPositive() { return (num.doubleValue() > 0); }
+
+    public static Num cast(Primitive p) {
+        if (!p.id().equals("num"))
+            throw new ClassCastException("incompatible primitive cast");
+
+        return (Num) p;
+    }
 }

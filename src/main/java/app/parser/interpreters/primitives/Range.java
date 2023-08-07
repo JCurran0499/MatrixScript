@@ -29,7 +29,7 @@ public class Range extends Primitive {
         if (!id().equals(p.id()))
             return false;
 
-        Range r = (Range) p;
+        Range r = Range.cast(p);
         return start == (r.start) && end == (r.end);
     }
 
@@ -45,10 +45,10 @@ public class Range extends Primitive {
 
     public Integer compareTo(Primitive a) {
         if (a.id().equals("num"))
-            return BigDecimal.valueOf(range()).compareTo(((Num) a).num());
+            return BigDecimal.valueOf(range()).compareTo(Num.cast(a).num());
 
         if (a.id().equals("range"))
-            return BigDecimal.valueOf(range()).compareTo(BigDecimal.valueOf(((Range) a).range()));
+            return BigDecimal.valueOf(range()).compareTo(BigDecimal.valueOf(Range.cast(a).range()));
 
         return null;
     }
@@ -65,5 +65,12 @@ public class Range extends Primitive {
         }
 
         return range;
+    }
+
+    public static Range cast(Primitive p) {
+        if (!p.id().equals("range"))
+            throw new ClassCastException("incompatible primitive cast");
+
+        return (Range) p;
     }
 }

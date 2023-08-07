@@ -139,7 +139,7 @@ public class Parser {
             if (t.type() == TokenType.NUM)
                 return new Num(new BigDecimal(t.value()));
             else if (t.type() == TokenType.BOOL)
-                return new Bool(t.value().strip().equals("true"));
+                return Bool.of(t.value().strip().equals("true"));
             else if (t.type() == TokenType.MAT)
                 return parseMatrixTokens(sessionToken, t.value());
             else if (t.type() == TokenType.PAREN)
@@ -306,14 +306,14 @@ public class Parser {
 
                 // add each item to the matrix
                 if (itemValue.id().equals("num")) {
-                    row.add(((Num) itemValue).num());
+                    row.add(Num.cast(itemValue).num());
                 } else if (itemValue.id().equals("mat")) {
                     matrixList.remove(matrixList.size() - 1);
-                    BigDecimal[][] mat = ((Mat) itemValue).mat().mapToArray(new BigDecimal(0), BigDecimal::valueOf);
+                    BigDecimal[][] mat = Mat.cast(itemValue).mat().mapToArray(new BigDecimal(0), BigDecimal::valueOf);
                     for (BigDecimal[] r : mat)
                         matrixList.add(Arrays.asList(r));
                 } else if (itemValue.id().equals("range")) {
-                    for (int v : ((Range) itemValue).fullRange()) row.add(BigDecimal.valueOf(v));
+                    for (int v : Range.cast(itemValue).fullRange()) row.add(BigDecimal.valueOf(v));
                 } else if (itemValue.id().equals("err")) {
                     return itemValue;
                 } else return new Err("invalid matrix");

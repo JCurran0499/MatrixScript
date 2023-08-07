@@ -25,7 +25,7 @@ public class Equal implements Interpreter {
         if (p2.id().equals("err"))
             return p2;
 
-        return new Bool(p1.equals(p2));
+        return Bool.of(p1.equals(p2));
     }
 
     public String id() {

@@ -26,7 +26,7 @@ public class Dim implements Interpreter {
             return p;
 
         if (p.id().equals("mat")) {
-            Matrix m = ((Mat) p).mat();
+            Matrix m = Mat.cast(p).mat();
             return new Tuple(Arrays.asList(new Interpreter[]
                     {new Num(BigDecimal.valueOf(m.rows())), new Num(BigDecimal.valueOf(m.cols()))}));
         }

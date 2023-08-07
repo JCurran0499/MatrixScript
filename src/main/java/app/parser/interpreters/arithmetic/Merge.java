@@ -29,15 +29,15 @@ public class Merge implements Interpreter {
             return p2;
 
         if (p1.id().equals("mat") && p2.id().equals("mat")) {
-            Matrix m1 = ((Mat) p1).mat();
-            Matrix m2 = ((Mat) p2).mat();
+            Matrix m1 = Mat.cast(p1).mat();
+            Matrix m2 = Mat.cast(p2).mat();
 
             return new Mat(m1.augment(m2)).solve();
         }
 
         if (p1.id().equals("num") && p2.id().equals("num")) {
-            Num n1 = (Num) p1;
-            Num n2 = (Num) p2;
+            Num n1 = Num.cast(p1);
+            Num n2 = Num.cast(p2);
             if (n1.isInteger() && n2.isInteger())
                 return new Range(n1.num().intValue(), n2.num().intValue());
             else return new Err("range must consist of integers");

@@ -20,6 +20,16 @@ public class Err extends Primitive {
     }
 
     public boolean equals(Primitive p) {
-        return false;
+        if (!id().equals(p.id()))
+            return false;
+
+        return message.equals(Err.cast(p).message);
+    }
+
+    public static Err cast(Primitive p) {
+        if (!p.id().equals("err"))
+            throw new ClassCastException("incompatible primitive cast");
+
+        return (Err) p;
     }
 }

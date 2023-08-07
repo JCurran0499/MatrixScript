@@ -29,7 +29,7 @@ public class Mat extends Primitive {
                 }
 
                 if (p.id().equals("range")) {
-                    for (int e : ((Range) p).fullRange())
+                    for (int e : Range.cast(p).fullRange())
                         matrixString.append(e).append(" ");
                 }
 
@@ -67,7 +67,7 @@ public class Mat extends Primitive {
         if (!id().equals(p.id()))
             return false;
 
-        return mat.equals(((Mat) p).mat);
+        return mat.equals(Mat.cast(p).mat);
     }
 
     /* Logic Methods */
@@ -78,7 +78,7 @@ public class Mat extends Primitive {
 
     public Primitive add(Primitive a) {
         if (a.id().equals("mat")) {
-            Matrix m = ((Mat) a).mat;
+            Matrix m = Mat.cast(a).mat;
             return new Mat(mat.add(m));
         }
 
@@ -87,7 +87,7 @@ public class Mat extends Primitive {
 
     public Primitive subtract(Primitive a) {
         if (a.id().equals("mat")) {
-            Matrix m = ((Mat) a).mat;
+            Matrix m = Mat.cast(a).mat;
             return new Mat(mat.subtract(m));
         }
 
@@ -96,12 +96,12 @@ public class Mat extends Primitive {
 
     public Primitive multiply(Primitive a) {
         if (a.id().equals("num")) {
-            BigDecimal n = ((Num) a).num();
+            BigDecimal n = Num.cast(a).num();
             return new Mat(mat.multiply(n.doubleValue()));
         }
 
         else if (a.id().equals("mat")) {
-            Matrix m = ((Mat) a).mat();
+            Matrix m = Mat.cast(a).mat();
             return new Mat(mat.multiply(m));
         }
 
@@ -110,7 +110,7 @@ public class Mat extends Primitive {
 
     public Primitive divide(Primitive a) {
         if (a.id().equals("num")) {
-            BigDecimal n = ((Num) a).num();
+            BigDecimal n = Num.cast(a).num();
             return new Mat(mat.divide(n.doubleValue()));
         }
 
@@ -118,8 +118,8 @@ public class Mat extends Primitive {
     }
 
     public Primitive power(Primitive a) {
-        if (a.id().equals("num") && ((Num) a).isInteger()) {
-            BigDecimal n = ((Num) a).num();
+        if (a.id().equals("num") && Num.cast(a).isInteger()) {
+            BigDecimal n = Num.cast(a).num();
             return new Mat(mat.toPower(n.intValue()));
         }
 
@@ -131,8 +131,8 @@ public class Mat extends Primitive {
             return new Err("invalid 'get' command");
 
         if (t.get(new Num(0)).id().equals("num") && t.get(new Num(1)).id().equals("num")) {
-            Num r = (Num) t.get(new Num(0));
-            Num c = (Num) t.get(new Num(1));
+            Num r = Num.cast(t.get(new Num(0)));
+            Num c = Num.cast(t.get(new Num(1)));
             if (!r.isInteger() || !c.isInteger())
                 return new Err("integers are required to index a matrix");
 
@@ -149,5 +149,12 @@ public class Mat extends Primitive {
 
     public Mat negate() {
         return new Mat(mat.multiply(-1));
+    }
+
+    public static Mat cast(Primitive p) {
+        if (!p.id().equals("mat"))
+            throw new ClassCastException("incompatible primitive cast");
+
+        return (Mat) p;
     }
 }

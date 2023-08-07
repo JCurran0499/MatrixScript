@@ -31,11 +31,11 @@ public class Get implements Interpreter {
 
         // --------- Computation --------- \\
         if (p1.id().equals("tuple") && p2.id().equals("mat")) {
-            return ((Mat) p2).get((Tuple) p1);
+            return Mat.cast(p2).get(Tuple.cast(p1));
         }
 
         if (p2.id().equals("tuple"))
-            return ((Tuple) p2).get(p1);
+            return Tuple.cast(p2).get(p1);
 
         return new Err("invalid 'get' command");
     }

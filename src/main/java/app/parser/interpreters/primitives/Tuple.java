@@ -49,7 +49,7 @@ public class Tuple extends Primitive {
         if (!id().equals(p.id()))
             return false;
 
-        Tuple t = (Tuple) p;
+        Tuple t = Tuple.cast(p);
         if (pList.size() != t.pList.size())
             return false;
 
@@ -73,16 +73,23 @@ public class Tuple extends Primitive {
 
     public Primitive get(Primitive index) {
         if (index.id().equals("num"))
-            return get((Num) index);
+            return get(Num.cast(index));
 
         else if (index.id().equals("range"))
-            return get((Range) index);
+            return get(Range.cast(index));
 
         else if (index.id().equals("tuple"))
-            return get((Tuple) index);
+            return get(Tuple.cast(index));
 
         else
             return new Err("invalid 'get' command on tuple");
+    }
+
+    public static Tuple cast(Primitive p) {
+        if (!p.id().equals("tuple"))
+            throw new ClassCastException("incompatible primitive cast");
+
+        return (Tuple) p;
     }
 
     private Primitive get(Num index) {
@@ -114,10 +121,10 @@ public class Tuple extends Primitive {
         List<Interpreter> newTuple = new ArrayList<>();
 
         for (Primitive p : tuple.pList) {
-            if (!p.id().equals("num") || !((Num) p).isInteger())
+            if (!p.id().equals("num") || !Num.cast(p).isInteger())
                 return new Err("index must be integer");
 
-            int i = ((Num) p).num().intValue();
+            int i = Num.cast(p).num().intValue();
             if (i < 0 || i >= length())
                 return new Err("outside tuple bounds");
 

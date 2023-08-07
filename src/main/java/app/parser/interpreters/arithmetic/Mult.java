@@ -38,7 +38,7 @@ public class Mult implements Interpreter {
         }
 
         if (p1.id().equals("mat")) {
-            return ((Mat) p1).multiply(p2).solve();
+            return Mat.cast(p1).multiply(p2).solve();
         }
 
         return new Err("invalid multiplication");

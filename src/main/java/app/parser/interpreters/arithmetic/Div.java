@@ -34,11 +34,11 @@ public class Div implements Interpreter {
         // --------- Computation --------- \\
 
         if (p1.id().equals("num")) {
-            return ((Num) p1).divide(p2).solve();
+            return Num.cast(p1).divide(p2).solve();
         }
 
         if (p1.id().equals("mat")) {
-            return ((Mat) p1).divide(p2).solve();
+            return Mat.cast(p1).divide(p2).solve();
         }
 
         return new Err("invalid division");

@@ -37,7 +37,7 @@ public class LTEqual implements Interpreter {
         if (comparison == null)
             return new Err("invalid comparison");
 
-        return new Bool(comparison <= 0);
+        return Bool.of(comparison <= 0);
     }
 
     public String id() {
