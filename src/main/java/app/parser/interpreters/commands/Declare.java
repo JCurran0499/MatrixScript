@@ -3,6 +3,7 @@ package app.parser.interpreters.commands;
 import app.parser.interpreters.Interpreter;
 import app.parser.interpreters.Primitive;
 import app.parser.interpreters.primitives.Err;
+import app.parser.interpreters.primitives.Null;
 import app.parser.interpreters.variables.SessionHandler;
 import app.parser.Token;
 
@@ -30,9 +31,9 @@ public class Declare implements Interpreter {
 
         Primitive p = expression.solve();
 
-        if (p.id().equals("err"))
+        if (Err.is(p))
             return p;
-        if (p.id().equals("null"))
+        if (Null.is(p))
             return new Err("variable '" + varName + "' must be set to a value");
 
         p.printValue = false;
@@ -41,9 +42,6 @@ public class Declare implements Interpreter {
         return p;
     }
 
-    public String id() {
-        return "declare";
-    }
 
     /* Logic Methods */
     public void addVariable(String varName, Primitive value) {

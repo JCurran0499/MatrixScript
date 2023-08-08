@@ -23,24 +23,20 @@ public class Less implements Interpreter {
         Primitive p1 = i1.solve();
         Primitive p2 = i2.solve();
 
-        if (p1.id().equals("err"))
+        if (Err.is(p1))
             return p1;
-        if (p2.id().equals("err"))
+        if (Err.is(p2))
             return p2;
 
         Integer comparison = null;
-        if (p1.id().equals("num"))
+        if (Num.is(p1))
             comparison = ((Num) p1).compareTo(p2);
-        else if (p1.id().equals("range"))
+        else if (Range.is(p1))
             comparison = ((Range) p1).compareTo(p2);
 
         if (comparison == null)
             return new Err("invalid comparison");
 
         return Bool.of(comparison < 0);
-    }
-
-    public String id() {
-        return "less";
     }
 }

@@ -1,6 +1,7 @@
 package app.parser.interpreters.primitives;
 
 import app.parser.interpreters.Primitive;
+import app.parser.interpreters.PrimitiveID;
 
 public class Err extends Primitive {
     private final String message;
@@ -12,7 +13,7 @@ public class Err extends Primitive {
     /* Base Methods */
 
     public String id() {
-        return "err";
+        return PrimitiveID.ERR.name;
     }
 
     public String string() {
@@ -26,8 +27,12 @@ public class Err extends Primitive {
         return message.equals(Err.cast(p).message);
     }
 
+    public static boolean is(Primitive p) {
+        return p.id().equals(PrimitiveID.ERR.name);
+    }
+
     public static Err cast(Primitive p) {
-        if (!p.id().equals("err"))
+        if (!Err.is(p))
             throw new ClassCastException("incompatible primitive cast");
 
         return (Err) p;

@@ -22,10 +22,10 @@ public class Dim implements Interpreter {
     public Primitive solve() {
         Primitive p = i.solve();
 
-        if (p.id().equals("err"))
+        if (Err.is(p))
             return p;
 
-        if (p.id().equals("mat")) {
+        if (Mat.is(p)) {
             Matrix m = Mat.cast(p).mat();
             return new Tuple(Arrays.asList(new Interpreter[]
                     {new Num(BigDecimal.valueOf(m.rows())), new Num(BigDecimal.valueOf(m.cols()))}));
@@ -33,6 +33,4 @@ public class Dim implements Interpreter {
 
         return new Err("invalid 'dim' command");
     }
-
-    public String id() { return "dim"; }
 }

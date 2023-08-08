@@ -1,6 +1,7 @@
 package app.parser.interpreters.primitives;
 
 import app.parser.interpreters.Primitive;
+import app.parser.interpreters.PrimitiveID;
 
 public class Bool extends Primitive {
 
@@ -22,7 +23,7 @@ public class Bool extends Primitive {
     /* Base Methods */
 
     public String id() {
-        return "bool";
+        return PrimitiveID.BOOL.name;
     }
 
     public String string() {
@@ -46,8 +47,12 @@ public class Bool extends Primitive {
         return Bool.of(!bool);
     }
 
+    public static boolean is(Primitive p) {
+        return p.id().equals(PrimitiveID.BOOL.name);
+    }
+
     public static Bool cast(Primitive p) {
-        if (!p.id().equals("bool"))
+        if (!Bool.is(p))
             throw new ClassCastException("incompatible primitive cast");
 
         return (Bool) p;

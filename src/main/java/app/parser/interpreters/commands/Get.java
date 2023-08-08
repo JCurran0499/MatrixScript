@@ -24,21 +24,19 @@ public class Get implements Interpreter {
 
         // --------- Errors --------- \\
 
-        if (p1.id().equals("err"))
+        if (Err.is(p1))
             return p1;
-        if (p2.id().equals("err"))
+        if (Err.is(p2))
             return p2;
 
         // --------- Computation --------- \\
-        if (p1.id().equals("tuple") && p2.id().equals("mat")) {
+        if (Tuple.is(p1) && Mat.is(p2)) {
             return Mat.cast(p2).get(Tuple.cast(p1));
         }
 
-        if (p2.id().equals("tuple"))
+        if (Tuple.is(p2))
             return Tuple.cast(p2).get(p1);
 
         return new Err("invalid 'get' command");
     }
-
-    public String id() { return "get"; }
 }

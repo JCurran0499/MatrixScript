@@ -2,6 +2,7 @@ package app.parser.interpreters.primitives;
 
 import app.parser.interpreters.Primitive;
 import app.parser.interpreters.Interpreter;
+import app.parser.interpreters.PrimitiveID;
 import resources.matrix.exceptions.MatrixException;
 import resources.matrix.Matrix;
 import java.math.BigDecimal;
@@ -20,15 +21,15 @@ public class Mat extends Primitive {
             for (Interpreter i : row) {
                 p = i.solve();
 
-                if (p.id().equals("num")) {
+                if (Num.is(p)) {
                     matrixString.append(p.string());
                 }
 
-                if (p.id().equals("mat")) {
+                if (Mat.is(p)) {
                     matrixString.append(p.string(), 1, p.string().length() - 1).append(" ; ");
                 }
 
-                if (p.id().equals("range")) {
+                if (Range.is(p)) {
                     for (int e : Range.cast(p).fullRange())
                         matrixString.append(e).append(" ");
                 }
@@ -56,7 +57,7 @@ public class Mat extends Primitive {
     }
 
     public String id() {
-        return "mat";
+        return PrimitiveID.MAT.name;
     }
 
     public String string() {
@@ -77,7 +78,7 @@ public class Mat extends Primitive {
     }
 
     public Primitive add(Primitive a) {
-        if (a.id().equals("mat")) {
+        if (Mat.is(a)) {
             Matrix m = Mat.cast(a).mat;
             return new Mat(mat.add(m));
         }
@@ -86,7 +87,7 @@ public class Mat extends Primitive {
     }
 
     public Primitive subtract(Primitive a) {
-        if (a.id().equals("mat")) {
+        if (Mat.is(a)) {
             Matrix m = Mat.cast(a).mat;
             return new Mat(mat.subtract(m));
         }
@@ -95,12 +96,12 @@ public class Mat extends Primitive {
     }
 
     public Primitive multiply(Primitive a) {
-        if (a.id().equals("num")) {
+        if (Num.is(a)) {
             BigDecimal n = Num.cast(a).num();
             return new Mat(mat.multiply(n.doubleValue()));
         }
 
-        else if (a.id().equals("mat")) {
+        else if (Mat.is(a)) {
             Matrix m = Mat.cast(a).mat();
             return new Mat(mat.multiply(m));
         }
@@ -109,7 +110,7 @@ public class Mat extends Primitive {
     }
 
     public Primitive divide(Primitive a) {
-        if (a.id().equals("num")) {
+        if (Num.is(a)) {
             BigDecimal n = Num.cast(a).num();
             return new Mat(mat.divide(n.doubleValue()));
         }
@@ -118,7 +119,7 @@ public class Mat extends Primitive {
     }
 
     public Primitive power(Primitive a) {
-        if (a.id().equals("num") && Num.cast(a).isInteger()) {
+        if (Num.is(a) && Num.cast(a).isInteger()) {
             BigDecimal n = Num.cast(a).num();
             return new Mat(mat.toPower(n.intValue()));
         }
@@ -130,7 +131,7 @@ public class Mat extends Primitive {
         if (t.length() != 2)
             return new Err("invalid 'get' command");
 
-        if (t.get(new Num(0)).id().equals("num") && t.get(new Num(1)).id().equals("num")) {
+        if (Num.is(t.get(new Num(0))) && Num.is(t.get(new Num(1)))) {
             Num r = Num.cast(t.get(new Num(0)));
             Num c = Num.cast(t.get(new Num(1)));
             if (!r.isInteger() || !c.isInteger())
@@ -151,8 +152,12 @@ public class Mat extends Primitive {
         return new Mat(mat.multiply(-1));
     }
 
+    public static boolean is(Primitive p) {
+        return p.id().equals(PrimitiveID.MAT.name);
+    }
+
     public static Mat cast(Primitive p) {
-        if (!p.id().equals("mat"))
+        if (!Mat.is(p))
             throw new ClassCastException("incompatible primitive cast");
 
         return (Mat) p;

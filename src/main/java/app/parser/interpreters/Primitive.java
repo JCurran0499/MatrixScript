@@ -8,6 +8,8 @@ public abstract class Primitive implements Interpreter {
         return this;
     }
 
+    public abstract String id();
+    
     public abstract String string();
 
     public abstract boolean equals(Primitive p);

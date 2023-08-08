@@ -305,16 +305,16 @@ public class Parser {
                 Primitive itemValue = parseTokens(sessionToken, tokenize(item)).solve();
 
                 // add each item to the matrix
-                if (itemValue.id().equals("num")) {
+                if (Num.is(itemValue)) {
                     row.add(Num.cast(itemValue).num());
-                } else if (itemValue.id().equals("mat")) {
+                } else if (Mat.is(itemValue)) {
                     matrixList.remove(matrixList.size() - 1);
                     BigDecimal[][] mat = Mat.cast(itemValue).mat().mapToArray(new BigDecimal(0), BigDecimal::valueOf);
                     for (BigDecimal[] r : mat)
                         matrixList.add(Arrays.asList(r));
-                } else if (itemValue.id().equals("range")) {
+                } else if (Range.is(itemValue)) {
                     for (int v : Range.cast(itemValue).fullRange()) row.add(BigDecimal.valueOf(v));
-                } else if (itemValue.id().equals("err")) {
+                } else if (Err.is(itemValue)) {
                     return itemValue;
                 } else return new Err("invalid matrix");
             }

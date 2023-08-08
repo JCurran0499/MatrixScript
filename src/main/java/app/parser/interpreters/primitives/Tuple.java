@@ -2,6 +2,7 @@ package app.parser.interpreters.primitives;
 
 import app.parser.interpreters.Interpreter;
 import app.parser.interpreters.Primitive;
+import app.parser.interpreters.PrimitiveID;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,7 @@ public class Tuple extends Primitive {
 
     public Primitive solve() {
         for (Primitive p : pList) {
-            if (p.id().equals("err"))
+            if (Err.is(p))
                 return p;
         }
 
@@ -28,7 +29,7 @@ public class Tuple extends Primitive {
     }
 
     public String id() {
-        return "tuple";
+        return PrimitiveID.TUPLE.name;
     }
 
     public String string() {
@@ -72,25 +73,31 @@ public class Tuple extends Primitive {
     }
 
     public Primitive get(Primitive index) {
-        if (index.id().equals("num"))
+        if (Num.is(index))
             return get(Num.cast(index));
 
-        else if (index.id().equals("range"))
+        else if (Range.is(index))
             return get(Range.cast(index));
 
-        else if (index.id().equals("tuple"))
+        else if (Tuple.is(index))
             return get(Tuple.cast(index));
 
         else
             return new Err("invalid 'get' command on tuple");
     }
 
+    public static boolean is(Primitive p) {
+        return p.id().equals(PrimitiveID.TUPLE.name);
+    }
+
     public static Tuple cast(Primitive p) {
-        if (!p.id().equals("tuple"))
+        if (!Tuple.is(p))
             throw new ClassCastException("incompatible primitive cast");
 
         return (Tuple) p;
     }
+
+    /* Helper Methods */
 
     private Primitive get(Num index) {
         if (!index.isInteger())
@@ -121,7 +128,7 @@ public class Tuple extends Primitive {
         List<Interpreter> newTuple = new ArrayList<>();
 
         for (Primitive p : tuple.pList) {
-            if (!p.id().equals("num") || !Num.cast(p).isInteger())
+            if (!Num.is(p) || !Num.cast(p).isInteger())
                 return new Err("index must be integer");
 
             int i = Num.cast(p).num().intValue();

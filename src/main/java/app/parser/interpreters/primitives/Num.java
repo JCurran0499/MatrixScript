@@ -3,6 +3,8 @@ package app.parser.interpreters.primitives;
 import app.parser.interpreters.Primitive;
 import java.math.BigDecimal;
 import java.math.MathContext;
+
+import app.parser.interpreters.PrimitiveID;
 import resources.matrix.Matrix;
 
 public class Num extends Primitive {
@@ -19,7 +21,7 @@ public class Num extends Primitive {
     /* Base Methods */
 
     public String id() {
-        return "num";
+        return PrimitiveID.NUM.name;
     }
 
     public String string() {
@@ -40,7 +42,7 @@ public class Num extends Primitive {
     }
 
     public Primitive add(Primitive a) {
-        if (a.id().equals("num")) {
+        if (Num.is(a)) {
             BigDecimal n = Num.cast(a).num;
             return new Num(num.add(n));
         }
@@ -49,7 +51,7 @@ public class Num extends Primitive {
     }
 
     public Primitive subtract(Primitive a) {
-        if (a.id().equals("num")) {
+        if (Num.is(a)) {
             BigDecimal n = Num.cast(a).num;
             return new Num(num.subtract(n));
         }
@@ -58,12 +60,12 @@ public class Num extends Primitive {
     }
 
     public Primitive multiply(Primitive a) {
-        if (a.id().equals("num")) {
+        if (Num.is(a)) {
             BigDecimal n = Num.cast(a).num;
             return new Num(num.multiply(n));
         }
 
-        else if (a.id().equals("mat")) {
+        else if (Mat.is(a)) {
             Matrix m = Mat.cast(a).mat();
             return new Mat(m.multiply(num.doubleValue()));
         }
@@ -72,7 +74,7 @@ public class Num extends Primitive {
     }
 
     public Primitive divide(Primitive a) {
-        if (a.id().equals("num")) {
+        if (Num.is(a)) {
             BigDecimal n = Num.cast(a).num;
             try {
                 return new Num(num.divide(n, MathContext.DECIMAL128));
@@ -85,7 +87,7 @@ public class Num extends Primitive {
     }
 
     public Primitive power(Primitive a) {
-        if (a.id().equals("num") && Num.cast(a).isInteger()) {
+        if (Num.is(a) && Num.cast(a).isInteger()) {
             BigDecimal n = Num.cast(a).num;
             return new Num(num.pow(n.intValue()));
         }
@@ -110,10 +112,10 @@ public class Num extends Primitive {
     }
 
     public Integer compareTo(Primitive a) {
-        if (a.id().equals("num"))
+        if (Num.is(a))
             return num.compareTo(Num.cast(a).num);
 
-        if (a.id().equals("range"))
+        if (Range.is(a))
             return num.compareTo(BigDecimal.valueOf(Range.cast(a).range()));
 
         return null;
@@ -125,8 +127,12 @@ public class Num extends Primitive {
 
     public boolean isPositive() { return (num.doubleValue() > 0); }
 
+    public static boolean is(Primitive p) {
+        return p.id().equals(PrimitiveID.NUM.name);
+    }
+
     public static Num cast(Primitive p) {
-        if (!p.id().equals("num"))
+        if (!Num.is(p))
             throw new ClassCastException("incompatible primitive cast");
 
         return (Num) p;

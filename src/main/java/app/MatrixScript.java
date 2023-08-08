@@ -4,6 +4,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import java.util.UUID;
 import app.parser.interpreters.Primitive;
+import app.parser.interpreters.primitives.Err;
+import app.parser.interpreters.primitives.Mat;
 import app.parser.interpreters.primitives.Null;
 import app.parser.Parser;
 import app.parser.interpreters.variables.SessionHandler;
@@ -94,14 +96,13 @@ public class MatrixScript {
             String command = body.asText();
             Primitive result = execute(sessionToken, command);
 
-            String response;
-            if (result.id().equals("mat") && result.printValue) {
+            if (Mat.is(result) && result.printValue) {
                 String matString = result.string().replaceAll("\n", "n");
                 return mapper.valueToTree(
                     new CommandResponse("success", null, matString, null)
                 );
             }
-            else if (result.id().equals("err") && result.printValue) {
+            else if (Err.is(result) && result.printValue) {
                 return mapper.valueToTree(
                     new CommandResponse("error", null, null, result.string())
                 );
@@ -179,7 +180,7 @@ public class MatrixScript {
             else {
 
                 Primitive result = execute(SessionHandler.RUN_TOKEN, command);
-                if (!result.id().equals("null") && result.printValue)
+                if (!Null.is(result) && result.printValue)
                     System.out.println(result.string() + "\n");
                 else
                     result.printValue = true;

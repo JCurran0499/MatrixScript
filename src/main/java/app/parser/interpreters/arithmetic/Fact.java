@@ -17,17 +17,12 @@ public class Fact implements Interpreter {
     public Primitive solve() {
         Primitive p = i.solve();
 
-        if (p.id().equals("err"))
+        if (Err.is(p))
             return p;
 
-        if (p.id().equals("num"))
+        if (Num.is(p))
             return ((Num) p).factorial();
 
         return new Err("invalid factorial");
     }
-
-    public String id() {
-        return "fact";
-    }
-
 }

@@ -1,6 +1,7 @@
 package app.parser.interpreters.primitives;
 
 import app.parser.interpreters.Primitive;
+import app.parser.interpreters.PrimitiveID;
 
 public class Null extends Primitive {
     private static final Null nullReturn = new Null();
@@ -8,7 +9,7 @@ public class Null extends Primitive {
     private Null() {}
 
     public String id() {
-        return "null";
+        return PrimitiveID.NULL.name;
     }
 
     public String string() {
@@ -21,5 +22,9 @@ public class Null extends Primitive {
 
     public static Null returnNull() {
         return nullReturn;
+    }
+
+    public static boolean is(Primitive p) {
+        return p.id().equals(PrimitiveID.NULL.name);
     }
 }

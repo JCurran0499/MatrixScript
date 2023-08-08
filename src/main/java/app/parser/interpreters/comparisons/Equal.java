@@ -3,6 +3,7 @@ package app.parser.interpreters.comparisons;
 import app.parser.interpreters.Interpreter;
 import app.parser.interpreters.Primitive;
 import app.parser.interpreters.primitives.Bool;
+import app.parser.interpreters.primitives.Err;
 
 public class Equal implements Interpreter {
 
@@ -20,15 +21,11 @@ public class Equal implements Interpreter {
         Primitive p1 = i1.solve();
         Primitive p2 = i2.solve();
 
-        if (p1.id().equals("err"))
+        if (Err.is(p1))
             return p1;
-        if (p2.id().equals("err"))
+        if (Err.is(p2))
             return p2;
 
         return Bool.of(p1.equals(p2));
-    }
-
-    public String id() {
-        return "equal";
     }
 }

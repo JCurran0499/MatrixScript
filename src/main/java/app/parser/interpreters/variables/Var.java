@@ -22,8 +22,4 @@ public class Var implements Interpreter {
 
         return SessionHandler.getVar(token, name);
     }
-
-    public String id() {
-        return "var";
-    }
 }

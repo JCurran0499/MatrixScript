@@ -1,6 +1,7 @@
 package app.parser.interpreters.primitives;
 
 import app.parser.interpreters.Primitive;
+import app.parser.interpreters.PrimitiveID;
 
 import java.math.BigDecimal;
 import java.lang.Math;
@@ -18,7 +19,7 @@ public class Range extends Primitive {
     /* Base Methods */
 
     public String id() {
-        return "range";
+        return PrimitiveID.RANGE.name;
     }
 
     public String string() {
@@ -44,10 +45,10 @@ public class Range extends Primitive {
     }
 
     public Integer compareTo(Primitive a) {
-        if (a.id().equals("num"))
+        if (Num.is(a))
             return BigDecimal.valueOf(range()).compareTo(Num.cast(a).num());
 
-        if (a.id().equals("range"))
+        if (Range.is(a))
             return BigDecimal.valueOf(range()).compareTo(BigDecimal.valueOf(Range.cast(a).range()));
 
         return null;
@@ -67,8 +68,12 @@ public class Range extends Primitive {
         return range;
     }
 
+    public static boolean is(Primitive p) {
+        return p.id().equals(PrimitiveID.RANGE.name);
+    }
+
     public static Range cast(Primitive p) {
-        if (!p.id().equals("range"))
+        if (!Range.is(p))
             throw new ClassCastException("incompatible primitive cast");
 
         return (Range) p;

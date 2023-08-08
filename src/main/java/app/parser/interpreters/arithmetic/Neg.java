@@ -17,25 +17,21 @@ public class Neg implements Interpreter {
     public Primitive solve() {
         Primitive p = i.solve();
 
-        if (p.id().equals("err"))
+        if (Err.is(p))
             return p;
 
-        if (p.id().equals("num"))
+        if (Num.is(p))
             return Num.cast(p).negate();
 
-        if (p.id().equals("mat"))
+        if (Mat.is(p))
             return Mat.cast(p).negate();
 
-        if (p.id().equals("range"))
+        if (Range.is(p))
             return Range.cast(p).negate();
 
-        if (p.id().equals("tuple"))
+        if (Tuple.is(p))
             return Tuple.cast(p).negate();
 
         return new Err("cannot negate this command");
-    }
-
-    public String id() {
-        return "neg";
     }
 }

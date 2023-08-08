@@ -2,6 +2,7 @@ package app.parser.interpreters.comparisons;
 
 import app.parser.interpreters.Interpreter;
 import app.parser.interpreters.Primitive;
+import app.parser.interpreters.PrimitiveID;
 import app.parser.interpreters.primitives.Bool;
 import app.parser.interpreters.primitives.Err;
 
@@ -18,17 +19,13 @@ public class Not implements Interpreter {
     public Primitive solve() {
         Primitive p = i.solve();
 
-        if (p.id().equals("err"))
+        if (Err.is(p))
             return p;
 
-        if (p.id().equals("bool")) {
+        if (Bool.is(p)) {
             return Bool.cast(p).not();
         }
 
         return new Err("can only reverse booleans");
-    }
-
-    public String id() {
-        return "not";
     }
 }

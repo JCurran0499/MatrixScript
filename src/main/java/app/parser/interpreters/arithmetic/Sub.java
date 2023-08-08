@@ -4,6 +4,7 @@ import app.parser.interpreters.Interpreter;
 import app.parser.interpreters.Primitive;
 import app.parser.interpreters.primitives.Err;
 import app.parser.interpreters.primitives.Mat;
+import app.parser.interpreters.primitives.Null;
 import app.parser.interpreters.primitives.Num;
 
 public class Sub implements Interpreter {
@@ -23,28 +24,24 @@ public class Sub implements Interpreter {
 
         // --------- Errors --------- \\
 
-        if (p1.id().equals("err"))
+        if (Err.is(p1))
             return p1;
-        if (p2.id().equals("err"))
+        if (Err.is(p2))
             return p2;
 
-        if (p2.id().equals("null"))
+        if (Null.is(p2))
             return new Err("imbalanced subtraction");
 
         // --------- Computation --------- \\
 
-        if (p1.id().equals("num")) {
+        if (Num.is(p1)) {
             return Num.cast(p1).subtract(p2).solve();
         }
 
-        if (p1.id().equals("mat")) {
+        if (Mat.is(p1)) {
             return Mat.cast(p1).subtract(p2).solve();
         }
 
         return new Err("invalid subtraction");
-    }
-
-    public String id() {
-        return "sub";
     }
 }
