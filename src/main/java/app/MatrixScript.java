@@ -1,13 +1,12 @@
 package app;
 
-import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 import java.util.UUID;
-import app.parser.interpreters.Primitive;
-import app.parser.interpreters.primitives.Err;
-import app.parser.interpreters.primitives.Mat;
-import app.parser.interpreters.primitives.Null;
-import app.parser.Parser;
+import app.parser.Primitive;
+import app.parser.primitives.Err;
+import app.parser.primitives.Mat;
+import app.parser.primitives.Null;
+import app.parser.parser.Parser;
 import app.parser.interpreters.variables.SessionHandler;
 import app.responses.CommandResponse;
 import app.responses.SessionListResponse;
@@ -18,11 +17,23 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import io.github.cdimascio.dotenv.Dotenv;
-//import software.amazon.awssdk.*;
+import software.amazon.awssdk.services.sns.SnsClient;
+import software.amazon.awssdk.services.sns.model.PublishRequest;
+import software.amazon.awssdk.services.ssm.SsmClient;
+import software.amazon.awssdk.services.ssm.model.GetParameterRequest;
+import software.amazon.awssdk.services.ssm.model.GetParameterResponse;
+import software.amazon.awssdk.regions.Region;
+import spark.Request;
 
 import static spark.Spark.*;
 
 public class MatrixScript {
+
+    private static final String ERROR_MESSAGE = "An error has occurred while a user was using MatrixScript.\n\n" +
+        "The command causing the error was \"%s\".\nError message:\n%s";
+
+    private static final String ERROR_SUBJECT = "[ALERT] MatrixScript Error";
+
 
     public static void main(String[] args) {
         if (args.length > 0 && args[0].equals("run"))
@@ -35,8 +46,17 @@ public class MatrixScript {
     private static void runAPI() {
         Dotenv env = Dotenv.load();
         Logger logger = LoggerFactory.getLogger(MatrixScript.class);
+
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
+        SnsClient sns = SnsClient.builder()
+            .region(Region.US_EAST_1)
+            .build();
+
+        SsmClient ssm = SsmClient.builder()
+            .region(Region.US_EAST_1)
+            .build();
 
         SessionHandler.initiateSessionManager();
 
@@ -94,30 +114,21 @@ public class MatrixScript {
             }
 
             String command = body.asText();
-            Primitive result = execute(sessionToken, command);
+            Primitive result;
+            try {
+                result = execute(sessionToken, command);
+            } catch (Exception e) {
+                sns.publish(PublishRequest.builder()
+                    .topicArn(env.get("SNS"))
+                    .message(String.format(ERROR_MESSAGE, command, e.getLocalizedMessage()))
+                    .subject(ERROR_SUBJECT)
+                    .build()
+                );
+                halt(500, "Unexpected internal server error");
+                return "";
+            }
 
-            if (Mat.is(result) && result.printValue) {
-                String matString = result.string().replaceAll("\n", "n");
-                return mapper.valueToTree(
-                    new CommandResponse("success", null, matString, null)
-                );
-            }
-            else if (Err.is(result) && result.printValue) {
-                return mapper.valueToTree(
-                    new CommandResponse("error", null, null, result.string())
-                );
-            }
-            else if (result.printValue) {
-                return mapper.valueToTree(
-                    new CommandResponse("success", result.string(), null, null)
-                );
-            }
-            else {
-                result.printValue = true;
-                return mapper.valueToTree(
-                    new CommandResponse("success", "", null, null)
-                );
-            }
+            return commandJson(mapper, result);
         });
 
 
@@ -136,21 +147,7 @@ public class MatrixScript {
 
             get("/list-sessions", (req, res) -> {
                 setJSONHeader(res);
-
-                StringBuilder sessionList = new StringBuilder(
-                    "{\"sessionCount\": " + SessionHandler.sessionCount() + ", \"sessions\": ["
-                );
-
-                for (String t : SessionHandler.tokens()) {
-                    sessionList.append(String.format(
-                        "{\"token\": \"%s\", \"expiration\": \"%s\"},",
-                        t, SessionHandler.getExpiration(t).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-                    );
-                }
-                if (SessionHandler.sessionCount() > 0) {
-                    sessionList.deleteCharAt(sessionList.length() - 1);
-                }
-                sessionList.append("]}");
+                authorize(ssm, req);
 
                 return mapper.valueToTree(
                     new SessionListResponse(SessionHandler.sessionCount(), SessionHandler.tokens())
@@ -194,11 +191,32 @@ public class MatrixScript {
         if (command.contains("//"))
             command = command.substring(0, command.indexOf("//")).stripTrailing();
 
-        if (command.equals("quit") || command.equals("exit")) {
-            return Null.returnNull();
-        }
-
         return Parser.parse(sessionToken, command).solve();
+    }
+
+    private static JsonNode commandJson(ObjectMapper mapper, Primitive result) {
+        if (Mat.is(result) && result.printValue) {
+            String matString = result.string().replaceAll("\n", "n");
+            return mapper.valueToTree(
+                new CommandResponse("success", null, matString, null)
+            );
+        }
+        else if (Err.is(result) && result.printValue) {
+            return mapper.valueToTree(
+                new CommandResponse("error", null, null, result.string())
+            );
+        }
+        else if (result.printValue) {
+            return mapper.valueToTree(
+                new CommandResponse("success", result.string(), null, null)
+            );
+        }
+        else {
+            result.printValue = true;
+            return mapper.valueToTree(
+                new CommandResponse("success", "", null, null)
+            );
+        }
     }
 
     private static void setCORSHeaders(spark.Response res, Dotenv env) {
@@ -210,5 +228,16 @@ public class MatrixScript {
 
     private static void setJSONHeader(spark.Response res) {
         res.header("Content-Type", "application/json");
+    }
+
+    private static void authorize(SsmClient ssm, Request req) {
+        GetParameterResponse response = ssm.getParameter(GetParameterRequest.builder()
+            .name("matrixscript_private_endpoint_key")
+            .withDecryption(true)
+            .build()
+        );
+
+        if (!req.headers("Authorization").equals("Bearer " + response.parameter().value()))
+            halt(403, "Access forbidden: invalid key");
     }
 }

@@ -1,11 +1,11 @@
 package app.parser.interpreters.commands;
 
-import app.parser.interpreters.Interpreter;
-import app.parser.interpreters.Primitive;
-import app.parser.interpreters.primitives.Err;
-import app.parser.interpreters.primitives.Null;
+import app.parser.Interpreter;
+import app.parser.Primitive;
+import app.parser.primitives.Err;
+import app.parser.primitives.Null;
 import app.parser.interpreters.variables.SessionHandler;
-import app.parser.Token;
+import app.parser.parser.Token;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

@@ -1,4 +1,4 @@
-package app.parser.interpreters;
+package app.parser;
 
 public interface Interpreter {
     Primitive solve();

@@ -1,8 +1,8 @@
-package app.parser.interpreters.primitives;
+package app.parser.primitives;
 
-import app.parser.interpreters.Interpreter;
-import app.parser.interpreters.Primitive;
-import app.parser.interpreters.PrimitiveID;
+import app.parser.Interpreter;
+import app.parser.Primitive;
+import app.parser.PrimitiveID;
 
 import java.util.ArrayList;
 import java.util.List;

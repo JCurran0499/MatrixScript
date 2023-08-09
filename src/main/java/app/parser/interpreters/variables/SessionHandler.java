@@ -1,6 +1,6 @@
 package app.parser.interpreters.variables;
 
-import app.parser.interpreters.Primitive;
+import app.parser.Primitive;
 
 import java.util.Map;
 import java.util.HashMap;

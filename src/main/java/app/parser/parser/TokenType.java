@@ -1,4 +1,4 @@
-package app.parser;
+package app.parser.parser;
 
 public enum TokenType {
     PAREN, MAT,

@@ -1,24 +1,20 @@
-package app.parser;
+package app.parser.parser;
 
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import java.math.BigDecimal;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+import app.parser.Interpreter;
+import app.parser.Primitive;
 import app.parser.interpreters.arithmetic.*;
 import app.parser.interpreters.commands.Declare;
 import app.parser.interpreters.commands.Dim;
 import app.parser.interpreters.commands.Get;
 import app.parser.interpreters.comparisons.*;
-import app.parser.interpreters.Interpreter;
-import app.parser.interpreters.Primitive;
-
-import app.parser.interpreters.primitives.*;
 import app.parser.interpreters.variables.Var;
+import app.parser.primitives.*;
 import resources.matrix.exceptions.MatrixDimensionsException;
 import resources.matrix.Matrix;
 

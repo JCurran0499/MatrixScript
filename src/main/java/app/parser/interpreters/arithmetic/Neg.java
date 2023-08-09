@@ -1,8 +1,8 @@
 package app.parser.interpreters.arithmetic;
 
-import app.parser.interpreters.Interpreter;
-import app.parser.interpreters.Primitive;
-import app.parser.interpreters.primitives.*;
+import app.parser.Interpreter;
+import app.parser.Primitive;
+import app.parser.primitives.*;
 
 public class Neg implements Interpreter {
 

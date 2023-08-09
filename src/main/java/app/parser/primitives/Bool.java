@@ -1,7 +1,7 @@
-package app.parser.interpreters.primitives;
+package app.parser.primitives;
 
-import app.parser.interpreters.Primitive;
-import app.parser.interpreters.PrimitiveID;
+import app.parser.Primitive;
+import app.parser.PrimitiveID;
 
 public class Bool extends Primitive {
 

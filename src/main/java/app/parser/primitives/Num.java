@@ -1,10 +1,10 @@
-package app.parser.interpreters.primitives;
+package app.parser.primitives;
 
-import app.parser.interpreters.Primitive;
+import app.parser.Primitive;
 import java.math.BigDecimal;
 import java.math.MathContext;
 
-import app.parser.interpreters.PrimitiveID;
+import app.parser.PrimitiveID;
 import resources.matrix.Matrix;
 
 public class Num extends Primitive {

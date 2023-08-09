@@ -1,9 +1,9 @@
 package app.parser.interpreters.arithmetic;
 
-import app.parser.interpreters.Interpreter;
-import app.parser.interpreters.Primitive;
-import app.parser.interpreters.primitives.Err;
-import app.parser.interpreters.primitives.Num;
+import app.parser.Interpreter;
+import app.parser.Primitive;
+import app.parser.primitives.Err;
+import app.parser.primitives.Num;
 
 public class Fact implements Interpreter {
     private final Interpreter i;

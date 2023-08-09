@@ -1,9 +1,9 @@
 package app.parser.interpreters.comparisons;
 
-import app.parser.interpreters.Interpreter;
-import app.parser.interpreters.Primitive;
-import app.parser.interpreters.primitives.Bool;
-import app.parser.interpreters.primitives.Err;
+import app.parser.Interpreter;
+import app.parser.Primitive;
+import app.parser.primitives.Bool;
+import app.parser.primitives.Err;
 
 public class Equal implements Interpreter {
 

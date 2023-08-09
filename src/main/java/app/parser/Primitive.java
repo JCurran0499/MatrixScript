@@ -1,4 +1,4 @@
-package app.parser.interpreters;
+package app.parser;
 
 public abstract class Primitive implements Interpreter {
 

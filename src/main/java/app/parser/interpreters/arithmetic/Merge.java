@@ -1,12 +1,12 @@
 package app.parser.interpreters.arithmetic;
 
-import app.parser.interpreters.Interpreter;
-import app.parser.interpreters.Primitive;
+import app.parser.Interpreter;
+import app.parser.Primitive;
 import resources.matrix.Matrix;
-import app.parser.interpreters.primitives.Err;
-import app.parser.interpreters.primitives.Mat;
-import app.parser.interpreters.primitives.Num;
-import app.parser.interpreters.primitives.Range;
+import app.parser.primitives.Err;
+import app.parser.primitives.Mat;
+import app.parser.primitives.Num;
+import app.parser.primitives.Range;
 
 public class Merge implements Interpreter {
 

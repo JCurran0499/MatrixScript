@@ -1,10 +1,10 @@
 package app.parser.interpreters.commands;
 
-import app.parser.interpreters.Interpreter;
-import app.parser.interpreters.Primitive;
-import app.parser.interpreters.primitives.Err;
-import app.parser.interpreters.primitives.Mat;
-import app.parser.interpreters.primitives.Tuple;
+import app.parser.Interpreter;
+import app.parser.Primitive;
+import app.parser.primitives.Err;
+import app.parser.primitives.Mat;
+import app.parser.primitives.Tuple;
 
 public class Get implements Interpreter {
 

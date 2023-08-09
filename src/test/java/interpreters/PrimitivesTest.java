@@ -1,6 +1,6 @@
 package interpreters;
 
-import app.parser.interpreters.primitives.*;
+import app.parser.primitives.*;
 import org.junit.jupiter.api.Test;
 import resources.matrix.Matrix;
 
