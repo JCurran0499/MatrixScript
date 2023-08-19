@@ -2,9 +2,9 @@ package parser;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import app.parser.Primitive;
-import app.parser.primitives.Num;
-import app.parser.parser.Parser;
+import app.parser.interpreters.Primitive;
+import app.parser.interpreters.primitives.Num;
+import app.parser.Parser;
 import org.junit.jupiter.api.*;
 import app.parser.interpreters.variables.SessionHandler;
 

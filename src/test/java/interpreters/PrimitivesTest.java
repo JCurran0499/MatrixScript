@@ -1,9 +1,11 @@
 package interpreters;
 
-import app.parser.primitives.*;
+import app.parser.interpreters.Interpreter;
+import app.parser.interpreters.primitives.*;
 import org.junit.jupiter.api.Test;
 import resources.matrix.Matrix;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,7 +37,7 @@ public class PrimitivesTest {
 
         assertFalse(b.equals(new Err("test error")));
         assertFalse(b.equals(new Mat(new Matrix("5 6 7"))));
-        assertFalse(b.equals(Null.returnNull()));
+        assertFalse(b.equals(Null.instance()));
         assertFalse(b.equals(new Num(5)));
     }
 
@@ -54,12 +56,23 @@ public class PrimitivesTest {
         assertFalse(e.equals(new Err("This is a test error message")));
 
         assertFalse(e.equals(new Num(3)));
+        assertFalse(e.equals(Null.instance()));
     }
 
     @Test
     public void errString() {
         e = new Err("this is another test error message");
         assertEquals(e.string(), "Error: this is another test error message");
+    }
+
+    @Test
+    public void matConstructorBasic() {
+        m = new Mat(new Interpreter[][] {
+            {new Num(5), new Num(7.5)},
+            {new Num(new BigDecimal("7.43")), new Num(0)}
+        });
+
+        assertTrue(m.mat().equals(new Matrix("5 7.5 ; 7.43 0")));
     }
 
 
@@ -80,7 +93,7 @@ public class PrimitivesTest {
         n = new Num(5);
         assertEquals(n.solve(), n);
 
-        assertEquals(Null.returnNull().solve(), Null.returnNull());
+        assertEquals(Null.instance().solve(), Null.instance());
 
         r = new Range(0, 5);
         assertEquals(r.solve(), r);

@@ -1,6 +1,10 @@
 package app.responses;
 
 
-public record TokenResponse(String sessionToken) {
+import org.jetbrains.annotations.Nullable;
+
+public record TokenResponse(
+    @Nullable String status,
+    String sessionToken) {
 
 }
