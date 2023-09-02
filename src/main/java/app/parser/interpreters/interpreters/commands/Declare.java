@@ -49,7 +49,6 @@ public class Declare implements Interpreter {
     }
 
     private static boolean isValidVariable(String name) {
-        Matcher m;
         for (Pattern p : Token.equivalentSymbols.values())
             if (p.matcher(name).matches())
                 return false;

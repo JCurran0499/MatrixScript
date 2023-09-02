@@ -24,7 +24,7 @@ public class SessionHandler {
     private static final Map<String, ZonedDateTime> sessionExpirations = new LinkedHashMap<>(); //Sessions are expired in their order of insertion
     private static final Map<String, Map<String, Primitive>> sessionMap = new HashMap<>();
 
-    private static Logger logger = LoggerFactory.getLogger(MatrixScript.class);
+    private static final Logger logger = LoggerFactory.getLogger(MatrixScript.class);
 
 
     /* ---------- Session Methods ---------- */

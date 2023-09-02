@@ -23,7 +23,6 @@ import resources.matrix.exceptions.MatrixOutOfBoundsException;
 import resources.matrix.exceptions.MatrixStringException;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Optional;
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -465,8 +464,7 @@ public class Matrix {
 		BigDecimal[][] m1 = new BigDecimal[rows()][m.cols() + cols()];
 		
 		for (int i = 0; i < rows(); i++) {
-			for (int j = 0; j < cols(); j++)
-				m1[i][j] = matrix[i][j];
+			if (cols() >= 0) System.arraycopy(matrix[i], 0, m1[i], 0, cols());
 
 			for (int j = 0; j < m.cols(); j++)
 				m1[i][cols() + j] = m.matrix[i][j];
@@ -649,14 +647,12 @@ public class Matrix {
 		
 		if (d % 1 == 0) {
 			l = Integer.toString((int) d).length();
-			for (int i = 0; i < w - l; i++)
-				val.append(" ");
+			val.append(" ".repeat(Math.max(0, w - l)));
 			val.append((int) d);
 		}
 		else {
 			l = Double.toString(d).length();
-			for (int i = 0; i < w - l; i++)
-				val.append(" ");
+			val.append(" ".repeat(Math.max(0, w - l)));
 			val.append(d);
 		}
 

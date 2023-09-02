@@ -7,7 +7,6 @@ import app.parser.interpreters.Primitive;
 import app.parser.interpreters.primitives.Mat;
 import app.parser.interpreters.primitives.Num;
 import app.parser.interpreters.primitives.Tuple;
-
 import java.math.BigDecimal;
 import java.util.Arrays;
 
@@ -27,8 +26,10 @@ public class Dim implements Interpreter {
 
         if (Mat.is(p)) {
             Matrix m = Mat.cast(p).mat();
-            return new Tuple(Arrays.asList(new Interpreter[]
-                    {new Num(BigDecimal.valueOf(m.rows())), new Num(BigDecimal.valueOf(m.cols()))}));
+            return new Tuple(
+                new Num(BigDecimal.valueOf(m.rows())),
+                new Num(BigDecimal.valueOf(m.cols()))
+            );
         }
 
         return new Err("invalid 'dim' command");

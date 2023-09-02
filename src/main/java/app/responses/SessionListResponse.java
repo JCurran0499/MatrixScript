@@ -1,7 +1,6 @@
 package app.responses;
 
 import app.parser.interpreters.variables.SessionHandler;
-import lombok.Builder;
 import lombok.Getter;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -23,10 +22,8 @@ public class SessionListResponse {
         }
     }
 
-    @Getter
-    @Builder
-    public static class SessionJson {
-        private final String token;
-        private final String expiration;
+    public record SessionJson(
+        String token,
+        String expiration) {
     }
 }

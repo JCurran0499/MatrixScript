@@ -1,50 +1,15 @@
 package app.parser.interpreters.primitives;
 
 import app.parser.interpreters.Primitive;
-import app.parser.interpreters.Interpreter;
 import app.parser.interpreters.PrimitiveID;
-import resources.matrix.exceptions.MatrixException;
 import resources.matrix.Matrix;
 import java.math.BigDecimal;
 
 public class Mat extends Primitive {
-    private Matrix mat;
+    private final Matrix mat;
 
     public Mat(Matrix m) {
         mat = m;
-    }
-
-    public Mat(Interpreter[][] m) {
-        StringBuilder matrixString = new StringBuilder();
-        Primitive p;
-        for (Interpreter[] row : m) {
-            for (Interpreter i : row) {
-                p = i.solve();
-
-                if (Num.is(p)) {
-                    matrixString.append(p.string());
-                }
-
-                if (Mat.is(p)) {
-                    matrixString.append(p.string(), 1, p.string().length() - 1).append(" ; ");
-                }
-
-                if (Range.is(p)) {
-                    for (int e : Range.cast(p).fullRange())
-                        matrixString.append(e).append(" ");
-                }
-
-                matrixString.append(" ");
-            }
-
-            matrixString.append(" ; ");
-        }
-
-        try {
-            mat = new Matrix(matrixString.toString());
-        } catch (MatrixException e) {
-            mat = null;
-        }
     }
 
     /* Base Methods */
@@ -75,6 +40,10 @@ public class Mat extends Primitive {
 
     public Matrix mat() {
         return mat;
+    }
+
+    public String lineString() {
+        return mat.toString();
     }
 
     public Primitive add(Primitive a) {
@@ -145,7 +114,7 @@ public class Mat extends Primitive {
             return new Num(mat.getValue(rint, cint));
         }
 
-        return null;
+        return new Err("invalid 'get' command");
     }
 
     public Mat negate() {

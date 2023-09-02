@@ -44,6 +44,17 @@ public class Range extends Primitive {
         return Math.abs(end - start);
     }
 
+    public Primitive get(Num index) {
+        if (!index.isInteger())
+            return new Err("integers are required to index a matrix");
+
+        int i = index.num().intValue();
+        if (i > range())
+            return new Err("out of bounds");
+
+        return new Num(start + i);
+    }
+
     public Integer compareTo(Primitive a) {
         if (Num.is(a))
             return BigDecimal.valueOf(range()).compareTo(Num.cast(a).num());

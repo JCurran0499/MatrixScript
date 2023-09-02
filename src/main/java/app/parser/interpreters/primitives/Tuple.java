@@ -17,6 +17,12 @@ public class Tuple extends Primitive {
             pList.add(i.solve());
     }
 
+    public Tuple(Interpreter... iList) {
+        pList = new ArrayList<>();
+        for (Interpreter i : iList)
+            pList.add(i.solve());
+    }
+
     /* Base Methods */
 
     public Primitive solve() {
@@ -34,8 +40,13 @@ public class Tuple extends Primitive {
 
     public String string() {
         StringBuilder s = new StringBuilder("(");
-        for (Primitive p : pList)
-            s.append(p.string()).append(", ");
+        for (Primitive p : pList) {
+            if (Mat.is(p)) s.append(Mat.cast(p).lineString());
+            else s.append(p.string());
+
+            s.append(", ");
+        }
+
         s.delete(s.length() - 2, s.length());
         s.append(")");
 
