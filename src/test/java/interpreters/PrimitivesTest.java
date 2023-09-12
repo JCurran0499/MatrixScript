@@ -3,7 +3,6 @@ package interpreters;
 import app.parser.interpreters.primitives.*;
 import org.junit.jupiter.api.Test;
 import resources.matrix.Matrix;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -374,7 +373,9 @@ public class PrimitivesTest {
             {4, 3.08, 2, 1},
         }));
 
-
+    assertTrue(m.get(
+        new Tuple(new Num(0), new Num(1))
+    ).equals(new Num(2.3)));
     }
 
 
