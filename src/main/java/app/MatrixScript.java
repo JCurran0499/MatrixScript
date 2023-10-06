@@ -34,6 +34,7 @@ public class MatrixScript {
         }
     }
 
+
     private static void runAPI() {
         SessionHandler.initiateSessionManager();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
@@ -49,10 +50,12 @@ public class MatrixScript {
 
         get("/health", (req, res) -> {
             setCORSHeaders(res);
-            return "OK";
+            return mapper.valueToTree(
+                new CommandResponse("OK", null, null, null)
+            );
         });
 
-        get("/token", (req, res) -> {
+        post("/token", (req, res) -> {
             setCORSHeaders(res);
             setJSONHeader(res);
 
@@ -76,8 +79,8 @@ public class MatrixScript {
 
             String sessionToken = req.queryParams("token");
             if (sessionToken == null) {
-                logger.error("401 ERROR - no session token provided");
-                halt(401, mapper.writeValueAsString(
+                logger.error("400 ERROR - no session token provided");
+                halt(400, mapper.writeValueAsString(
                     new ErrorResponse("no session token")
                 ));
             }

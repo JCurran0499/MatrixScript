@@ -34,7 +34,7 @@ public class AwsService {
             .build()
         );
 
-        return auth != null && auth.equals("Bearer " + response.parameter().value());
+        return auth != null && auth.equals(response.parameter().value());
     }
 
     public static void publishError(String topicArn, String command, Exception e) {
