@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ -z $1 ]
+if [ -z "$1" ]
 then
   echo "================================================================================"
   echo "|                                                                              |"
@@ -20,7 +20,7 @@ then
   echo "7: Run specific JUnit test"
   echo " "
 
-  read -p "Select: " CHOICE
+  read -p "Select: " -r CHOICE
 
 else
   CHOICE="$1"
@@ -48,7 +48,7 @@ case $CHOICE in
     mvn test
     ;;
   7)
-    read -p "Test class name: " TEST_CLASS
+    read -p "Test class name: " -r TEST_CLASS
     mvn test -Dtest="$TEST_CLASS"
     ;;
   *)

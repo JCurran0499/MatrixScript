@@ -2,8 +2,6 @@ package app.parser.interpreters;
 
 public abstract class Primitive implements Interpreter {
 
-    public boolean printValue = true;
-
     public Primitive solve() {
         return this;
     }
