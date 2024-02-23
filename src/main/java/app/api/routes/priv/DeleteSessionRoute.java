@@ -23,13 +23,18 @@ public class DeleteSessionRoute extends Route {
     public JsonNode run(Request req, Response res) throws JsonProcessingException {
         setJSONHeader(res);
 
-        int success = SessionHandler.invalidateSession(req.params(":token"));
+        String sessionToken = req.params(":token");
+        int success = SessionHandler.invalidateSession(sessionToken);
         if (success == -1) {
             logger.error("404 ERROR - tried to delete invalid token");
             halt(404, mapper.writeValueAsString(
                 new ErrorResponse("invalid session token")
             ));
         }
+
+        logger.info("token ~" + sessionToken + "~ expired");
+        logger.info(SessionHandler.sessionCount() + " open session" +
+            (SessionHandler.sessionCount() != 1 ? "s" : ""));
 
         return mapper.valueToTree(
             new TokenResponse("DELETED", req.params(":token"))

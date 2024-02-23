@@ -18,7 +18,7 @@ public class ListSessionsRoute extends Route {
 
     private final ObjectMapper mapper;
 
-    public JsonNode run(Request req, Response res) throws JsonProcessingException {
+    public JsonNode run(Request req, Response res) {
         setJSONHeader(res);
 
         int sessionCount = SessionHandler.sessionCount();

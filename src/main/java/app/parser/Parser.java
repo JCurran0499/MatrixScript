@@ -31,7 +31,7 @@ public class Parser {
         Token token;
         boolean addedToken;
 
-        while (command.length() > 0) {
+        while (!command.isEmpty()) {
             addedToken = false;
 
             // ---------- Parentheses ---------- \\
@@ -107,7 +107,7 @@ public class Parser {
                     List<Character> stoppers = Arrays.asList(' ', '\t', '+', '-', '*', '/', '^', '!', ':',
                             '=', '<', '>', '~', ',', '(', '[');
 
-                    while (command.length() > 0 && !stoppers.contains(command.charAt(0))) {
+                    while (!command.isEmpty() && !stoppers.contains(command.charAt(0))) {
                         errorText.append(command.charAt(0));
                         command = command.substring(1).stripLeading();
                     }
@@ -262,7 +262,7 @@ public class Parser {
         String s;
 
         List<String> commandParts = new ArrayList<>();
-        while (command.length() > 0) {
+        while (!command.isEmpty()) {
             if (command.startsWith("("))
                 s = "(" + Token.parseBracket(command, '(', ')', TokenType.PAREN).value() + ")";
 

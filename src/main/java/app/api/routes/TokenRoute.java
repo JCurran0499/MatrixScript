@@ -35,6 +35,10 @@ public class TokenRoute extends Route {
             ));
         }
 
+        logger.info("new token generated: ~" + sessionToken + "~");
+        logger.info(SessionHandler.sessionCount() + " open session" +
+            (SessionHandler.sessionCount() != 1 ? "s" : ""));
+
         return mapper.valueToTree(
             new TokenResponse(null, sessionToken)
         );

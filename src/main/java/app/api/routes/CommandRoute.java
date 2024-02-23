@@ -60,7 +60,7 @@ public class CommandRoute extends Route {
         try {
             result = execute(sessionToken, command);
         } catch (Exception e) {
-            AwsService.publishError(System.getenv("SNS"), command, e);
+            AwsService.publishError(env.get("SNS"), command, e);
             halt(500, mapper.writeValueAsString(
                 new ErrorResponse("unexpected internal server error")
             ));
