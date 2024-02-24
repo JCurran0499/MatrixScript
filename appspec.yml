@@ -5,6 +5,6 @@ files:
     destination: /home/ec2-user/MatrixScript
 hooks:
   ApplicationStop:
-    - location: codedeploy/codedeploy-kill.sh
+    - location: deploy/codedeploy-kill.sh
   ApplicationStart:
-    - location: codedeploy/codedeploy-start.sh
+    - location: deploy/codedeploy-start.sh
