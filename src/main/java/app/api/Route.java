@@ -2,12 +2,14 @@ package app.api;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.cdimascio.dotenv.Dotenv;
 import spark.Request;
 import spark.Response;
 
 public abstract class Route {
 
+    protected static final ObjectMapper mapper = new ObjectMapper();
     protected static final Dotenv env = Dotenv.load();
 
     public abstract JsonNode run(Request req, Response res) throws JsonProcessingException;

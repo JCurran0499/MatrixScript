@@ -6,19 +6,16 @@ import app.api.responses.TokenResponse;
 import app.parser.interpreters.variables.SessionHandler;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import spark.Request;
 import spark.Response;
 
 import static spark.Spark.halt;
 
-@AllArgsConstructor
 public class DeleteSessionRoute extends Route {
 
-    private final ObjectMapper mapper;
-    private final Logger logger;
+    private final Logger logger = LoggerFactory.getLogger(DeleteSessionRoute.class);
 
     public JsonNode run(Request req, Response res) throws JsonProcessingException {
         setJSONHeader(res);
