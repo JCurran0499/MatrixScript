@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /home/ec2-user/MatrixScript
+    destination: /home/ec2-user/MatrixScript-Backend
 hooks:
   ApplicationStop:
     - location: deploy/codedeploy-kill.sh
